@@ -1,2 +1,2 @@
 # VOCASY
-Voice chat system
+Voice chat system for Unity Engine
