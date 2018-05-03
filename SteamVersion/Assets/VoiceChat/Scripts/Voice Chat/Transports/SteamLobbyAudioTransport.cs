@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Steamworks;
 using UnityEngine;
+using VOCASY;
+using VOCASY.Utility;
 public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
 {
     public const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(bool);
@@ -109,7 +111,7 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
     {
         INetworkIdentity id = GameObject.Instantiate(voiceUserPrefab.gameObject).GetComponent<INetworkIdentity>();
         id.IsLocalPlayer = true;
-        id.NetworkId = self.m_SteamID;
+        id.NetworkId = (uint)self.m_SteamID;
 
         if ((EChatRoomEnterResponse)cb.m_EChatRoomEnterResponse == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
         {
@@ -124,7 +126,7 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
                     others.Add(client.m_SteamID, client);
                     id = GameObject.Instantiate(voiceUserPrefab.gameObject).GetComponent<INetworkIdentity>();
                     id.IsLocalPlayer = false;
-                    id.NetworkId = client.m_SteamID;
+                    id.NetworkId = (uint)client.m_SteamID;
                 }
             }
         }
@@ -138,7 +140,7 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
             others.Add(changed.m_SteamID, changed);
             INetworkIdentity id = GameObject.Instantiate(voiceUserPrefab.gameObject).GetComponent<INetworkIdentity>();
             id.IsLocalPlayer = false;
-            id.NetworkId = changed.m_SteamID;
+            id.NetworkId = (uint)changed.m_SteamID;
         }
         else
         {

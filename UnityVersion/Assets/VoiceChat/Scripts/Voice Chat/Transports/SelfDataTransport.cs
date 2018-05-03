@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VOCASY;
+using VOCASY.Utility;
 public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
 {
     private const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(bool);
@@ -11,7 +13,7 @@ public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
 
     public uint MaxPacketLength { get { return pLength - FirstPacketByteAvailable; } }
 
-    public ulong ReceiverId;
+    public uint ReceiverId;
 
     private Queue<GamePacket> packets = new Queue<GamePacket>();
     public VoicePacketInfo Receive(GamePacket buffer)
@@ -20,7 +22,7 @@ public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
         GamePacket received = packets.Dequeue();
 
         VoicePacketInfo info = new VoicePacketInfo();
-        info.NetId = received.ReadULong(0);
+        info.NetId = received.ReadUInt(0);
         info.Frequency = received.ReadUShort();
         info.Channels = received.ReadByte();
         info.Format = (AudioDataTypeFlag)received.ReadByte();

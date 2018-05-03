@@ -1,4 +1,6 @@
 ﻿using Steamworks;
+using VOCASY;
+using VOCASY.Utility;
 public class SteamVoiceDataManipulator : IAudioDataManipulator
 {
     private const int defaultBufferSize = 20000;

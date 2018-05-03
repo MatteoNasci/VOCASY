@@ -1,0 +1,13 @@
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\obj\Debug\VOCASY.csprojResolveAssemblyReference.cache
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\obj\Debug\VOCASY.csproj.CoreCompileInputs.cache
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\bin\Debug\VOCASY.dll
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\bin\Debug\VOCASY.pdb
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\obj\Debug\VOCASY.dll
+D:\GitProjects\Self\VOCASY\VOCASYlib\VOCASY\VOCASY\obj\Debug\VOCASY.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\bin\Debug\VOCASY.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\bin\Debug\VOCASY.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\obj\Debug\VOCASY.csprojResolveAssemblyReference.cache
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\obj\Debug\VOCASY.csproj.CoreCompileInputs.cache
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\obj\Debug\VOCASY.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\obj\Debug\VOCASY.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY\bin\Debug\VOCASY.xml

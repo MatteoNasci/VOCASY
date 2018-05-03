@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using VOCASY;
+using VOCASY.Utility;
 [RequireComponent(typeof(AudioSource))]
 public class Receiver : MonoBehaviour, IVoiceReceiver
 {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Steamworks;
+using VOCASY;
 [RequireComponent(typeof(IVoiceHandler))]
 public class SteamPlayer : MonoBehaviour
 {

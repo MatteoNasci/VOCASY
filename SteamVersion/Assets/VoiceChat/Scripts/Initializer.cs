@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
+using VOCASY;
 [RequireComponent(typeof(IAudioTransportLayer))]
 public class Initializer : MonoBehaviour
 {
-    [SerializeField]
-    private VoiceDataWorkflow manager;
+    public VoiceChatSettings Settings;
     void Update()
     {
         if (SteamManager.Initialized)
         {
-            manager.Init(new SteamVoiceDataManipulator(), GetComponent<IAudioTransportLayer>());
+            VoiceDataWorkflow.Init(new SteamVoiceDataManipulator(), GetComponent<IAudioTransportLayer>(), Settings);
             Destroy(this);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using VOCASY;
 [RequireComponent(typeof(INetworkIdentity), typeof(IVoiceReceiver), typeof(IVoiceRecorder))]
 public class VoiceHandler : MonoBehaviour, IVoiceHandler
 {
@@ -19,16 +20,11 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
 
     public float SelfOutputVolume { get { return selfOutputVolume; } set { selfOutputVolume = Mathf.Clamp01(value); } }
 
-    public float OutputVolume { get { return SelfOutputVolume * Manager.Settings.VoiceChatVolume; } }
-
-    protected VoiceDataWorkflow Manager { get { return manager; } }
+    public float OutputVolume { get { return SelfOutputVolume * VoiceDataWorkflow.Settings.VoiceChatVolume; } }
 
     protected IVoiceReceiver Receiver { get; private set; }
 
     protected IVoiceRecorder Recorder { get; private set; }
-
-    [SerializeField]
-    private VoiceDataWorkflow manager;
 
     private float selfOutputVolume = 1f;
 
@@ -112,7 +108,7 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
             //Set receiver enable status
             Receiver.Enable(!IsRecorder);
             //Add self to the workflow
-            Manager.AddVoiceHandler(this);
+            VoiceDataWorkflow.AddVoiceHandler(this);
         }
     }
     void OnDisable()
@@ -125,7 +121,7 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
             //Make sure to disables receiver
             Receiver.Enable(false);
             //Removes self from the workflow
-            Manager.RemoveVoiceHandler(this);
+            VoiceDataWorkflow.RemoveVoiceHandler(this);
         }
     }
     void Awake()
@@ -145,11 +141,11 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
         AvailableTypes = res;
 
         if (IsRecorder)
-            Manager.Settings.PushToTalkChanged += OnPushToTalkChanged;
+            VoiceDataWorkflow.Settings.PushToTalkChanged += OnPushToTalkChanged;
     }
     void OnDestroy()
     {
-        Manager.Settings.PushToTalkChanged -= OnPushToTalkChanged;
+        VoiceDataWorkflow.Settings.PushToTalkChanged -= OnPushToTalkChanged;
     }
 
     void PTTOffUpdate()
@@ -159,7 +155,7 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
     }
     void PTTOnUpdate()
     {
-        if (Input.GetKey(Manager.Settings.PushToTalkKey))
+        if (Input.GetKey((KeyCode)VoiceDataWorkflow.Settings.PushToTalkKey))
         {
             //if ptt key is pressed and recorder is not recording start recording
             if (Recorder.IsDisabled)
@@ -170,7 +166,7 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
     }
     void OnPushToTalkChanged()
     {
-        if (Manager.Settings.PushToTalk)
+        if (VoiceDataWorkflow.Settings.PushToTalk)
         {
             //if ptt is on set custom update and stop recording
             updatePtt = PTTOnUpdate;

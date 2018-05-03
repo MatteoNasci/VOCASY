@@ -2,6 +2,8 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using VOCASY;
+using VOCASY.Utility;
 public class SteamVoiceDirectTransport : MonoBehaviour, IAudioTransportLayer
 {
     public const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(bool); 

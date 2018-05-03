@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Steamworks;
+using VOCASY;
 public class SteamRecorder : MonoBehaviour, IVoiceRecorder
 {
     public bool IsDisabled { get { return !isRecording; } }

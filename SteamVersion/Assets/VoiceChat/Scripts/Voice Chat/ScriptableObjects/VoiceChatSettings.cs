@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System;
+using VOCASY;
 /// <summary>
 /// Class that manages and holds voice chat settings
 /// </summary>
@@ -88,7 +89,7 @@ public class VoiceChatSettings : ScriptableObject, IVoiceChatSettings
         }
     }
 
-    public KeyCode PushToTalkKey { get { return pushToTalkKey; } set { pushToTalkKey = value; } }
+    public int PushToTalkKey { get { return (int)pushToTalkKey; } set { pushToTalkKey = (KeyCode)value; } }
 
     public FrequencyType AudioQuality
     {
@@ -190,21 +191,6 @@ public class VoiceChatSettings : ScriptableObject, IVoiceChatSettings
             Directory.CreateDirectory(SavedCustomValuesDirectoryPath);
 
         File.WriteAllText(SavedCustomValuesPath, JsonUtility.ToJson(this));
-    }
-
-    public bool IsPushToTalkKeyOpen()
-    {
-        return Input.GetKey(PushToTalkKey);
-    }
-
-    public bool IsPushToTalkKeyReleased()
-    {
-        return Input.GetKeyUp(PushToTalkKey);
-    }
-
-    public bool IsPushToTalkKeyDown()
-    {
-        return Input.GetKeyDown(PushToTalkKey);
     }
 
     void OnEnable()
