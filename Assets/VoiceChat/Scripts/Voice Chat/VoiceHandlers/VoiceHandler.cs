@@ -159,7 +159,7 @@ public class VoiceHandler : MonoBehaviour, IVoiceHandler
     }
     void PTTOnUpdate()
     {
-        if (Manager.Settings.IsPushToTalkKeyOpen())
+        if (Input.GetKey(Manager.Settings.PushToTalkKey))
         {
             //if ptt key is pressed and recorder is not recording start recording
             if (Recorder.IsDisabled)

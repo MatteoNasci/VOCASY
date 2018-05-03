@@ -94,15 +94,15 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
         temp512 = GamePacket.CreatePacket(512);
         temp256 = GamePacket.CreatePacket(256);
 
-        //SteamCallbackReceiver.Init();
+        SteamCallbacksUtility.Init();
 
-        //SteamCallbackReceiver.ChatUpdate += OnLobbyChatUpdate;
-        //SteamCallbackReceiver.LobbyEnter += OnLobbyEnter;
+        SteamCallbacksUtility.LobbyChatUpd += OnLobbyChatUpdate;
+        SteamCallbacksUtility.LobbyEnter += OnLobbyEnter;
     }
     void OnDestroy()
     {
-        //SteamCallbackReceiver.ChatUpdate -= OnLobbyChatUpdate;
-        //SteamCallbackReceiver.LobbyEnter -= OnLobbyEnter;
+        SteamCallbacksUtility.LobbyChatUpd -= OnLobbyChatUpdate;
+        SteamCallbacksUtility.LobbyEnter -= OnLobbyEnter;
         //TODO: destroy all prefabs when leaving lobby
     }
     void OnLobbyEnter(LobbyEnter_t cb)

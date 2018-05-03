@@ -6,12 +6,12 @@ public class SteamPlayer : MonoBehaviour
     private IVoiceHandler handler;
     void Awake()
     {
-        //SteamCallbackReceiver.ChatUpdate += OnLobbyUpdate;
+        SteamCallbacksUtility.LobbyChatUpd += OnLobbyUpdate;
         handler = GetComponent<IVoiceHandler>();
     }
     void OnDestroy()
     {
-        //SteamCallbackReceiver.ChatUpdate -= OnLobbyUpdate;
+        SteamCallbacksUtility.LobbyChatUpd -= OnLobbyUpdate;
     }
     void OnLobbyUpdate(LobbyChatUpdate_t cb)
     {
