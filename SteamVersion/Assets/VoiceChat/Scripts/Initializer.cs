@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using VOCASY;
+using VOCASY.Common;
 [RequireComponent(typeof(IAudioTransportLayer))]
 public class Initializer : MonoBehaviour
 {

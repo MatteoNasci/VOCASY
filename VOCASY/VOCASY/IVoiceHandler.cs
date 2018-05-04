@@ -37,7 +37,7 @@ namespace VOCASY
         /// <summary>
         /// Amount of mic data recorded available
         /// </summary>
-        uint MicDataAvailable { get; }
+        int MicDataAvailable { get; }
         /// <summary>
         /// Processes audio data in format Single and plays it
         /// </summary>
@@ -54,7 +54,7 @@ namespace VOCASY
         /// <param name="micDataCount">amount of data to store</param>
         /// <param name="effectiveMicDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int micDataCount, out uint effectiveMicDataCount);
+        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int micDataCount, out int effectiveMicDataCount);
         /// <summary>
         /// Processes audio data in format Int16 and plays it
         /// </summary>
@@ -71,7 +71,7 @@ namespace VOCASY
         /// <param name="micDataCount">amount of data to store</param>
         /// <param name="effectiveMicDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicDataInt16(byte[] buffer, int bufferOffset, int micDataCount, out uint effectiveMicDataCount);
+        VoicePacketInfo GetMicDataInt16(byte[] buffer, int bufferOffset, int micDataCount, out int effectiveMicDataCount);
         /// <summary>
         /// Sets an action to be called whenever there is mic data available
         /// </summary>

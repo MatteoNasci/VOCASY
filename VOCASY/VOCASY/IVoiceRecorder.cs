@@ -16,7 +16,7 @@
         /// <summary>
         /// Amount of mic data recorded currently available
         /// </summary>
-        uint MicDataAvailable { get; }
+        int MicDataAvailable { get; }
         /// <summary>
         /// Gets recorded data and stores it in format Single
         /// </summary>
@@ -25,7 +25,7 @@
         /// <param name="dataCount">amount of data to store</param>
         /// <param name="effectiveDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out uint effectiveDataCount);
+        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount);
         /// <summary>
         /// Gets recorded data and stores it in format Int16
         /// </summary>
@@ -34,7 +34,7 @@
         /// <param name="dataCount">amount of data to store</param>
         /// <param name="effectiveDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out uint effectiveDataCount);
+        VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount);
         /// <summary>
         /// Starts recording
         /// </summary>

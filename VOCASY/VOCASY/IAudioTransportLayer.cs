@@ -10,7 +10,7 @@ namespace VOCASY
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
-        uint MaxPacketLength { get; }
+        int MaxPacketLength { get; }
         /// <summary>
         /// True as long as there are packets available to receive
         /// </summary>

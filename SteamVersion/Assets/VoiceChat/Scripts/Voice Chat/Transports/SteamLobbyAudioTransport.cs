@@ -10,7 +10,7 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
 
     public bool IsPacketAvailable { get { uint pack; return SteamNetworking.IsP2PPacketAvailable(out pack); } }
 
-    public uint MaxPacketLength { get { return (uint)temp1024.MaxCapacity - FirstPacketByteAvailable; } }
+    public int MaxPacketLength { get { return temp1024.MaxCapacity - FirstPacketByteAvailable; } }
 
     [SerializeField]
     private SteamPlayer voiceUserPrefab;

@@ -33,6 +33,14 @@
         /// Format of the stored data
         /// </summary>
         public AudioDataTypeFlag Format;
+        /// <summary>
+        /// Create a new struct instance
+        /// </summary>
+        /// <param name="netId">packet netid</param>
+        /// <param name="frequency">audio frequency</param>
+        /// <param name="channels">audio channels</param>
+        /// <param name="format">audio format</param>
+        /// <param name="valid">is packet valid?</param>
         public VoicePacketInfo(uint netId, ushort frequency, byte channels, AudioDataTypeFlag format, bool valid = true)
         {
             NetId = netId;

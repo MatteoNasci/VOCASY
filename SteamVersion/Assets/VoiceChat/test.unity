@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b58b999c9207d094faeda559fb8db115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 613200136330d7941b42b0404c4adc40, type: 2}
+  Settings: {fileID: 11400000, guid: c81247759671a144bb60f6d4daf0cd74, type: 2}
 --- !u!114 &1510225251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdd98a82e1c3bd45825aa4faade9a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceUserPrefab: {fileID: 114734110467101412, guid: 216c93c775714984ab652abd77bbee85,
+  voiceUserPrefab: {fileID: 114223811801696526, guid: 216c93c775714984ab652abd77bbee85,
     type: 2}
 --- !u!4 &1510225252
 Transform:

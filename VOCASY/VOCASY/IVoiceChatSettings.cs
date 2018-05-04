@@ -1,6 +1,9 @@
 ﻿using System;
 namespace VOCASY
 {
+    /// <summary>
+    /// Interface that represents a class that manages the voice chat general status
+    /// </summary>
     public interface IVoiceChatSettings
     {
         /// <summary>

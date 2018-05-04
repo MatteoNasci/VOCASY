@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using VOCASY.Utility;
-/// <summary>
-/// Class that manages the workflow of audio data from input to output
-/// </summary>
 namespace VOCASY
 {
+    /// <summary>
+    /// Class that manages the workflow of audio data from input to output
+    /// </summary>
     public static class VoiceDataWorkflow
     {
         /// <summary>
@@ -28,8 +28,9 @@ namespace VOCASY
         /// <summary>
         /// Initializes the workflow
         /// </summary>
-        /// <param name="manipulator">manipulator to use</param>
-        /// <param name="transport">transport to use</param>
+        /// <param name="dataManipulator">manipulator to use</param>
+        /// <param name="transportLayer">transport to use</param>
+        /// <param name="settings">settings to use</param>
         public static void Init(IAudioDataManipulator dataManipulator, IAudioTransportLayer transportLayer, IVoiceChatSettings settings)
         {
             Settings = settings;
@@ -160,7 +161,7 @@ namespace VOCASY
             bool useSingle = (res & AudioDataTypeFlag.Int16) == 0;
 
             //Retrive data from handler input
-            uint count;
+            int count;
             if (useSingle)
                 info = handler.GetMicData(micDataBuffer, 0, micDataBuffer.Length, out count);
             else

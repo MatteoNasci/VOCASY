@@ -135,6 +135,7 @@ namespace VOCASY.Utility
         /// <param name="output">output char array</param>
         /// <param name="outputOffset">output char array offset</param>
         /// <param name="byteCount">Number of bytes used to store the given string starting from startIndex</param>
+        /// <param name="charCount">Number of chars recovered from buffer</param>
         public static void ReadChars(byte[] buffer, int startIndex, char[] output, int outputOffset, out int byteCount, out int charCount)
         {
             int n = ReadInt32(buffer, startIndex);
