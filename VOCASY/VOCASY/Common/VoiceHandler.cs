@@ -18,10 +18,6 @@ namespace VOCASY.Common
         /// </summary>
         public INetworkIdentity Identity { get; private set; }
         /// <summary>
-        /// Amount of mic data recorded available
-        /// </summary>
-        public int MicDataAvailable { get { return Recorder.IsDisabled ? 0 : Recorder.MicDataAvailable; } }
-        /// <summary>
         /// Flag that determines which types of data format this class can process
         /// </summary>
         public AudioDataTypeFlag AvailableTypes { get; private set; }
@@ -117,9 +113,8 @@ namespace VOCASY.Common
         public void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
             //Gives receiver the audio data for the output is not disabled
-            if (Receiver.IsDisabled)
-                return;
-            Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
+            if (!Receiver.IsDisabled)
+                Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
         }
         /// <summary>
         /// Processes audio data in format Int16 and plays it
@@ -131,15 +126,17 @@ namespace VOCASY.Common
         public void ReceiveAudioDataInt16(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
             //Gives receiver the audio data for the output is not disabled
-            if (Receiver.IsDisabled)
-                return;
-            Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
+            if (!Receiver.IsDisabled)
+                Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
         }
 
         void Start()
         {
-            initialized = true;
-            OnEnable();
+            if (!initialized)
+            {
+                initialized = true;
+                OnEnable();
+            }
         }
         void Update()
         {
@@ -154,7 +151,7 @@ namespace VOCASY.Common
             updatePtt.Invoke();
 
             //if the are mic data recorded available and there is an action setted call it
-            if (MicDataAvailable > 0 && onMicDataProcessed != null)
+            if (!Recorder.IsDisabled && Recorder.MicDataAvailable > 0 && onMicDataProcessed != null)
                 onMicDataProcessed.Invoke(this);
         }
         void OnEnable()
@@ -162,7 +159,11 @@ namespace VOCASY.Common
             if (initialized)
             {
                 //If this is a recorder && ptt is off start recording
-                OnPushToTalkChanged();
+                if (IsRecorder)
+                {
+                    VoiceDataWorkflow.Settings.PushToTalkChanged += OnPushToTalkChanged;
+                    OnPushToTalkChanged();
+                }
                 //Set receiver enable status
                 Receiver.Enable(!IsRecorder);
                 //Add self to the workflow
@@ -175,7 +176,10 @@ namespace VOCASY.Common
             {
                 //If this is a recorder stop recording
                 if (IsRecorder)
+                {
+                    VoiceDataWorkflow.Settings.PushToTalkChanged -= OnPushToTalkChanged;
                     Recorder.StopRecording();
+                }
                 //Make sure to disables receiver
                 Receiver.Enable(false);
                 //Removes self from the workflow
@@ -184,10 +188,14 @@ namespace VOCASY.Common
         }
         void Awake()
         {
+            initialized = false;
             //Get all required components
             Identity = GetComponent<INetworkIdentity>();
             Receiver = GetComponent<IVoiceReceiver>();
             Recorder = GetComponent<IVoiceRecorder>();
+
+            if (Identity == null || Receiver == null || Recorder == null)
+                throw new NullReferenceException("VoiceHandler requeires 3 valid component interfaces INetworkIdentity, IVoiceReceiver and IVoiceRecorder");
 
             //Compatibility check between self, receiver and recorder
             AudioDataTypeFlag res = Receiver.AvailableTypes & Recorder.AvailableTypes & SelfFlag;
@@ -198,12 +206,13 @@ namespace VOCASY.Common
             //Set the compatibility value of this handler
             AvailableTypes = res;
 
-            if (IsRecorder)
-                VoiceDataWorkflow.Settings.PushToTalkChanged += OnPushToTalkChanged;
+            VoiceDataWorkflow.Settings.VoiceChatEnabledChanged += OnVoiceChatEnabledChanged;
+
+            OnVoiceChatEnabledChanged();
         }
         void OnDestroy()
         {
-            VoiceDataWorkflow.Settings.PushToTalkChanged -= OnPushToTalkChanged;
+            VoiceDataWorkflow.Settings.VoiceChatEnabledChanged -= OnVoiceChatEnabledChanged;
         }
 
         void PTTOffUpdate()
@@ -225,18 +234,13 @@ namespace VOCASY.Common
         void OnPushToTalkChanged()
         {
             if (VoiceDataWorkflow.Settings.PushToTalk)
-            {
-                //if ptt is on set custom update and stop recording
                 updatePtt = PTTOnUpdate;
-                Recorder.StopRecording();
-            }
             else
-            {
-                //if ptt is off remove custom update and start recording if neccessary
                 updatePtt = PTTOffUpdate;
-                if (Recorder.IsDisabled)
-                    Recorder.StartRecording();
-            }
+        }
+        void OnVoiceChatEnabledChanged()
+        {
+            this.enabled = VoiceDataWorkflow.Settings.VoiceChatEnabled;
         }
     }
 }

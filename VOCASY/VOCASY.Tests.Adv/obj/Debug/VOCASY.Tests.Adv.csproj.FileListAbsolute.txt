@@ -1,0 +1,13 @@
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.Tests.Adv.exe.config
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.Tests.Adv.exe
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.Tests.Adv.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\UnityEngine.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\VOCASY.xml
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\UnityEngine.xml
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.csprojResolveAssemblyReference.cache
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.csproj.CoreCompileInputs.cache
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.csproj.CopyComplete
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.exe
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.pdb

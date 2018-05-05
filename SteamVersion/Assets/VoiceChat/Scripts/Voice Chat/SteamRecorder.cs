@@ -10,7 +10,8 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
         get
         {
             uint n;
-            isRecording = SteamUser.GetAvailableVoice(out n) != EVoiceResult.k_EVoiceResultNotRecording;
+            EVoiceResult res = SteamUser.GetAvailableVoice(out n);
+            isRecording = res != EVoiceResult.k_EVoiceResultNotRecording;
             return (int)n;
         }
     }
@@ -30,8 +31,11 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
             return VoicePacketInfo.InvalidPacket;
 
         uint n;
-    
+
         EVoiceResult eR = SteamUser.GetAvailableVoice(out n);
+
+        effectiveDataCount = (int)n;
+
         isRecording = eR != EVoiceResult.k_EVoiceResultNotRecording;
         if (eR == EVoiceResult.k_EVoiceResultOK)
         {

@@ -45,7 +45,7 @@ namespace VOCASY.Common.Unity
 
                 writeIndex += count;
                 if (writeIndex >= cyclicBuffer.Length)
-                    writeIndex *= cyclicBuffer.Length;
+                    writeIndex -= cyclicBuffer.Length;
 
                 prevOffset = offset;
             }
@@ -60,13 +60,9 @@ namespace VOCASY.Common.Unity
         /// <returns>data info</returns>
         public VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
         {
-            if (dataCount <= 0)
-            {
-                effectiveDataCount = 0;
+            effectiveDataCount = Mathf.Min(dataCount, buffer.Length - bufferOffset, MicDataAvailable);
+            if (effectiveDataCount <= 0)
                 return VoicePacketInfo.InvalidPacket;
-            }
-
-            effectiveDataCount = Mathf.Min(dataCount, MicDataAvailable);
 
             Utils.WriteFromCycle(this.cyclicBuffer, readIndex, buffer, bufferOffset, dataCount, out readIndex);
 
@@ -82,19 +78,18 @@ namespace VOCASY.Common.Unity
         /// <returns>data info</returns>
         public VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
         {
-            if (dataCount <= 0)
-            {
-                effectiveDataCount = 0;
+            effectiveDataCount = Mathf.Min(dataCount, buffer.Length - bufferOffset, MicDataAvailable * sizeof(short));
+            if ((effectiveDataCount & 1) == 1)
+                effectiveDataCount--;
+
+            if (effectiveDataCount <= 0)
                 return VoicePacketInfo.InvalidPacket;
-            }
 
-            effectiveDataCount = Mathf.Min(dataCount, MicDataAvailable * 2);
-
-            int l = dataCount + bufferOffset;
+            int l = effectiveDataCount + bufferOffset;
 
             for (int i = bufferOffset; i < l; i += sizeof(short))
             {
-                Utils.Write(buffer, i, Mathf.Lerp(short.MinValue, short.MaxValue, cyclicBuffer[readIndex]));
+                Utils.Write(buffer, i, (short)Mathf.Lerp(short.MinValue, short.MaxValue, cyclicBuffer[readIndex]));
 
                 readIndex++;
                 if (readIndex >= cyclicBuffer.Length)
@@ -103,6 +98,38 @@ namespace VOCASY.Common.Unity
 
             return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Int16);
         }
+        /// <summary>
+        /// Stops recording
+        /// </summary>
+        public void StopRecording()
+        {
+            Microphone.End(Settings.MicrophoneDevice);
+
+            if (clip != null)
+                Destroy(clip);
+
+            clip = null;
+
+            IsDisabled = true;
+        }
+        /// <summary>
+        /// Starts recording
+        /// </summary>
+        public void StartRecording()
+        {
+            int freq = (ushort)Mathf.Clamp((int)Settings.AudioQuality, VoiceChatSettings.MinFrequency, Mathf.Min(maxDevFrequency, VoiceChatSettings.MaxFrequency));
+
+            clip = Microphone.Start(Settings.MicrophoneDevice, true, 1, freq);
+
+            if (cyclicBuffer == null)
+                cyclicBuffer = new float[VoiceChatSettings.MaxFrequency / 10];
+
+            readIndex = 0;
+            writeIndex = 0;
+
+            IsDisabled = false;
+        }
+
         void OnFrequencyChanged(FrequencyType prevFrequency)
         {
             //if it was recording restart with new frequency
@@ -126,34 +153,6 @@ namespace VOCASY.Common.Unity
             //restart recording if it was rec previously
             if (wasRecording)
                 StartRecording();
-        }
-        /// <summary>
-        /// Stops recording
-        /// </summary>
-        public void StopRecording()
-        {
-            Microphone.End(Settings.MicrophoneDevice);
-
-            if (clip != null)
-                Destroy(clip);
-
-            clip = null;
-
-            IsDisabled = true;
-        }
-        /// <summary>
-        /// Starts recording
-        /// </summary>
-        public void StartRecording()
-        {
-            if (cyclicBuffer == null)
-                cyclicBuffer = new float[VoiceChatSettings.MaxFrequency / 10];
-
-            int freq = (ushort)Mathf.Clamp((int)Settings.AudioQuality, VoiceChatSettings.MinFrequency, Mathf.Min(maxDevFrequency, VoiceChatSettings.MaxFrequency));
-
-            clip = Microphone.Start(Settings.MicrophoneDevice, true, 1, freq);
-
-            IsDisabled = false;
         }
         void Awake()
         {

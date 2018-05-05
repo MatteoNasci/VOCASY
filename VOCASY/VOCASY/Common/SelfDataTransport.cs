@@ -5,7 +5,7 @@ using VOCASY.Utility;
 namespace VOCASY.Common
 {
     /// <summary>
-    /// Class that fakes network state between self and another client
+    /// Class that fakes network state between self and another client. It should be used for tests and debug
     /// </summary>
     public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
     {
@@ -19,13 +19,16 @@ namespace VOCASY.Common
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
-        public int MaxPacketLength { get { return pLength - FirstPacketByteAvailable; } }
+        public int MaxPacketLength { get { return packetDataSize; } }
         /// <summary>
         /// To which id fake packets should be sent
         /// </summary>
         public uint ReceiverId;
 
         private Queue<GamePacket> packets = new Queue<GamePacket>();
+
+        [SerializeField]
+        private int packetDataSize = pLength - FirstPacketByteAvailable;
 
         /// <summary>
         /// Receive packet data
@@ -44,7 +47,8 @@ namespace VOCASY.Common
             info.Format = (AudioDataTypeFlag)received.ReadByte();
             info.ValidPacketInfo = true;
 
-            buffer.WriteByteData(received, FirstPacketByteAvailable, 0, Mathf.Min(received.MaxCapacity, buffer.MaxCapacity));
+            int n;
+            buffer.Copy(received, out n);
 
             received.DisposePacket();
 
@@ -64,7 +68,8 @@ namespace VOCASY.Common
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
 
-            toSend.WriteByteData(data.Data, 0, data.CurrentLength);
+            int n;
+            toSend.Copy(data, out n);
 
             packets.Enqueue(toSend);
         }

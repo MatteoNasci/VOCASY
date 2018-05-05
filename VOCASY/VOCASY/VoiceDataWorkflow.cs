@@ -18,10 +18,10 @@ namespace VOCASY
 
         private static Dictionary<uint, IVoiceHandler> handlers = new Dictionary<uint, IVoiceHandler>();
 
-        private static float[] micDataBuffer = new float[4800];
-        private static float[] receivedDataBuffer = new float[4800];
-        private static byte[] micDataBufferInt16 = new byte[19200];
-        private static byte[] receivedDataBufferInt16 = new byte[19200];
+        private static float[] micDataBuffer;
+        private static float[] receivedDataBuffer;
+        private static byte[] micDataBufferInt16;
+        private static byte[] receivedDataBufferInt16;
         private static GamePacket packetReceiver;
         private static GamePacket packetSender;
 
@@ -31,8 +31,24 @@ namespace VOCASY
         /// <param name="dataManipulator">manipulator to use</param>
         /// <param name="transportLayer">transport to use</param>
         /// <param name="settings">settings to use</param>
-        public static void Init(IAudioDataManipulator dataManipulator, IAudioTransportLayer transportLayer, IVoiceChatSettings settings)
+        /// <param name="maxAudioFrequencyUsed">max frequency used</param>
+        /// <param name="maxChannelsUsed">max channels used</param>
+        public static void Init(IAudioDataManipulator dataManipulator, IAudioTransportLayer transportLayer, IVoiceChatSettings settings, ushort maxAudioFrequencyUsed, byte maxChannelsUsed)
         {
+            if (dataManipulator == null || transportLayer == null || settings == null)
+                throw new ArgumentNullException("The interfaces passed to the workflow are invalid");
+
+            if (maxAudioFrequencyUsed <= 0 || maxChannelsUsed <= 0)
+                throw new ArgumentOutOfRangeException("Both frequency and channels passed to the workflow need to be > 0");
+
+            if (micDataBuffer == null || (maxChannelsUsed * maxAudioFrequencyUsed) / 20 != micDataBuffer.Length)
+            {
+                micDataBuffer = new float[(maxAudioFrequencyUsed * maxChannelsUsed) / 20];
+                receivedDataBuffer = new float[(maxAudioFrequencyUsed * maxChannelsUsed) / 20];
+                micDataBufferInt16 = new byte[micDataBuffer.Length * 2];
+                receivedDataBufferInt16 = new byte[receivedDataBuffer.Length * 2];
+            }
+
             Settings = settings;
 
             //if a transport is already set remove the callback
@@ -48,14 +64,14 @@ namespace VOCASY
             //packets are initialized
             if (packetReceiver != null)
                 packetReceiver.DisposePacket();
-            packetReceiver = GamePacket.CreatePacket((int)transport.MaxPacketLength);
+            packetReceiver = GamePacket.CreatePacket(transport.MaxPacketLength);
 
             if (packetSender != null)
                 packetSender.DisposePacket();
-            packetSender = GamePacket.CreatePacket((int)transport.MaxPacketLength);
+            packetSender = GamePacket.CreatePacket(transport.MaxPacketLength);
         }
         /// <summary>
-        /// Adds the handler
+        /// Adds the handler. Handler should already be initialized before calling this method
         /// </summary>
         /// <param name="handler">handler to add</param>
         public static void AddVoiceHandler(IVoiceHandler handler)
@@ -72,7 +88,9 @@ namespace VOCASY
 
             //handler is added and callback for when mic data is available is set on the handler
             handlers.Add(handler.Identity.NetworkId, handler);
-            handler.SetOnMicDataProcessed(OnMicDataProcessed);
+
+            if (handler.IsRecorder)
+                handler.SetOnMicDataProcessed(OnMicDataProcessed);
         }
         /// <summary>
         /// Removes the handler
@@ -87,8 +105,8 @@ namespace VOCASY
         private static void OnPacketAvailable()
         {
             //throw exception if workflow is not initialized correctly
-            if (manipulator == null || transport == null)
-                throw new Exception("The current manipulator or transport is null, be sure to initialize the workflow properly before any other action");
+            if (manipulator == null || transport == null || Settings == null)
+                throw new Exception("The workflow is not in a valid state. One or more of its core parts are null");
 
             //If voice chat is disabled do nothing
             if (!Settings.VoiceChatEnabled)
@@ -99,6 +117,7 @@ namespace VOCASY
             {
                 //resets packet buffer
                 packetReceiver.ResetSeekLength();
+
                 //receive packet
                 VoicePacketInfo info = transport.Receive(packetReceiver);
 
@@ -110,7 +129,7 @@ namespace VOCASY
 
                 //Do nothing if handler is either muted or if it is a recorder
                 if (handler.IsOutputMuted || handler.IsRecorder)
-                    return;
+                    continue;
 
                 //Compatibility check between manipulator, handler and packet; if incompatible throw exception
                 AudioDataTypeFlag res = manipulator.AvailableTypes & handler.AvailableTypes & info.Format;
@@ -143,8 +162,8 @@ namespace VOCASY
         private static void OnMicDataProcessed(IVoiceHandler handler)
         {
             //throw exception if workflow is not initialized correctly
-            if (manipulator == null || transport == null)
-                throw new Exception("The current manipulator or transport is null, be sure to initialize the workflow properly before any other action");
+            if (manipulator == null || transport == null || Settings == null)
+                throw new Exception("The workflow is not in a valid state. One or more of its core parts are null");
 
             //If voice chat is disabled or if the given handler is not a recorder do nothing
             if (!Settings.VoiceChatEnabled || Settings.MuteSelf || !handler.IsRecorder)
@@ -175,9 +194,11 @@ namespace VOCASY
 
                 //data recovered from input is manipulated and stored into the gamepacket
                 if (useSingle)
-                    manipulator.FromAudioDataToPacket(micDataBuffer, 0, (int)count, ref info, packetSender);
+                    manipulator.FromAudioDataToPacket(micDataBuffer, 0, count, ref info, packetSender);
                 else
-                    manipulator.FromAudioDataToPacketInt16(micDataBufferInt16, 0, (int)count, ref info, packetSender);
+                    manipulator.FromAudioDataToPacketInt16(micDataBufferInt16, 0, count, ref info, packetSender);
+
+                packetSender.CurrentSeek = 0;
 
                 //if packet is valid send to transport
                 if (info.ValidPacketInfo)

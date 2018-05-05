@@ -18,5 +18,5 @@ MonoBehaviour:
   pushToTalk: 0
   pushToTalkKey: 99
   muteSelf: 0
-  audioQuality: 16000
+  audioQuality: 48000
   voiceChatVolume: 1

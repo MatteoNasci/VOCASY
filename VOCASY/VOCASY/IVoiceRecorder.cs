@@ -22,19 +22,19 @@
         /// </summary>
         /// <param name="buffer">buffer to fill with audio data recorded</param>
         /// <param name="bufferOffset">buffer start index</param>
-        /// <param name="dataCount">amount of data to store</param>
+        /// <param name="maxDataCount">max amount of data to store</param>
         /// <param name="effectiveDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount);
+        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int maxDataCount, out int effectiveDataCount);
         /// <summary>
         /// Gets recorded data and stores it in format Int16
         /// </summary>
         /// <param name="buffer">buffer to fill with audio data recorded</param>
         /// <param name="bufferOffset">buffer start index</param>
-        /// <param name="dataCount">amount of data to store</param>
+        /// <param name="maxDataCount">max amount of data to store</param>
         /// <param name="effectiveDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount);
+        VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int maxDataCount, out int effectiveDataCount);
         /// <summary>
         /// Starts recording
         /// </summary>

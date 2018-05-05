@@ -138,18 +138,18 @@ namespace VOCASY.Utility
             }
         }
         /// <summary>
-        /// Copies the internal buffer of the given gamepacket to the current instance. Elements copied are equal to the minimum of the 2 MaxCapacity.
+        /// Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
         /// </summary>
-        /// <param name="instanceDataOffset">offset of the current instance internal buffer</param>
         /// <param name="toCopy">gamepacket to copy from</param>
-        /// <param name="toCopyOffset">offset of the given packet</param>
-        public void Copy(int instanceDataOffset, GamePacket toCopy, int toCopyOffset)
+        /// <param name="elementsCopied">effective number of elements copied successfully</param>
+        public void Copy(GamePacket toCopy, out int elementsCopied)
         {
-            int v1 = MaxCapacity - instanceDataOffset;
-            int v2 = toCopy.MaxCapacity - toCopyOffset;
-            int l = v1 > v2 ? v1 : v2;
+            int v1 = MaxCapacity - CurrentSeek;
+            int v2 = toCopy.CurrentLength - toCopy.CurrentSeek;
+            int v3 = toCopy.MaxCapacity - toCopy.CurrentSeek;
+            elementsCopied = v1 > v2 ? v2 : (v3 > v1 ? v1 : v3);
 
-            WriteByteData(toCopy, toCopyOffset, instanceDataOffset, l);
+            WriteByteData(toCopy, elementsCopied);
         }
         /// <summary>
         /// Reads the internal buffer into the given array
@@ -173,17 +173,19 @@ namespace VOCASY.Utility
         public void ReadByteData(GamePacket buffer, int bufferOffset, int dataOffset, int lengthToRead)
         {
             CurrentSeek = dataOffset;
-            ReadByteData(buffer, bufferOffset, lengthToRead);
+            buffer.CurrentSeek = bufferOffset;
+            ReadByteData(buffer, lengthToRead);
         }
         /// <summary>
         /// Reads the internal buffer into the given array
         /// </summary>
         /// <param name="buffer">buffer on which the internal buffer elements will be written. Buffer Seek will not be moved</param>
-        /// <param name="bufferOffset">buffer offset</param>
         /// <param name="lengthToRead">number of bytes to read</param>
-        public void ReadByteData(GamePacket buffer, int bufferOffset, int lengthToRead)
+        public void ReadByteData(GamePacket buffer, int lengthToRead)
         {
-            ReadByteData(buffer.Data, bufferOffset, lengthToRead);
+            ReadByteData(buffer.Data, buffer.CurrentSeek, lengthToRead);
+            buffer.CurrentSeek += lengthToRead;
+            buffer.CurrentLength += lengthToRead;
         }
         /// <summary>
         /// Reads the internal buffer into the given array
@@ -230,17 +232,18 @@ namespace VOCASY.Utility
         public void WriteByteData(GamePacket buffer, int bufferOffset, int dataOffset, int lengthToWrite)
         {
             CurrentSeek = dataOffset;
-            WriteByteData(buffer, bufferOffset, lengthToWrite);
+            buffer.CurrentSeek = bufferOffset;
+            WriteByteData(buffer, lengthToWrite);
         }
         /// <summary>
         /// Writes the given byte array into the internal buffer
         /// </summary>
         /// <param name="buffer">buffer from which elements will be written on the internal buffer. Buffer Seek will not be moved</param>
-        /// <param name="bufferOffset">buffer offset</param>
         /// <param name="lengthToWrite">number of bytes to write</param>
-        public void WriteByteData(GamePacket buffer, int bufferOffset, int lengthToWrite)
+        public void WriteByteData(GamePacket buffer, int lengthToWrite)
         {
-            WriteByteData(buffer.Data, bufferOffset, lengthToWrite);
+            WriteByteData(buffer.Data, buffer.CurrentSeek, lengthToWrite);
+            buffer.CurrentSeek += lengthToWrite;
         }
         /// <summary>
         /// Writes the value in the packet

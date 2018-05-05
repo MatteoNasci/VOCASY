@@ -20,7 +20,7 @@
         /// <summary>
         /// High frequency quality
         /// </summary>
-        HighQuality = 44100,
+        HighQuality = 32000,
         /// <summary>
         /// Best frequency quality
         /// </summary>

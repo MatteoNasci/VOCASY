@@ -2,7 +2,7 @@
 namespace VOCASY.Common.Unity
 {
     /// <summary>
-    /// Class that converts audio data formats to game packet. Performs no other actions
+    /// Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
     /// </summary>
     public class VoidManipulator : IAudioDataManipulator
     {
@@ -20,7 +20,10 @@ namespace VOCASY.Common.Unity
         /// <param name="output">gamepacket on which data will be written</param>
         public void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
         {
-            output.Write((int)(audioDataCount * 0.25000001f));
+            if (output.MaxCapacity < (audioDataCount * sizeof(float)) + sizeof(int))
+                audioDataCount = (output.MaxCapacity / sizeof(float)) - sizeof(int);
+
+            output.Write(audioDataCount);
             int length = audioDataCount + audioDataOffset;
             for (int i = audioDataOffset; i < length; i++)
             {
@@ -37,6 +40,9 @@ namespace VOCASY.Common.Unity
         /// <param name="output">gamepacket on which data will be written</param>
         public void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
         {
+            if (output.MaxCapacity < audioDataCount + sizeof(int))
+                audioDataCount = output.MaxCapacity - sizeof(int);
+
             output.Write(audioDataCount);
             output.WriteByteData(audioData, audioDataOffset, audioDataCount);
         }

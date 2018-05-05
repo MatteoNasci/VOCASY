@@ -3,7 +3,7 @@ using VOCASY.Utility;
 namespace VOCASY.Common
 {
     /// <summary>
-    /// Class that manages voice audio output
+    /// Class that manages voice audio output, compatible with all data formats and frequency/channels
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class Receiver : MonoBehaviour, IVoiceReceiver
@@ -20,10 +20,7 @@ namespace VOCASY.Common
         /// Output channels
         /// </summary>
         public const byte OutputBaseChannels = 2;
-        /// <summary>
-        /// Output inverse channels
-        /// </summary>
-        public const float OutputBaseChannelsInverse = 0.50000001f;
+
         /// <summary>
         /// Flag that determines which types of data format this class can process
         /// </summary>
@@ -39,7 +36,7 @@ namespace VOCASY.Common
 
         private AudioSource source;
 
-        private float[] audioBuffer = new float[VoiceChatSettings.MaxFrequency / 2];
+        private float[] audioBuffer;
         private int readIndex;
         private int writeIndex;
 
@@ -60,6 +57,9 @@ namespace VOCASY.Common
         /// <param name="info">data info</param>
         public void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
+            if (audioBuffer == null)
+                audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
+
             int length = audioDataCount / sizeof(short);
 
             //operations to convert the given audio data stored at tot frequency and tot channels into audio data with Frequency and Channels compatible with output source, inserting results into internal cyclic buffer
@@ -97,6 +97,9 @@ namespace VOCASY.Common
         /// <param name="info">data info</param>
         public void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
+            if (audioBuffer == null)
+                audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
+
             //if given audio data is already configured the same as the output source copy elements directly into internal cyclic buffer
             if (info.Frequency == OutputBaseFrequency && info.Channels == OutputBaseChannels)
             {
@@ -123,6 +126,9 @@ namespace VOCASY.Common
 
         void OnAudioFilterRead(float[] data, int channels)//this method fills the unity audiosource audio data with the stored data
         {
+            if (audioBuffer == null)
+                return;
+
             //current total number of audio data stored
             int count = readIndex > writeIndex ? (audioBuffer.Length - readIndex) + writeIndex : writeIndex - readIndex;
             //total number of elements to supply to the audiosource
@@ -140,6 +146,7 @@ namespace VOCASY.Common
         }
         void OnEnable()
         {
+            source.enabled = true;
             source.Play();
         }
         void OnDisable()
@@ -149,6 +156,7 @@ namespace VOCASY.Common
             writeIndex = 0;
 
             source.Stop();
+            source.enabled = false;
         }
     }
 }

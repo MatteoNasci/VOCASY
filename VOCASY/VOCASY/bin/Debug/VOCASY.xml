@@ -31,7 +31,7 @@
         </member>
         <member name="T:VOCASY.Common.Receiver">
             <summary>
-            Class that manages voice audio output
+            Class that manages voice audio output, compatible with all data formats and frequency/channels
             </summary>
         </member>
         <member name="F:VOCASY.Common.Receiver.OutputBaseFrequency">
@@ -47,11 +47,6 @@
         <member name="F:VOCASY.Common.Receiver.OutputBaseChannels">
             <summary>
             Output channels
-            </summary>
-        </member>
-        <member name="F:VOCASY.Common.Receiver.OutputBaseChannelsInverse">
-            <summary>
-            Output inverse channels
             </summary>
         </member>
         <member name="P:VOCASY.Common.Receiver.AvailableTypes">
@@ -95,7 +90,7 @@
         </member>
         <member name="T:VOCASY.Common.SelfDataTransport">
             <summary>
-            Class that fakes network state between self and another client
+            Class that fakes network state between self and another client. It should be used for tests and debug
             </summary>
         </member>
         <member name="P:VOCASY.Common.SelfDataTransport.IsPacketAvailable">
@@ -185,7 +180,7 @@
         </member>
         <member name="T:VOCASY.Common.Unity.VoidManipulator">
             <summary>
-            Class that converts audio data formats to game packet. Performs no other actions
+            Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
             </summary>
         </member>
         <member name="P:VOCASY.Common.Unity.VoidManipulator.AvailableTypes">
@@ -351,11 +346,6 @@
         <member name="P:VOCASY.Common.VoiceHandler.Identity">
             <summary>
             The INetworkIdentity associated with this object
-            </summary>
-        </member>
-        <member name="P:VOCASY.Common.VoiceHandler.MicDataAvailable">
-            <summary>
-            Amount of mic data recorded available
             </summary>
         </member>
         <member name="P:VOCASY.Common.VoiceHandler.AvailableTypes">
@@ -702,11 +692,6 @@
             The INetworkIdentity associated with this object
             </summary>
         </member>
-        <member name="P:VOCASY.IVoiceHandler.MicDataAvailable">
-            <summary>
-            Amount of mic data recorded available
-            </summary>
-        </member>
         <member name="M:VOCASY.IVoiceHandler.ReceiveAudioData(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo)">
             <summary>
             Processes audio data in format Single and plays it
@@ -722,7 +707,7 @@
             </summary>
             <param name="buffer">buffer to fill with audio data recorded</param>
             <param name="bufferOffset">buffer start index</param>
-            <param name="micDataCount">amount of data to store</param>
+            <param name="maxMicDataCount">max amount of data to store</param>
             <param name="effectiveMicDataCount">effective amount of data stored</param>
             <returns>data info</returns>
         </member>
@@ -741,7 +726,7 @@
             </summary>
             <param name="buffer">buffer to fill with audio data recorded</param>
             <param name="bufferOffset">buffer start index</param>
-            <param name="micDataCount">amount of data to store</param>
+            <param name="maxMicDataCount">max amount of data to store</param>
             <param name="effectiveMicDataCount">effective amount of data stored</param>
             <returns>data info</returns>
         </member>
@@ -821,7 +806,7 @@
             </summary>
             <param name="buffer">buffer to fill with audio data recorded</param>
             <param name="bufferOffset">buffer start index</param>
-            <param name="dataCount">amount of data to store</param>
+            <param name="maxDataCount">max amount of data to store</param>
             <param name="effectiveDataCount">effective amount of data stored</param>
             <returns>data info</returns>
         </member>
@@ -831,7 +816,7 @@
             </summary>
             <param name="buffer">buffer to fill with audio data recorded</param>
             <param name="bufferOffset">buffer start index</param>
-            <param name="dataCount">amount of data to store</param>
+            <param name="maxDataCount">max amount of data to store</param>
             <param name="effectiveDataCount">effective amount of data stored</param>
             <returns>data info</returns>
         </member>
@@ -910,13 +895,12 @@
             Operation that disposes the current packet. if UsePools is true the disposed instance will be pooled, id UsePools is false it does nothing
             </summary>
         </member>
-        <member name="M:VOCASY.Utility.GamePacket.Copy(System.Int32,VOCASY.Utility.GamePacket,System.Int32)">
+        <member name="M:VOCASY.Utility.GamePacket.Copy(VOCASY.Utility.GamePacket,System.Int32@)">
             <summary>
-            Copies the internal buffer of the given gamepacket to the current instance. Elements copied are equal to the minimum of the 2 MaxCapacity.
+            Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
             </summary>
-            <param name="instanceDataOffset">offset of the current instance internal buffer</param>
             <param name="toCopy">gamepacket to copy from</param>
-            <param name="toCopyOffset">offset of the given packet</param>
+            <param name="elementsCopied">effective number of elements copied successfully</param>
         </member>
         <member name="M:VOCASY.Utility.GamePacket.ReadByteData(System.Byte[],System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -936,12 +920,11 @@
             <param name="dataOffset">internal buffer offset</param>
             <param name="lengthToRead">number of bytes to read</param>
         </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(VOCASY.Utility.GamePacket,System.Int32,System.Int32)">
+        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(VOCASY.Utility.GamePacket,System.Int32)">
             <summary>
             Reads the internal buffer into the given array
             </summary>
             <param name="buffer">buffer on which the internal buffer elements will be written. Buffer Seek will not be moved</param>
-            <param name="bufferOffset">buffer offset</param>
             <param name="lengthToRead">number of bytes to read</param>
         </member>
         <member name="M:VOCASY.Utility.GamePacket.ReadByteData(System.Byte[],System.Int32,System.Int32)">
@@ -978,12 +961,11 @@
             <param name="dataOffset">internal buffer offset</param>
             <param name="lengthToWrite">number of bytes to write</param>
         </member>
-        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(VOCASY.Utility.GamePacket,System.Int32,System.Int32)">
+        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(VOCASY.Utility.GamePacket,System.Int32)">
             <summary>
             Writes the given byte array into the internal buffer
             </summary>
             <param name="buffer">buffer from which elements will be written on the internal buffer. Buffer Seek will not be moved</param>
-            <param name="bufferOffset">buffer offset</param>
             <param name="lengthToWrite">number of bytes to write</param>
         </member>
         <member name="M:VOCASY.Utility.GamePacket.Write(System.Char[])">
@@ -1858,17 +1840,19 @@
             Voice chat settings
             </summary>
         </member>
-        <member name="M:VOCASY.VoiceDataWorkflow.Init(VOCASY.IAudioDataManipulator,VOCASY.IAudioTransportLayer,VOCASY.IVoiceChatSettings)">
+        <member name="M:VOCASY.VoiceDataWorkflow.Init(VOCASY.IAudioDataManipulator,VOCASY.IAudioTransportLayer,VOCASY.IVoiceChatSettings,System.UInt16,System.Byte)">
             <summary>
             Initializes the workflow
             </summary>
             <param name="dataManipulator">manipulator to use</param>
             <param name="transportLayer">transport to use</param>
             <param name="settings">settings to use</param>
+            <param name="maxAudioFrequencyUsed">max frequency used</param>
+            <param name="maxChannelsUsed">max channels used</param>
         </member>
         <member name="M:VOCASY.VoiceDataWorkflow.AddVoiceHandler(VOCASY.IVoiceHandler)">
             <summary>
-            Adds the handler
+            Adds the handler. Handler should already be initialized before calling this method
             </summary>
             <param name="handler">handler to add</param>
         </member>

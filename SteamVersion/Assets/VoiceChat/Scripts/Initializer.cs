@@ -5,12 +5,28 @@ using VOCASY.Common;
 public class Initializer : MonoBehaviour
 {
     public VoiceChatSettings Settings;
-    void Update()
+    public GameObject Prefab;
+    private uint otherId = 5;
+    private uint selfId = 1;
+    void Start()
     {
-        if (SteamManager.Initialized)
+        IAudioTransportLayer transport = GetComponent<IAudioTransportLayer>();
+        VoiceDataWorkflow.Init(new SteamVoiceDataManipulator(), transport, Settings, VoiceChatSettings.MaxFrequency, 2);
+
+        SelfDataTransport selfT = transport as SelfDataTransport;
+        if (selfT != null)
         {
-            VoiceDataWorkflow.Init(new SteamVoiceDataManipulator(), GetComponent<IAudioTransportLayer>(), Settings);
-            Destroy(this);
+            selfT.ReceiverId = otherId;
+
+            INetworkIdentity obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
+            obj.IsLocalPlayer = true;
+            obj.NetworkId = selfId;
+
+            obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
+            obj.IsLocalPlayer = false;
+            obj.NetworkId = otherId;
         }
+
+        Destroy(this);
     }
 }

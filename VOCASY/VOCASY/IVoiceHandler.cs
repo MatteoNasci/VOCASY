@@ -35,10 +35,6 @@ namespace VOCASY
         /// </summary>
         INetworkIdentity Identity { get; }
         /// <summary>
-        /// Amount of mic data recorded available
-        /// </summary>
-        int MicDataAvailable { get; }
-        /// <summary>
         /// Processes audio data in format Single and plays it
         /// </summary>
         /// <param name="audioData">audio data to process</param>
@@ -51,10 +47,10 @@ namespace VOCASY
         /// </summary>
         /// <param name="buffer">buffer to fill with audio data recorded</param>
         /// <param name="bufferOffset">buffer start index</param>
-        /// <param name="micDataCount">amount of data to store</param>
+        /// <param name="maxMicDataCount">max amount of data to store</param>
         /// <param name="effectiveMicDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int micDataCount, out int effectiveMicDataCount);
+        VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int maxMicDataCount, out int effectiveMicDataCount);
         /// <summary>
         /// Processes audio data in format Int16 and plays it
         /// </summary>
@@ -68,10 +64,10 @@ namespace VOCASY
         /// </summary>
         /// <param name="buffer">buffer to fill with audio data recorded</param>
         /// <param name="bufferOffset">buffer start index</param>
-        /// <param name="micDataCount">amount of data to store</param>
+        /// <param name="maxMicDataCount">max amount of data to store</param>
         /// <param name="effectiveMicDataCount">effective amount of data stored</param>
         /// <returns>data info</returns>
-        VoicePacketInfo GetMicDataInt16(byte[] buffer, int bufferOffset, int micDataCount, out int effectiveMicDataCount);
+        VoicePacketInfo GetMicDataInt16(byte[] buffer, int bufferOffset, int maxMicDataCount, out int effectiveMicDataCount);
         /// <summary>
         /// Sets an action to be called whenever there is mic data available
         /// </summary>
