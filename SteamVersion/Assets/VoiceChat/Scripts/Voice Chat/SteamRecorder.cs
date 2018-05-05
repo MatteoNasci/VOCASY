@@ -20,7 +20,7 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
 
     public byte Channels { get { return 1; } }
 
-    public ushort Frequency { get { return (ushort)SteamUser.GetVoiceOptimalSampleRate(); } }
+    public ushort Frequency { get; private set; }
 
     private bool isRecording = false;
 
@@ -65,5 +65,9 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
         SteamUser.StopVoiceRecording();
         uint n;
         isRecording = SteamUser.GetAvailableVoice(out n) != EVoiceResult.k_EVoiceResultNotRecording;
+    }
+    void Awake()
+    {
+        Frequency = (ushort)SteamUser.GetVoiceOptimalSampleRate();
     }
 }

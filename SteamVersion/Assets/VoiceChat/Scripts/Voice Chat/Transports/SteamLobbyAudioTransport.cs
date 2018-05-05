@@ -82,7 +82,7 @@ public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
         if (IsPacketAvailable && onPacketAvailable != null)
             onPacketAvailable.Invoke();
     }
-    void Awake()
+    void Start()
     {
         self = SteamUser.GetSteamID();
         Callback<P2PSessionRequest_t>.Create((cb) =>
