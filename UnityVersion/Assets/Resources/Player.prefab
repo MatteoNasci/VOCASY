@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4550533159784868}
   - component: {fileID: 114665268756028874}
   - component: {fileID: 82967025730795876}
-  - component: {fileID: 114452880931980126}
-  - component: {fileID: 114762320004553668}
-  - component: {fileID: 114851477154643610}
+  - component: {fileID: 114546733543946886}
+  - component: {fileID: 114965837769890574}
+  - component: {fileID: 114534573244079190}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -124,7 +124,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114452880931980126
+--- !u!114 &114534573244079190
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -132,7 +132,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1728815152150654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1202367468, guid: c643b3b37c6cd57418fb843c6e83ae42, type: 3}
+  m_Script: {fileID: 2111043110, guid: 26d4d3d37e9442d4eb2b6907dbf6f5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114546733543946886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728815152150654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1202367468, guid: 26d4d3d37e9442d4eb2b6907dbf6f5bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114665268756028874
@@ -146,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e7f84fe4d9bbb4ba90602e5c278b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114762320004553668
+--- !u!114 &114965837769890574
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -154,17 +165,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1728815152150654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 575118810, guid: c643b3b37c6cd57418fb843c6e83ae42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114851477154643610
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1728815152150654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 2111043110, guid: c643b3b37c6cd57418fb843c6e83ae42, type: 3}
+  m_Script: {fileID: 575118810, guid: 26d4d3d37e9442d4eb2b6907dbf6f5bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
