@@ -1,5 +1,5 @@
 ﻿using VOCASY.Utility;
-namespace VOCASY.Common.Unity
+namespace VOCASY.Common
 {
     /// <summary>
     /// Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
@@ -20,8 +20,9 @@ namespace VOCASY.Common.Unity
         /// <param name="output">gamepacket on which data will be written</param>
         public void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
         {
-            if (output.MaxCapacity < (audioDataCount * sizeof(float)) + sizeof(int))
-                audioDataCount = (output.MaxCapacity / sizeof(float)) - sizeof(int);
+            int outputAvailableSpace = output.MaxCapacity - output.CurrentSeek;
+            if (outputAvailableSpace < (audioDataCount * sizeof(float)) + sizeof(int))
+                audioDataCount = (outputAvailableSpace / sizeof(float)) - sizeof(int);
 
             output.Write(audioDataCount);
             int length = audioDataCount + audioDataOffset;
@@ -40,8 +41,9 @@ namespace VOCASY.Common.Unity
         /// <param name="output">gamepacket on which data will be written</param>
         public void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
         {
-            if (output.MaxCapacity < audioDataCount + sizeof(int))
-                audioDataCount = output.MaxCapacity - sizeof(int);
+            int outputAvailableSpace = output.MaxCapacity - output.CurrentSeek;
+            if (outputAvailableSpace < audioDataCount + sizeof(int))
+                audioDataCount = outputAvailableSpace - sizeof(int);
 
             output.Write(audioDataCount);
             output.WriteByteData(audioData, audioDataOffset, audioDataCount);

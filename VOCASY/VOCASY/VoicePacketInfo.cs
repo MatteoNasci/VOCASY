@@ -16,7 +16,7 @@
         /// <summary>
         /// Network Id of the audio owner
         /// </summary>
-        public uint NetId;
+        public ulong NetId;
         /// <summary>
         /// Frequency at which data is stored
         /// </summary>
@@ -41,7 +41,7 @@
         /// <param name="channels">audio channels</param>
         /// <param name="format">audio format</param>
         /// <param name="valid">is packet valid?</param>
-        public VoicePacketInfo(uint netId, ushort frequency, byte channels, AudioDataTypeFlag format, bool valid = true)
+        public VoicePacketInfo(ulong netId, ushort frequency, byte channels, AudioDataTypeFlag format, bool valid = true)
         {
             NetId = netId;
             Frequency = frequency;

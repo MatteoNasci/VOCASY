@@ -6,8 +6,8 @@ public class Initializer : MonoBehaviour
 {
     public VoiceChatSettings Settings;
     public GameObject Prefab;
-    private uint otherId = 5;
-    private uint selfId = 1;
+    private ulong otherId = 5;
+    private ulong selfId = 1;
     void Start()
     {
         IAudioTransportLayer transport = GetComponent<IAudioTransportLayer>();

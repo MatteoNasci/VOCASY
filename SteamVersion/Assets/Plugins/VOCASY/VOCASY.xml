@@ -178,17 +178,17 @@
             Starts recording
             </summary>
         </member>
-        <member name="T:VOCASY.Common.Unity.VoidManipulator">
+        <member name="T:VOCASY.Common.VoidManipulator">
             <summary>
             Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
             </summary>
         </member>
-        <member name="P:VOCASY.Common.Unity.VoidManipulator.AvailableTypes">
+        <member name="P:VOCASY.Common.VoidManipulator.AvailableTypes">
             <summary>
             Audio data formats that this class can process
             </summary>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
             <summary>
             Processes audio data in format Single into a GamePacket
             </summary>
@@ -198,7 +198,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
             <summary>
             Processes audio data in format Int16 into a GamePacket
             </summary>
@@ -208,7 +208,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -218,7 +218,7 @@
             <param name="out_audioDataOffset">output array start index</param>
             <param name="dataCount">total number of bytes written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -1897,7 +1897,7 @@
             Format of the stored data
             </summary>
         </member>
-        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt32,System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
+        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt64,System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
             <summary>
             Create a new struct instance
             </summary>
