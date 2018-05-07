@@ -23,7 +23,7 @@ namespace VOCASY.Common
         /// <summary>
         /// To which id fake packets should be sent
         /// </summary>
-        public uint ReceiverId;
+        public ulong ReceiverId;
 
         private Queue<GamePacket> packets = new Queue<GamePacket>();
 
@@ -41,7 +41,7 @@ namespace VOCASY.Common
             GamePacket received = packets.Dequeue();
 
             VoicePacketInfo info = new VoicePacketInfo();
-            info.NetId = received.ReadUInt(0);
+            info.NetId = received.ReadULong(0);
             info.Frequency = received.ReadUShort();
             info.Channels = received.ReadByte();
             info.Format = (AudioDataTypeFlag)received.ReadByte();

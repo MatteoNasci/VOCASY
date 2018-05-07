@@ -16,7 +16,7 @@ namespace VOCASY
         private static IAudioDataManipulator manipulator;
         private static IAudioTransportLayer transport;
 
-        private static Dictionary<uint, IVoiceHandler> handlers = new Dictionary<uint, IVoiceHandler>();
+        private static Dictionary<ulong, IVoiceHandler> handlers = new Dictionary<ulong, IVoiceHandler>();
 
         private static float[] micDataBuffer;
         private static float[] receivedDataBuffer;

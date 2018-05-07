@@ -12,7 +12,7 @@ public class Starter : MonoBehaviour
     {
         IAudioTransportLayer transport = GetComponent<IAudioTransportLayer>();
         Settings.AudioQuality = FrequencyType.BestQuality;
-        VoiceDataWorkflow.Init(new ConcentusDataManipulator(VoiceChatSettings.MaxFrequency, 1), transport, Settings, VoiceChatSettings.MaxFrequency, 2);
+        VoiceDataWorkflow.Init(new ConcentusDataManipulator(VoiceChatSettings.MaxFrequency, 2), transport, Settings, VoiceChatSettings.MaxFrequency, 2);
 
         SelfDataTransport selfT = transport as SelfDataTransport;
         if (selfT != null)

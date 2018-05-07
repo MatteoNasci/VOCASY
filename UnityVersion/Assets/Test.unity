@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReceiverId: 0
-  packetDataSize: 1016
+  packetDataSize: 10016
 --- !u!4 &1428212616
 Transform:
   m_ObjectHideFlags: 0

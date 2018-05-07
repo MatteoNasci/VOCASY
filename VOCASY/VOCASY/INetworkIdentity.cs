@@ -8,7 +8,7 @@
         /// <summary>
         /// Unique network id that identifies this specific object in the network. This value should not change
         /// </summary>
-        uint NetworkId { get; set; }
+        ulong NetworkId { get; set; }
         /// <summary>
         /// True if this object is owned by the local player. This value should not change
         /// </summary>

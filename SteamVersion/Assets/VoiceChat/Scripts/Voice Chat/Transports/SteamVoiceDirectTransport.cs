@@ -40,7 +40,7 @@ public class SteamVoiceDirectTransport : MonoBehaviour, IAudioTransportLayer
             SteamNetworking.ReadP2PPacket(temp1024.Data, packSize, out b, out id);
 
             VoicePacketInfo info = new VoicePacketInfo();
-            info.NetId = temp1024.ReadUInt(0);
+            info.NetId = temp1024.ReadULong(0);
             info.Frequency = temp1024.ReadUShort();
             info.Channels = temp1024.ReadByte();
             info.Format = (AudioDataTypeFlag)temp1024.ReadByte();
