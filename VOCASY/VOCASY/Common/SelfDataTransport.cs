@@ -9,13 +9,9 @@ namespace VOCASY.Common
     /// </summary>
     public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
     {
-        private const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(bool);
+        private const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
 
         private const int pLength = 1024;
-        /// <summary>
-        /// True as long as there are packets available to receive
-        /// </summary>
-        public bool IsPacketAvailable { get { return packets.Count > 0; } }
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
@@ -25,8 +21,6 @@ namespace VOCASY.Common
         /// </summary>
         public ulong ReceiverId;
 
-        private Queue<GamePacket> packets = new Queue<GamePacket>();
-
         [SerializeField]
         private int packetDataSize = pLength - FirstPacketByteAvailable;
 
@@ -34,23 +28,20 @@ namespace VOCASY.Common
         /// Receive packet data
         /// </summary>
         /// <param name="buffer">GamePacket of which data will be stored</param>
+        /// <param name="dataReceived">Raw data received from network</param>
+        /// <param name="netId">Sender net id</param>
         /// <returns>data info</returns>
-        public VoicePacketInfo Receive(GamePacket buffer)
+        public VoicePacketInfo Receive(GamePacket buffer, GamePacket dataReceived, ulong netId)
         {
-            //Debug.Log("Data packet received");
-            GamePacket received = packets.Dequeue();
-
             VoicePacketInfo info = new VoicePacketInfo();
-            info.NetId = received.ReadULong(0);
-            info.Frequency = received.ReadUShort();
-            info.Channels = received.ReadByte();
-            info.Format = (AudioDataTypeFlag)received.ReadByte();
+            info.NetId = netId;
+            info.Frequency = dataReceived.ReadUShort();
+            info.Channels = dataReceived.ReadByte();
+            info.Format = (AudioDataTypeFlag)dataReceived.ReadByte();
             info.ValidPacketInfo = true;
 
             int n;
-            buffer.Copy(received, out n);
-
-            received.DisposePacket();
+            buffer.Copy(dataReceived, out n);
 
             return info;
         }
@@ -71,26 +62,9 @@ namespace VOCASY.Common
             int n;
             toSend.Copy(data, out n);
 
-            packets.Enqueue(toSend);
-        }
-        void Update()
-        {
-            //if (packets.Count != 0)
-            //    Debug.Log(packets.Count);
-            if (IsPacketAvailable && onPacketAvailable != null)
-            {
-                //Debug.Log("OnpacketAvailable");
-                onPacketAvailable.Invoke();
-            }
-        }
-        private Action onPacketAvailable;
-        /// <summary>
-        /// Sets an action to be called when a packet is available
-        /// </summary>
-        /// <param name="onPacketAvailable">Action called on packet available</param>
-        public void SetOnPacketAvailable(Action onPacketAvailable)
-        {
-            this.onPacketAvailable = onPacketAvailable;
+            toSend.CurrentSeek = sizeof(ulong);
+
+            VoiceDataWorkflow.OnPacketAvailable(toSend, ReceiverId);
         }
     }
 }

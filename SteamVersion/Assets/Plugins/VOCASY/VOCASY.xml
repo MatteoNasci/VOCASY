@@ -93,11 +93,6 @@
             Class that fakes network state between self and another client. It should be used for tests and debug
             </summary>
         </member>
-        <member name="P:VOCASY.Common.SelfDataTransport.IsPacketAvailable">
-            <summary>
-            True as long as there are packets available to receive
-            </summary>
-        </member>
         <member name="P:VOCASY.Common.SelfDataTransport.MaxPacketLength">
             <summary>
             Max data length that should be sent to this class
@@ -108,11 +103,13 @@
             To which id fake packets should be sent
             </summary>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.Receive(VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.SelfDataTransport.Receive(VOCASY.Utility.GamePacket,VOCASY.Utility.GamePacket,System.UInt64)">
             <summary>
             Receive packet data
             </summary>
             <param name="buffer">GamePacket of which data will be stored</param>
+            <param name="dataReceived">Raw data received from network</param>
+            <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
         <member name="M:VOCASY.Common.SelfDataTransport.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
@@ -121,12 +118,6 @@
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SetOnPacketAvailable(System.Action)">
-            <summary>
-            Sets an action to be called when a packet is available
-            </summary>
-            <param name="onPacketAvailable">Action called on packet available</param>
         </member>
         <member name="T:VOCASY.Common.Unity.Recorder">
             <summary>
@@ -517,22 +508,13 @@
             Max data length that should be sent to this class
             </summary>
         </member>
-        <member name="P:VOCASY.IAudioTransportLayer.IsPacketAvailable">
-            <summary>
-            True as long as there are packets available to receive
-            </summary>
-        </member>
-        <member name="M:VOCASY.IAudioTransportLayer.SetOnPacketAvailable(System.Action)">
-            <summary>
-            Sets an action to be called when a packet is available
-            </summary>
-            <param name="onPacketAvailable">Action called on packet available</param>
-        </member>
-        <member name="M:VOCASY.IAudioTransportLayer.Receive(VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.IAudioTransportLayer.Receive(VOCASY.Utility.GamePacket,VOCASY.Utility.GamePacket,System.UInt64)">
             <summary>
             Receive packet data
             </summary>
             <param name="buffer">GamePacket of which data will be stored</param>
+            <param name="dataReceived">Raw data received from network</param>
+            <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
         <member name="M:VOCASY.IAudioTransportLayer.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
@@ -1861,6 +1843,13 @@
             Removes the handler
             </summary>
             <param name="handler">handler to remove</param>
+        </member>
+        <member name="M:VOCASY.VoiceDataWorkflow.OnPacketAvailable(VOCASY.Utility.GamePacket,System.UInt64)">
+            <summary>
+            Methods that receives raw audio data from network, manipulates it and then plays it.
+            </summary>
+            <param name="receivedData">received raw data</param>
+            <param name="netId">sender net id</param>
         </member>
         <member name="T:VOCASY.VoicePacketInfo">
             <summary>

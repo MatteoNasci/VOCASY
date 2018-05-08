@@ -12,20 +12,13 @@ namespace VOCASY
         /// </summary>
         int MaxPacketLength { get; }
         /// <summary>
-        /// True as long as there are packets available to receive
-        /// </summary>
-        bool IsPacketAvailable { get; }
-        /// <summary>
-        /// Sets an action to be called when a packet is available
-        /// </summary>
-        /// <param name="onPacketAvailable">Action called on packet available</param>
-        void SetOnPacketAvailable(Action onPacketAvailable);
-        /// <summary>
         /// Receive packet data
         /// </summary>
         /// <param name="buffer">GamePacket of which data will be stored</param>
+        /// <param name="dataReceived">Raw data received from network</param>
+        /// <param name="netId">Sender net id</param>
         /// <returns>data info</returns>
-        VoicePacketInfo Receive(GamePacket buffer);
+        VoicePacketInfo Receive(GamePacket buffer, GamePacket dataReceived, ulong netId);
         /// <summary>
         /// Sends a packet to all the other clients that need it
         /// </summary>
