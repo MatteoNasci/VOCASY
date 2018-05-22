@@ -41,10 +41,18 @@ namespace VOCASY
             if (maxAudioFrequencyUsed <= 0 || maxChannelsUsed <= 0)
                 throw new ArgumentOutOfRangeException("Both frequency and channels passed to the workflow need to be > 0");
 
-            if (micDataBuffer == null || (maxChannelsUsed * maxAudioFrequencyUsed) / 20 != micDataBuffer.Length)
+            micDataBuffer = null;
+            receivedDataBuffer = null;
+            micDataBufferInt16 = null;
+            receivedDataBufferInt16 = null;
+
+            if ((manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0)
             {
                 micDataBuffer = new float[(maxAudioFrequencyUsed * maxChannelsUsed) / 20];
                 receivedDataBuffer = new float[(maxAudioFrequencyUsed * maxChannelsUsed) / 20];
+            }
+            if ((manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0)
+            {
                 micDataBufferInt16 = new byte[micDataBuffer.Length * 2];
                 receivedDataBufferInt16 = new byte[receivedDataBuffer.Length * 2];
             }
@@ -98,7 +106,7 @@ namespace VOCASY
             handler.SetOnMicDataProcessed(null);
         }
         /// <summary>
-        /// Methods that receives raw audio data from network, manipulates it and then plays it.
+        /// Method that receives raw audio data from network, manipulates it and then plays it.
         /// </summary>
         /// <param name="receivedData">received raw data</param>
         /// <param name="netId">sender net id</param>

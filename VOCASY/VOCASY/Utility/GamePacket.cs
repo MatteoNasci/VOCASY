@@ -152,6 +152,16 @@ namespace VOCASY.Utility
             WriteByteData(toCopy, elementsCopied);
         }
         /// <summary>
+        /// Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
+        /// </summary>
+        /// <param name="instanceOffset">offset for the current instance from which to start writing</param>
+        /// <param name="toCopyOffset">offset for the current instance from which to start reading</param>
+        /// <param name="elementsCopied">effective number of elements copied successfully</param>
+        //public void CopySelf(int instanceOffset, int toCopyOffset, out int elementsCopied)
+        //{
+        //    Utils.Write(Data, toCopyOffset, Data, instanceOffset,)
+        //}
+        /// <summary>
         /// Reads the internal buffer into the given array
         /// </summary>
         /// <param name="buffer">buffer on which the internal buffer elements will be written</param>

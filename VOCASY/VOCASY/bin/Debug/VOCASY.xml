@@ -1846,7 +1846,7 @@
         </member>
         <member name="M:VOCASY.VoiceDataWorkflow.OnPacketAvailable(VOCASY.Utility.GamePacket,System.UInt64)">
             <summary>
-            Methods that receives raw audio data from network, manipulates it and then plays it.
+            Method that receives raw audio data from network, manipulates it and then plays it.
             </summary>
             <param name="receivedData">received raw data</param>
             <param name="netId">sender net id</param>

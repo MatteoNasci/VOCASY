@@ -31,7 +31,7 @@
         </member>
         <member name="T:VOCASY.Common.Receiver">
             <summary>
-            Class that manages voice audio output
+            Class that manages voice audio output, compatible with all data formats and frequency/channels
             </summary>
         </member>
         <member name="F:VOCASY.Common.Receiver.OutputBaseFrequency">
@@ -47,11 +47,6 @@
         <member name="F:VOCASY.Common.Receiver.OutputBaseChannels">
             <summary>
             Output channels
-            </summary>
-        </member>
-        <member name="F:VOCASY.Common.Receiver.OutputBaseChannelsInverse">
-            <summary>
-            Output inverse channels
             </summary>
         </member>
         <member name="P:VOCASY.Common.Receiver.AvailableTypes">
@@ -95,12 +90,7 @@
         </member>
         <member name="T:VOCASY.Common.SelfDataTransport">
             <summary>
-            Class that fakes network state between self and another client
-            </summary>
-        </member>
-        <member name="P:VOCASY.Common.SelfDataTransport.IsPacketAvailable">
-            <summary>
-            True as long as there are packets available to receive
+            Class that fakes network state between self and another client. It should be used for tests and debug
             </summary>
         </member>
         <member name="P:VOCASY.Common.SelfDataTransport.MaxPacketLength">
@@ -113,11 +103,13 @@
             To which id fake packets should be sent
             </summary>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.Receive(VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.SelfDataTransport.Receive(VOCASY.Utility.GamePacket,VOCASY.Utility.GamePacket,System.UInt64)">
             <summary>
             Receive packet data
             </summary>
             <param name="buffer">GamePacket of which data will be stored</param>
+            <param name="dataReceived">Raw data received from network</param>
+            <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
         <member name="M:VOCASY.Common.SelfDataTransport.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
@@ -126,12 +118,6 @@
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SetOnPacketAvailable(System.Action)">
-            <summary>
-            Sets an action to be called when a packet is available
-            </summary>
-            <param name="onPacketAvailable">Action called on packet available</param>
         </member>
         <member name="T:VOCASY.Common.Unity.Recorder">
             <summary>
@@ -183,17 +169,17 @@
             Starts recording
             </summary>
         </member>
-        <member name="T:VOCASY.Common.Unity.VoidManipulator">
+        <member name="T:VOCASY.Common.VoidManipulator">
             <summary>
             Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
             </summary>
         </member>
-        <member name="P:VOCASY.Common.Unity.VoidManipulator.AvailableTypes">
+        <member name="P:VOCASY.Common.VoidManipulator.AvailableTypes">
             <summary>
             Audio data formats that this class can process
             </summary>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
             <summary>
             Processes audio data in format Single into a GamePacket
             </summary>
@@ -203,7 +189,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
             <summary>
             Processes audio data in format Int16 into a GamePacket
             </summary>
@@ -213,7 +199,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -223,7 +209,7 @@
             <param name="out_audioDataOffset">output array start index</param>
             <param name="dataCount">total number of bytes written</param>
         </member>
-        <member name="M:VOCASY.Common.Unity.VoidManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -522,22 +508,13 @@
             Max data length that should be sent to this class
             </summary>
         </member>
-        <member name="P:VOCASY.IAudioTransportLayer.IsPacketAvailable">
-            <summary>
-            True as long as there are packets available to receive
-            </summary>
-        </member>
-        <member name="M:VOCASY.IAudioTransportLayer.SetOnPacketAvailable(System.Action)">
-            <summary>
-            Sets an action to be called when a packet is available
-            </summary>
-            <param name="onPacketAvailable">Action called on packet available</param>
-        </member>
-        <member name="M:VOCASY.IAudioTransportLayer.Receive(VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.IAudioTransportLayer.Receive(VOCASY.Utility.GamePacket,VOCASY.Utility.GamePacket,System.UInt64)">
             <summary>
             Receive packet data
             </summary>
             <param name="buffer">GamePacket of which data will be stored</param>
+            <param name="dataReceived">Raw data received from network</param>
+            <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
         <member name="M:VOCASY.IAudioTransportLayer.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
@@ -1857,7 +1834,7 @@
         </member>
         <member name="M:VOCASY.VoiceDataWorkflow.AddVoiceHandler(VOCASY.IVoiceHandler)">
             <summary>
-            Adds the handler
+            Adds the handler. Handler should already be initialized before calling this method
             </summary>
             <param name="handler">handler to add</param>
         </member>
@@ -1866,6 +1843,13 @@
             Removes the handler
             </summary>
             <param name="handler">handler to remove</param>
+        </member>
+        <member name="M:VOCASY.VoiceDataWorkflow.OnPacketAvailable(VOCASY.Utility.GamePacket,System.UInt64)">
+            <summary>
+            Method that receives raw audio data from network, manipulates it and then plays it.
+            </summary>
+            <param name="receivedData">received raw data</param>
+            <param name="netId">sender net id</param>
         </member>
         <member name="T:VOCASY.VoicePacketInfo">
             <summary>
@@ -1902,7 +1886,7 @@
             Format of the stored data
             </summary>
         </member>
-        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt32,System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
+        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt64,System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
             <summary>
             Create a new struct instance
             </summary>
