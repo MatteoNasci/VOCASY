@@ -7,7 +7,8 @@ namespace VOCASY.Common
     /// <summary>
     /// Class that fakes network state between self and another client. It should be used for tests and debug
     /// </summary>
-    public class SelfDataTransport : MonoBehaviour, IAudioTransportLayer
+    [CreateAssetMenu(fileName = "SelfTransport", menuName = "VOCASY/DataTransports/Self")]
+    public class SelfDataTransport : VoiceDataTransport
     {
         private const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
 
@@ -15,7 +16,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
-        public int MaxPacketLength { get { return packetDataSize; } }
+        public override int MaxDataLength { get { return packetDataSize; } }
         /// <summary>
         /// To which id fake packets should be sent
         /// </summary>
@@ -25,23 +26,27 @@ namespace VOCASY.Common
         private int packetDataSize = pLength - FirstPacketByteAvailable;
 
         /// <summary>
-        /// Receive packet data
+        /// Process packet data
         /// </summary>
         /// <param name="buffer">GamePacket of which data will be stored</param>
         /// <param name="dataReceived">Raw data received from network</param>
+        /// <param name="startIndex">Raw data start index</param>
+        /// <param name="length">Raw data length</param>
         /// <param name="netId">Sender net id</param>
         /// <returns>data info</returns>
-        public VoicePacketInfo Receive(GamePacket buffer, GamePacket dataReceived, ulong netId)
+        public override VoicePacketInfo ProcessReceivedData(GamePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
         {
             VoicePacketInfo info = new VoicePacketInfo();
             info.NetId = netId;
-            info.Frequency = dataReceived.ReadUShort();
-            info.Channels = dataReceived.ReadByte();
-            info.Format = (AudioDataTypeFlag)dataReceived.ReadByte();
+            info.Frequency = Utils.ReadUInt16(dataReceived, startIndex);
+            startIndex += sizeof(ushort);
+            info.Channels = Utils.ReadByte(dataReceived, startIndex);
+            startIndex += sizeof(byte);
+            info.Format = (AudioDataTypeFlag)Utils.ReadByte(dataReceived, startIndex);
+            startIndex += sizeof(byte);
             info.ValidPacketInfo = true;
 
-            int n;
-            buffer.Copy(dataReceived, out n);
+            buffer.WriteByteData(dataReceived, startIndex, length - sizeof(ushort) - sizeof(byte) - sizeof(byte));
 
             return info;
         }
@@ -50,7 +55,7 @@ namespace VOCASY.Common
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
-        public void SendToAllOthers(GamePacket data, VoicePacketInfo info)
+        public override void SendToAllOthers(GamePacket data, VoicePacketInfo info)
         {
             //Debug.Log("packet sent to all others");
             GamePacket toSend = GamePacket.CreatePacket(pLength);
@@ -64,7 +69,19 @@ namespace VOCASY.Common
 
             toSend.CurrentSeek = sizeof(ulong);
 
-            VoiceDataWorkflow.OnPacketAvailable(toSend, ReceiverId);
+            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength - sizeof(ulong), ReceiverId);
+
+            toSend.DisposePacket();
+        }
+        /// <summary>
+        /// Performs a normal SendToAllOthers
+        /// </summary>
+        /// <param name="data">GamePacket that stores the data to send</param>
+        /// <param name="info">data info</param>
+        /// <param name="receiverID">Receiver to which the packet should be sent</param>
+        public override void SendTo(GamePacket data, VoicePacketInfo info, ulong receiverID)
+        {
+            SendToAllOthers(data, info);
         }
     }
 }

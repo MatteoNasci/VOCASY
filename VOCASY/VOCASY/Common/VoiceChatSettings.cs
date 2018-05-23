@@ -1,14 +1,27 @@
 ﻿using UnityEngine;
 using System.IO;
-using System;
 namespace VOCASY.Common
 {
     /// <summary>
     /// Class that manages and holds voice chat settings
     /// </summary>
-    [CreateAssetMenu(menuName = "Communication/Voice Chat/Settings")]
-    public class VoiceChatSettings : ScriptableObject, IVoiceChatSettings
+    [CreateAssetMenu(menuName = "VOCASY/Settings")]
+    public class VoiceChatSettings : ScriptableObject
     {
+        /// <summary>
+        /// Delegate used on some settings changed
+        /// </summary>
+        public delegate void OnSettingChanged();
+        /// <summary>
+        /// Delegate used on event AudioQualityChanged
+        /// </summary>
+        /// <param name="previousFrequency">previous frequency value</param>
+        public delegate void OnFrequencyChanged(FrequencyType previousFrequency);
+        /// <summary>
+        /// Delegate used on event MicrophoneDeviceChanged
+        /// </summary>
+        /// <param name="previousDevice">previous device name</param>
+        public delegate void OnMicDeviceChanged(string previousDevice);
         /// <summary>
         /// Minimum frequency possible
         /// </summary>
@@ -17,6 +30,14 @@ namespace VOCASY.Common
         /// Maximum frequency possible
         /// </summary>
         public const ushort MaxFrequency = (ushort)FrequencyType.BestQuality;
+        /// <summary>
+        /// Minimum frequency possible
+        /// </summary>
+        public const byte MinChannels = 1;
+        /// <summary>
+        /// Maximum frequency possible
+        /// </summary>
+        public const byte MaxChannels = 2;
         /// <summary>
         /// Name of the folder used to store files
         /// </summary>
@@ -104,7 +125,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Key used in push to talk mode
         /// </summary>
-        public int PushToTalkKey { get { return (int)pushToTalkKey; } set { pushToTalkKey = (KeyCode)value; } }
+        public KeyCode PushToTalkKey = KeyCode.C;
         /// <summary>
         /// Audio quality used. Does not effect audio received from network
         /// </summary>
@@ -164,23 +185,23 @@ namespace VOCASY.Common
         /// <summary>
         /// Event called whenever push to talk mode has been changed
         /// </summary>
-        public event Action PushToTalkChanged;
+        public event OnSettingChanged PushToTalkChanged;
         /// <summary>
         /// Event called whenever MuteSelf state has been changed
         /// </summary>
-        public event Action MuteSelfChanged;
+        public event OnSettingChanged MuteSelfChanged;
         /// <summary>
         /// Event called whenever Audio Quality value has been changed , previous audio quality is passed as argument
         /// </summary>
-        public event Action<FrequencyType> AudioQualityChanged;
+        public event OnFrequencyChanged AudioQualityChanged;
         /// <summary>
         /// Event called whenever the current microphone device has been changed, previous mic device is passed as argument
         /// </summary>
-        public event Action<string> MicrophoneDeviceChanged;
+        public event OnMicDeviceChanged MicrophoneDeviceChanged;
         /// <summary>
         /// Event called whenever Voice Chat enbaled state has been changed
         /// </summary>
-        public event Action VoiceChatEnabledChanged;
+        public event OnSettingChanged VoiceChatEnabledChanged;
 
         [SerializeField]
         private string folderName = "Communication";
@@ -196,9 +217,6 @@ namespace VOCASY.Common
 
         [SerializeField]
         private bool pushToTalk = true;
-
-        [SerializeField]
-        private KeyCode pushToTalkKey = KeyCode.C;
 
         [SerializeField]
         private bool muteSelf = false;

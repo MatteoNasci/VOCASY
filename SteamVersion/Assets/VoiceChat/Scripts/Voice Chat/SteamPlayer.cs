@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using Steamworks;
 using VOCASY;
-[RequireComponent(typeof(IVoiceHandler))]
+using VOCASY.Common;
+[RequireComponent(typeof(VoiceHandler))]
 public class SteamPlayer : MonoBehaviour
 {
-    private IVoiceHandler handler;
+    private VoiceHandler handler;
     void Awake()
     {
         SteamCallbacksUtility.LobbyChatUpd += OnLobbyUpdate;
-        handler = GetComponent<IVoiceHandler>();
+        handler = GetComponent<VoiceHandler>();
     }
     void OnDestroy()
     {

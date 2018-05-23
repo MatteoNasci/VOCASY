@@ -4,23 +4,28 @@ using Steamworks;
 using UnityEngine;
 using VOCASY;
 using VOCASY.Utility;
-public class SteamLobbyAudioTransport : MonoBehaviour, IAudioTransportLayer
+using VOCASY.Common;
+[CreateAssetMenu(menuName = "Steam/Transports/Lobby")]
+public class SteamLobbyAudioTransport : VoiceDataTransport
 {
     public const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
 
-    public int MaxPacketLength { get { return temp1024.MaxCapacity - FirstPacketByteAvailable; } }
+    public override int MaxDataLength { get { return temp1024.MaxCapacity - FirstPacketByteAvailable; } }
 
     private GamePacket temp1024;
     private GamePacket temp768;
     private GamePacket temp512;
     private GamePacket temp256;
-
-    public VoicePacketInfo Receive(GamePacket buffer, GamePacket dataReceived, ulong netId)
+    public override VoicePacketInfo ProcessReceivedData(GamePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
     {
         throw new NotImplementedException();
     }
 
-    public void SendToAllOthers(GamePacket data, VoicePacketInfo info)
+    public override void SendToAllOthers(GamePacket data, VoicePacketInfo info)
+    {
+        throw new NotImplementedException();
+    }
+    public override void SendTo(GamePacket data, VoicePacketInfo info, ulong receiverID)
     {
         throw new NotImplementedException();
     }

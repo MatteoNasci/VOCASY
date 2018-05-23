@@ -91,30 +91,33 @@ namespace VOCASY.Utility
         /// <summary>
         /// Amount of bytes that has been written in the packet. This may not return a correct value if already written data in the packet has been overwritten or if methods other than the given Write methods in this class has been used to modify the internal buffer, and it must be reset manually. GamePackets created through CreatePacket will be already resetted. This value has no impact in the internal logic of GamePacket and should be used as a way to store the current amount of written byte data
         /// </summary>
-        public int CurrentLength { get; set; }
+        public int CurrentLength;
         /// <summary>
         /// Current seek position in the packet, used for all Read/Write operations
         /// </summary>
-        public int CurrentSeek { get; set; }
+        public int CurrentSeek;
         /// <summary>
         /// Determines whenever the current instance has been disposed through DestroyPacket. Disposed packets should not be used
         /// </summary>
-        public bool IsDisposed { get; private set; }
+        public bool IsDisposed { get { return isDisposed; } }
         /// <summary>
         /// Max capacity of the packet. Write/Read operations that go beyond this limit will throw exceptions
         /// </summary>
-        public int MaxCapacity { get { return Data.Length; } }
+        public int MaxCapacity { get { return data.Length; } }
         /// <summary>
         /// Internal buffer used by the packet Changes done to the buffer directly will not automatically modify the other variables
         /// </summary>
-        public byte[] Data { get; private set; }
+        public byte[] Data { get { return data; } }
+
+        private byte[] data;
+        private bool isDisposed;
 
         /// <summary>
         /// Operation that disposes the current packet. if UsePools is true the disposed instance will be pooled, id UsePools is false it does nothing
         /// </summary>
         public void DisposePacket()
         {
-            if (!IsDisposed)
+            if (!isDisposed)
             {
                 Queue<GamePacket> list;
 
@@ -122,19 +125,19 @@ namespace VOCASY.Utility
                 {
                     if (UsePools)
                     {
-                        if (!packetsPools.ContainsKey(MaxCapacity))
+                        if (!packetsPools.ContainsKey(data.Length))
                         {
                             list = new Queue<GamePacket>();
-                            packetsPools.Add(MaxCapacity, list);
+                            packetsPools.Add(data.Length, list);
                         }
                         else
-                            list = packetsPools[MaxCapacity];
+                            list = packetsPools[data.Length];
 
                         list.Enqueue(this);
                     }
                 }
 
-                IsDisposed = true;
+                isDisposed = true;
             }
         }
         /// <summary>
@@ -144,23 +147,13 @@ namespace VOCASY.Utility
         /// <param name="elementsCopied">effective number of elements copied successfully</param>
         public void Copy(GamePacket toCopy, out int elementsCopied)
         {
-            int v1 = MaxCapacity - CurrentSeek;
+            int v1 = data.Length - CurrentSeek;
             int v2 = toCopy.CurrentLength - toCopy.CurrentSeek;
-            int v3 = toCopy.MaxCapacity - toCopy.CurrentSeek;
+            int v3 = toCopy.data.Length - toCopy.CurrentSeek;
             elementsCopied = v1 > v2 ? v2 : (v3 > v1 ? v1 : v3);
 
             WriteByteData(toCopy, elementsCopied);
         }
-        /// <summary>
-        /// Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
-        /// </summary>
-        /// <param name="instanceOffset">offset for the current instance from which to start writing</param>
-        /// <param name="toCopyOffset">offset for the current instance from which to start reading</param>
-        /// <param name="elementsCopied">effective number of elements copied successfully</param>
-        //public void CopySelf(int instanceOffset, int toCopyOffset, out int elementsCopied)
-        //{
-        //    Utils.Write(Data, toCopyOffset, Data, instanceOffset,)
-        //}
         /// <summary>
         /// Reads the internal buffer into the given array
         /// </summary>
@@ -193,7 +186,7 @@ namespace VOCASY.Utility
         /// <param name="lengthToRead">number of bytes to read</param>
         public void ReadByteData(GamePacket buffer, int lengthToRead)
         {
-            ReadByteData(buffer.Data, buffer.CurrentSeek, lengthToRead);
+            ReadByteData(buffer.data, buffer.CurrentSeek, lengthToRead);
             buffer.CurrentSeek += lengthToRead;
             buffer.CurrentLength += lengthToRead;
         }
@@ -205,7 +198,7 @@ namespace VOCASY.Utility
         /// <param name="lengthToRead">number of bytes to read</param>
         public void ReadByteData(byte[] buffer, int bufferOffset, int lengthToRead)
         {
-            Utils.Write(Data, CurrentSeek, buffer, bufferOffset, lengthToRead);
+            Utils.Write(data, CurrentSeek, buffer, bufferOffset, lengthToRead);
             CurrentSeek += lengthToRead;
         }
         /// <summary>
@@ -216,7 +209,7 @@ namespace VOCASY.Utility
         /// <param name="lengthToWrite">number of bytes to write</param>
         public void WriteByteData(byte[] buffer, int bufferOffset, int lengthToWrite)
         {
-            Utils.Write(buffer, bufferOffset, Data, CurrentSeek, lengthToWrite);
+            Utils.Write(buffer, bufferOffset, data, CurrentSeek, lengthToWrite);
             CurrentLength += lengthToWrite;
             CurrentSeek += lengthToWrite;
         }
@@ -252,7 +245,7 @@ namespace VOCASY.Utility
         /// <param name="lengthToWrite">number of bytes to write</param>
         public void WriteByteData(GamePacket buffer, int lengthToWrite)
         {
-            WriteByteData(buffer.Data, buffer.CurrentSeek, lengthToWrite);
+            WriteByteData(buffer.data, buffer.CurrentSeek, lengthToWrite);
             buffer.CurrentSeek += lengthToWrite;
         }
         /// <summary>
@@ -261,7 +254,7 @@ namespace VOCASY.Utility
         /// <param name="values">values to write</param>
         public void Write(char[] values)
         {
-            int n = Utils.Write(Data, CurrentSeek, values);
+            int n = Utils.Write(data, CurrentSeek, values);
             CurrentSeek += n;
             CurrentLength += n;
         }
@@ -281,7 +274,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(string value)
         {
-            int n = Utils.Write(Data, CurrentSeek, value);
+            int n = Utils.Write(data, CurrentSeek, value);
 
             CurrentSeek += n;
             CurrentLength += n;
@@ -302,7 +295,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(char value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(char);
             CurrentLength += sizeof(char);
         }
@@ -322,7 +315,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(float value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(float);
             CurrentLength += sizeof(float);
         }
@@ -342,7 +335,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(double value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(double);
             CurrentLength += sizeof(double);
         }
@@ -362,7 +355,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(bool value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(bool);
             CurrentLength += sizeof(bool);
         }
@@ -382,7 +375,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(short value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(short);
             CurrentLength += sizeof(short);
         }
@@ -402,7 +395,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(ushort value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(ushort);
             CurrentLength += sizeof(ushort);
         }
@@ -422,7 +415,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(byte value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(byte);
             CurrentLength += sizeof(byte);
         }
@@ -442,7 +435,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(int value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(int);
             CurrentLength += sizeof(int);
         }
@@ -462,7 +455,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(uint value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(uint);
             CurrentLength += sizeof(uint);
         }
@@ -482,7 +475,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(long value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(long);
             CurrentLength += sizeof(long);
         }
@@ -502,7 +495,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(ulong value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(ulong);
             CurrentLength += sizeof(ulong);
         }
@@ -522,7 +515,7 @@ namespace VOCASY.Utility
         /// <param name="value">value to write</param>
         public void Write(sbyte value)
         {
-            Utils.Write(Data, CurrentSeek, value);
+            Utils.Write(data, CurrentSeek, value);
             CurrentSeek += sizeof(sbyte);
             CurrentLength += sizeof(sbyte);
         }
@@ -546,7 +539,7 @@ namespace VOCASY.Utility
         {
             int charC;
             int byteC;
-            Utils.ReadChars(Data, CurrentSeek, out_chars, out_charsOffset, out byteC, out charC);
+            Utils.ReadChars(data, CurrentSeek, out_chars, out_charsOffset, out byteC, out charC);
             CurrentSeek += byteC;
             return charC;
         }
@@ -568,7 +561,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public char ReadChar()
         {
-            char res = Utils.ReadChar(Data, CurrentSeek);
+            char res = Utils.ReadChar(data, CurrentSeek);
             CurrentSeek += sizeof(char);
             return res;
         }
@@ -590,7 +583,7 @@ namespace VOCASY.Utility
         {
             int n;
 
-            string s = Utils.ReadString(Data, CurrentSeek, out n);
+            string s = Utils.ReadString(data, CurrentSeek, out n);
 
             CurrentSeek += n;
 
@@ -612,7 +605,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public float ReadFloat()
         {
-            float res = Utils.ReadSingle(Data, CurrentSeek);
+            float res = Utils.ReadSingle(data, CurrentSeek);
             CurrentSeek += sizeof(float);
             return res;
         }
@@ -632,7 +625,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public double ReadDouble()
         {
-            double res = Utils.ReadDouble(Data, CurrentSeek);
+            double res = Utils.ReadDouble(data, CurrentSeek);
             CurrentSeek += sizeof(double);
             return res;
         }
@@ -652,7 +645,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public short ReadShort()
         {
-            short res = Utils.ReadInt16(Data, CurrentSeek);
+            short res = Utils.ReadInt16(data, CurrentSeek);
             CurrentSeek += sizeof(short);
             return res;
         }
@@ -672,7 +665,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public ushort ReadUShort()
         {
-            ushort res = Utils.ReadUInt16(Data, CurrentSeek);
+            ushort res = Utils.ReadUInt16(data, CurrentSeek);
             CurrentSeek += sizeof(ushort);
             return res;
         }
@@ -692,7 +685,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public int ReadInt()
         {
-            int res = Utils.ReadInt32(Data, CurrentSeek);
+            int res = Utils.ReadInt32(data, CurrentSeek);
             CurrentSeek += sizeof(int);
             return res;
         }
@@ -712,7 +705,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public uint ReadUInt()
         {
-            uint res = Utils.ReadUInt32(Data, CurrentSeek);
+            uint res = Utils.ReadUInt32(data, CurrentSeek);
             CurrentSeek += sizeof(uint);
             return res;
         }
@@ -732,7 +725,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public long ReadLong()
         {
-            long res = Utils.ReadInt64(Data, CurrentSeek);
+            long res = Utils.ReadInt64(data, CurrentSeek);
             CurrentSeek += sizeof(long);
             return res;
         }
@@ -752,7 +745,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public ulong ReadULong()
         {
-            ulong res = Utils.ReadUInt64(Data, CurrentSeek);
+            ulong res = Utils.ReadUInt64(data, CurrentSeek);
             CurrentSeek += sizeof(ulong);
             return res;
         }
@@ -772,7 +765,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public bool ReadBool()
         {
-            bool res = Utils.ReadBoolean(Data, CurrentSeek);
+            bool res = Utils.ReadBoolean(data, CurrentSeek);
             CurrentSeek += sizeof(bool);
             return res;
         }
@@ -792,7 +785,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public byte ReadByte()
         {
-            byte res = Data[CurrentSeek];
+            byte res = data[CurrentSeek];
             CurrentSeek += sizeof(byte);
             return res;
         }
@@ -812,7 +805,7 @@ namespace VOCASY.Utility
         /// <returns>value</returns>
         public sbyte ReadSByte()
         {
-            sbyte res = Utils.ReadSByte(Data, CurrentSeek);
+            sbyte res = Utils.ReadSByte(data, CurrentSeek);
             CurrentSeek += sizeof(sbyte);
             return res;
         }
@@ -840,7 +833,7 @@ namespace VOCASY.Utility
         /// <param name="maxCapacity">packet capacity</param>
         protected GamePacket(int maxCapacity)
         {
-            Data = new byte[maxCapacity];
+            data = new byte[maxCapacity];
         }
         /// <summary>
         /// Creates new instance with the given buffer as the internal buffer. MaxCapacity == bufferToUse.Length
@@ -848,7 +841,7 @@ namespace VOCASY.Utility
         /// <param name="bufferToUse">buffer to use as the internalBuffer</param>
         protected GamePacket(byte[] bufferToUse)
         {
-            Data = bufferToUse;
+            data = bufferToUse;
         }
         /// <summary>
         /// Resets internal values to default
@@ -856,7 +849,7 @@ namespace VOCASY.Utility
         protected void Reset()
         {
             ResetSeekLength();
-            IsDisposed = false;
+            isDisposed = false;
         }
     }
 }

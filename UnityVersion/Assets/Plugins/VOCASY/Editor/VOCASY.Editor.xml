@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VOCASY.Editor</name>
+    </assembly>
+    <members>
+        <member name="T:VOCASY.Editor.VoiceChatSettingsDrawer">
+            <summary>
+            Class that modifies VoiceChatSettings inspector view
+            </summary>
+        </member>
+        <member name="M:VOCASY.Editor.VoiceChatSettingsDrawer.OnInspectorGUI">
+            <summary>
+            Method that modifies SOEvent inspector view
+            </summary>
+        </member>
+    </members>
+</doc>

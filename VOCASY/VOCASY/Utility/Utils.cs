@@ -15,7 +15,7 @@ namespace VOCASY.Utility
         /// <summary>
         /// Encoding used when handling strings
         /// </summary>
-        public static Encoding Encoder { get; set; }
+        public static Encoding Encoder;
 
         static Utils()
         {

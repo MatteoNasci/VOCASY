@@ -1,30 +1,29 @@
 ﻿using UnityEngine;
 using VOCASY;
 using VOCASY.Common;
-[RequireComponent(typeof(IAudioTransportLayer))]
 public class Initializer : MonoBehaviour
 {
-    public VoiceChatSettings Settings;
-    public GameObject Prefab;
+    public VoiceHandler Prefab;
+    public VoiceDataWorkflow Workflow;
     private ulong otherId = 5;
     private ulong selfId = 1;
     void Start()
     {
-        IAudioTransportLayer transport = GetComponent<IAudioTransportLayer>();
-        VoiceDataWorkflow.Init(new SteamVoiceDataManipulator(), transport, Settings, VoiceChatSettings.MaxFrequency, 2);
 
-        SelfDataTransport selfT = transport as SelfDataTransport;
+        SelfDataTransport selfT = Workflow.Transport as SelfDataTransport;
         if (selfT != null)
         {
             selfT.ReceiverId = otherId;
 
-            INetworkIdentity obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
-            obj.IsLocalPlayer = true;
-            obj.NetworkId = selfId;
+            VoiceHandler obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<VoiceHandler>();
+            obj.Identity.IsLocalPlayer = true;
+            obj.Identity.NetworkId = selfId;
+            obj.Identity.IsInitialized = true;
 
-            obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
-            obj.IsLocalPlayer = false;
-            obj.NetworkId = otherId;
+            obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<VoiceHandler>();
+            obj.Identity.IsLocalPlayer = false;
+            obj.Identity.NetworkId = otherId;
+            obj.Identity.IsInitialized = true;
         }
 
         Destroy(this);

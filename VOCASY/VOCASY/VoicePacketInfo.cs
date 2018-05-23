@@ -8,7 +8,7 @@
         /// <summary>
         /// Invalid packet
         /// </summary>
-        public static VoicePacketInfo InvalidPacket;
+        public static readonly VoicePacketInfo InvalidPacket;
         static VoicePacketInfo()
         {
             InvalidPacket = new VoicePacketInfo(0, 0, 0, AudioDataTypeFlag.None, false);

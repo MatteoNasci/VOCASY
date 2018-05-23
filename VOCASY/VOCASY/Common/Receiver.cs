@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using VOCASY.Utility;
 namespace VOCASY.Common
 {
@@ -6,7 +7,7 @@ namespace VOCASY.Common
     /// Class that manages voice audio output, compatible with all data formats and frequency/channels
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    public class Receiver : MonoBehaviour, IVoiceReceiver
+    public class Receiver : VoiceReceiver
     {
         /// <summary>
         /// Output frequency
@@ -24,15 +25,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Flag that determines which types of data format this class can process
         /// </summary>
-        public AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Both; } }
-        /// <summary>
-        /// Volume specific for this output source
-        /// </summary>
-        public float Volume { get { return source.volume; } set { source.volume = value; } }
-        /// <summary>
-        /// Is this output source disabled?
-        /// </summary>
-        public bool IsDisabled { get { return !enabled; } }
+        public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Both; } }
 
         private AudioSource source;
 
@@ -41,21 +34,13 @@ namespace VOCASY.Common
         private int writeIndex;
 
         /// <summary>
-        /// Updates the enable status of this output source
-        /// </summary>
-        /// <param name="isEnabled">enable value</param>
-        public void Enable(bool isEnabled)
-        {
-            this.enabled = isEnabled;
-        }
-        /// <summary>
         /// Processes audio data in format Int16 and plays it
         /// </summary>
         /// <param name="audioData">audio data to process</param>
         /// <param name="audioDataOffset">audio data start index</param>
         /// <param name="audioDataCount">audio data amount to process</param>
         /// <param name="info">data info</param>
-        public void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
+        public override void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
             if (audioBuffer == null)
                 audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
@@ -95,7 +80,7 @@ namespace VOCASY.Common
         /// <param name="audioDataOffset">audio data start index</param>
         /// <param name="audioDataCount">audio data amount to process</param>
         /// <param name="info">data info</param>
-        public void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
+        public override void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
             if (audioBuffer == null)
                 audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
@@ -157,6 +142,10 @@ namespace VOCASY.Common
 
             source.Stop();
             source.enabled = false;
+        }
+        void Update()
+        {
+            source.volume = Volume;
         }
     }
 }
