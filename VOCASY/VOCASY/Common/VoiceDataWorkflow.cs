@@ -27,7 +27,7 @@ namespace VOCASY.Common
         /// Exposed for tests. Internal collection of all registered handlers
         /// </summary>
         [NonSerialized]
-        public Dictionary<ulong, VoiceHandler> Internal_handlers = new Dictionary<ulong, VoiceHandler>();
+        public Dictionary<ulong, VoiceHandler> Internal_handlers;
 
         /// <summary>
         /// Exposed for tests. Internal Single format audio data buffer
@@ -172,20 +172,35 @@ namespace VOCASY.Common
             }
         }
         /// <summary>
-        /// Exposed for tests. Initializes workflow
+        /// Exposed for tests. Initializes workflow. If fields are not setted when this method is called the workflow will remain in an uninitialized state untill a new call to this method is made with setted fields
         /// </summary>
         public void OnEnable()
         {
-            if (Application.isPlaying)
+            Internal_handlers = new Dictionary<ulong, VoiceHandler>();
+
+            if (Manipulator)
             {
+                int length = (VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20;
+
                 if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0)
-                    Internal_dataBuffer = new float[(VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20];
+                    Internal_dataBuffer = new float[length];
 
                 if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0)
-                    Internal_dataBufferInt16 = new byte[Internal_dataBuffer.Length * 2];
-
-                Internal_packetBuffer = new BytePacket(Transport.MaxDataLength);
+                    Internal_dataBufferInt16 = new byte[length * 2];
             }
+
+            if (Transport)
+                Internal_packetBuffer = new BytePacket(Transport.MaxDataLength);
+        }
+        /// <summary>
+        /// Exposed for tests. Finalizes workflow
+        /// </summary>
+        public void OnDisable()
+        {
+            Internal_handlers = null;
+            Internal_dataBuffer = null;
+            Internal_dataBufferInt16 = null;
+            Internal_packetBuffer = null;
         }
     }
 }

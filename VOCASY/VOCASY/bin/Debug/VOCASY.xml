@@ -393,6 +393,11 @@
             Class that converts audio data formats to game packet. Performs no other actions and no compression, it should be used only for tests and debug
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoidManipulator.ConverterByteSingle">
+            <summary>
+            Value used to convert byte data length to float data length
+            </summary>
+        </member>
         <member name="P:VOCASY.Common.VoidManipulator.AvailableTypes">
             <summary>
             Audio data formats that this class can process
@@ -950,7 +955,12 @@
         </member>
         <member name="M:VOCASY.Common.VoiceDataWorkflow.OnEnable">
             <summary>
-            Exposed for tests. Initializes workflow
+            Exposed for tests. Initializes workflow. If fields are not setted when this method is called the workflow will remain in an uninitialized state untill a new call to this method is made with setted fields
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceDataWorkflow.OnDisable">
+            <summary>
+            Exposed for tests. Finalizes workflow
             </summary>
         </member>
         <member name="T:VOCASY.FrequencyType">

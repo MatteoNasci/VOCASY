@@ -59,6 +59,26 @@
             Flag that determines which types of data format this class can process
             </summary>
         </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_source">
+            <summary>
+            Exposed for tests. Internal audiosource used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_cyclicAudioBuffer">
+            <summary>
+            Exposed for tests. Internal cyclic audioBuffer used to store data and fetch them to the audiosource
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_readIndex">
+            <summary>
+            Exposed for tests. Internal index that indicates the current cyclic buffer read index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_writeIndex">
+            <summary>
+            Exposed for tests. Internal index that indicates the current cyclic buffer write index
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.Receiver.ReceiveAudioData(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo)">
             <summary>
             Processes audio data in format Int16 and plays it
@@ -76,6 +96,28 @@
             <param name="audioDataOffset">audio data start index</param>
             <param name="audioDataCount">audio data amount to process</param>
             <param name="info">data info</param>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.OnAudioFilterRead(System.Single[],System.Int32)">
+            <summary>
+            Exposed for tests. Audio data from internal buffer is written into the given array
+            </summary>
+            <param name="data">data to fill</param>
+            <param name="channels">channels of data required</param>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.Awake">
+            <summary>
+            Exposed for tests. Gets audiosource from components
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.OnEnable">
+            <summary>
+            Exposed for tests. Enables audiosource
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.OnDisable">
+            <summary>
+            Exposed for tests. Disables audiosource and resets internal indexes
+            </summary>
         </member>
         <member name="T:VOCASY.Common.SelfDataTransport">
             <summary>
@@ -100,6 +142,11 @@
         <member name="F:VOCASY.Common.SelfDataTransport.ReceiverId">
             <summary>
             To which id fake packets should be sent
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.SelfDataTransport.Internal_packetDataSize">
+            <summary>
+            Exposed for tests. Max payload size that can be processed
             </summary>
         </member>
         <member name="M:VOCASY.Common.SelfDataTransport.ProcessReceivedData(GENUtility.BytePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
@@ -153,6 +200,51 @@
             Voice chat settings
             </summary>
         </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_isEnabled">
+            <summary>
+            Exposed for tests. True if recorder is currently recording
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_minDevFrequency">
+            <summary>
+            Exposed for tests. Current device min frequency
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_maxDevFrequency">
+            <summary>
+            Exposed for tests. Current device max frequency
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_clip">
+            <summary>
+            Exposed fot tests. Internal clip created by UnityEngine API holding recorded audio data
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_prevOffset">
+            <summary>
+            Exposed for tests. Offset used to keep tracking of last clip buffer index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_cyclicAudioBuffer">
+            <summary>
+            Exposed for tests. Internal cyclic audio buffer which holds audio data received from clip
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_readIndex">
+            <summary>
+            Exposed for tests. Internal cyclic buffer current read index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_writeIndex">
+            <summary>
+            Exposed for tests. Internal cyclic buffer current write index
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Update">
+            <summary>
+            Exposed for tests. Gets new audio data from clip
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.Recorder.GetMicData(System.Single[],System.Int32,System.Int32,System.Int32@)">
             <summary>
             Gets recorded data and stores it in format Single
@@ -181,6 +273,28 @@
         <member name="M:VOCASY.Common.Recorder.StartRecording">
             <summary>
             Starts recording
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Internal_OnFrequencyChanged(VOCASY.FrequencyType)">
+            <summary>
+            Exposed for tests. Internal method invoked in response to settings frequency changed
+            </summary>
+            <param name="prevFrequency">prev frequency</param>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Internal_OnMicDeviceChanged(System.String)">
+            <summary>
+            Exposed for tests. Internal method invoked in response to settings device changed
+            </summary>
+            <param name="prevMicDevice">prev mic device</param>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Awake">
+            <summary>
+            Exposed for tests. Initializes recorder state and settings event responses
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.OnDestroy">
+            <summary>
+            Exposed for tests. Removes settings event responses
             </summary>
         </member>
         <member name="T:VOCASY.Common.VoiceDataManipulator">
@@ -446,6 +560,46 @@
             Event called whenever Voice Chat enbaled state has been changed
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_folderName">
+            <summary>
+            Exposed for tests. Folder used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_settingsFileName">
+            <summary>
+            Exposed for tests. Saved settings file name
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_microphoneDevice">
+            <summary>
+            Exposed for tests. Device name
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_voiceChatEnabled">
+            <summary>
+            Exposed for tests. Voice chat status
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_pushToTalk">
+            <summary>
+            Exposed for tests. PTT status
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_muteSelf">
+            <summary>
+            Exposed for tests. True if mic is muted
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_audioQuality">
+            <summary>
+            Exposed for tests. Frequency used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_voiceChatVolume">
+            <summary>
+            Exposed for tests. General voice chat volume
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceChatSettings.RestoreToSavedSettings">
             <summary>
             Restore the settings to the saved file values. If file is not found it is created with current settings values
@@ -456,9 +610,19 @@
             Saves current settings to file. If it is not performed changes to the settings will not be recorded
             </summary>
         </member>
+        <member name="M:VOCASY.Common.VoiceChatSettings.OnEnable">
+            <summary>
+            Exposed for tests. Initializes paths and read from file
+            </summary>
+        </member>
         <member name="T:VOCASY.Common.VoiceHandler">
             <summary>
             Class that handles voice input/output
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceHandler.SelfFlag">
+            <summary>
+            Default flag
             </summary>
         </member>
         <member name="F:VOCASY.Common.VoiceHandler.Workflow">
@@ -516,6 +680,16 @@
             True if VoiceHandler has initialized correctly
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoiceHandler.Internal_selfOutputVolume">
+            <summary>
+            Exposed for tests. Internal local output volume
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceHandler.Internal_initialized">
+            <summary>
+            Exposed for tests. Initialization status
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceHandler.GetMicData(System.Single[],System.Int32,System.Int32,System.Int32@)">
             <summary>
             Gets recorded data and stores it in format Single
@@ -553,6 +727,56 @@
             <param name="audioDataOffset">audio data start index</param>
             <param name="audioDataCount">audio data amount to process</param>
             <param name="info">data info</param>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_PTTOffUpdate">
+            <summary>
+            Exposed for tests. Logic used when PTT is off
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_PTTOnUpdate">
+            <summary>
+            Exposed for tests. Logic used when PTT is on
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_OnVoiceChatEnabledChanged">
+            <summary>
+            Exposed for tests. Responds to settings voice chat changed event. Disables-Enables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_InitUpdate">
+            <summary>
+            Exposed for tests. Update used to initialize status
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_NormalUpdate">
+            <summary>
+            Exposed for tests. Update used after initialization occurred
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Update">
+            <summary>
+            Exposed for tests. Updates I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnEnable">
+            <summary>
+            Exposed for tests. Enables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnDisable">
+            <summary>
+            Exposed for tests. Disables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Awake">
+            <summary>
+            Exposed for tests. Initialize status
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnDestroy">
+            <summary>
+            Exposed for tests. Finalize status
+            </summary>
         </member>
         <member name="T:VOCASY.Common.NetworkIdentity">
             <summary>
@@ -677,6 +901,26 @@
             Transport used
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_handlers">
+            <summary>
+            Exposed for tests. Internal collection of all registered handlers
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_dataBuffer">
+            <summary>
+            Exposed for tests. Internal Single format audio data buffer
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_dataBufferInt16">
+            <summary>
+            Exposed for tests. Internal Int16 format audio data buffer
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_packetBuffer">
+            <summary>
+            Exposed for tests. Internal BytePacket buffer
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceDataWorkflow.AddVoiceHandler(VOCASY.Common.VoiceHandler)">
             <summary>
             Adds the handler. Handler should already be initialized before calling this method
@@ -703,6 +947,11 @@
             Processes mic data from the given handler
             </summary>
             <param name="handler">handler which has available mic data</param>
+        </member>
+        <member name="M:VOCASY.Common.VoiceDataWorkflow.OnEnable">
+            <summary>
+            Exposed for tests. Initializes workflow
+            </summary>
         </member>
         <member name="T:VOCASY.FrequencyType">
             <summary>

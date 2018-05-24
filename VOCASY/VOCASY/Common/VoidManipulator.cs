@@ -9,6 +9,10 @@ namespace VOCASY.Common
     public class VoidManipulator : VoiceDataManipulator
     {
         /// <summary>
+        /// Value used to convert byte data length to float data length
+        /// </summary>
+        public const float ConverterByteSingle = 0.2500000000f;
+        /// <summary>
         /// Audio data formats that this class can process
         /// </summary>
         public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Both; } }
@@ -60,7 +64,7 @@ namespace VOCASY.Common
         /// <param name="dataCount">total number of bytes written</param>
         public override void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
         {
-            dataCount = packet.ReadInt();
+            dataCount = (int)(packet.ReadInt() * ConverterByteSingle);
             int length = dataCount + out_audioDataOffset;
             for (int i = out_audioDataOffset; i < length; i++)
             {
