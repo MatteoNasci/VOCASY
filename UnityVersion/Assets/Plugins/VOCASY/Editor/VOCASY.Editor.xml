@@ -11,7 +11,7 @@
         </member>
         <member name="M:VOCASY.Editor.VoiceChatSettingsDrawer.OnInspectorGUI">
             <summary>
-            Method that modifies SOEvent inspector view
+            Method that modifies VoiceChatSettings inspector view
             </summary>
         </member>
     </members>

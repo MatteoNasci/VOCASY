@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using VOCASY.Utility;
+using GENUtility;
+using System;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -14,45 +15,80 @@ namespace VOCASY.Common
         /// <summary>
         /// Is this input disabled?
         /// </summary>
-        public override bool IsEnabled { get { return isEnabled; } }
+        public override bool IsEnabled { get { return Internal_isEnabled; } }
         /// <summary>
         /// Amount of mic data recorded currently available
         /// </summary>
-        public override int MicDataAvailable { get { return readIndex <= writeIndex ? writeIndex - readIndex : (cyclicBuffer.Length - readIndex) + writeIndex; } }
+        public override int MicDataAvailable { get { return Internal_readIndex <= Internal_writeIndex ? Internal_writeIndex - Internal_readIndex : (Internal_cyclicAudioBuffer.Length - Internal_readIndex) + Internal_writeIndex; } }
         /// <summary>
         /// Voice chat settings
         /// </summary>
         public VoiceChatSettings Settings;
 
-        private bool isEnabled;
+        /// <summary>
+        /// Exposed for tests. True if recorder is currently recording
+        /// </summary>
+        [NonSerialized]
+        public bool Internal_isEnabled;
 
-        private int minDevFrequency;
-        private int maxDevFrequency;
+        /// <summary>
+        /// Exposed for tests. Current device min frequency
+        /// </summary>
+        [NonSerialized]
+        public int Internal_minDevFrequency;
+        /// <summary>
+        /// Exposed for tests. Current device max frequency
+        /// </summary>
+        [NonSerialized]
+        public int Internal_maxDevFrequency;
 
-        private AudioClip clip;
+        /// <summary>
+        /// Exposed fot tests. Internal clip created by UnityEngine API holding recorded audio data
+        /// </summary>
+        [NonSerialized]
+        public AudioClip Internal_clip;
 
-        private int prevOffset;
+        /// <summary>
+        /// Exposed for tests. Offset used to keep tracking of last clip buffer index
+        /// </summary>
+        [NonSerialized]
+        public int Internal_prevOffset;
 
-        private float[] cyclicBuffer;
-        private int readIndex;
-        private int writeIndex;
+        /// <summary>
+        /// Exposed for tests. Internal cyclic audio buffer which holds audio data received from clip
+        /// </summary>
+        [NonSerialized]
+        public float[] Internal_cyclicAudioBuffer;
+        /// <summary>
+        /// Exposed for tests. Internal cyclic buffer current read index
+        /// </summary>
+        [NonSerialized]
+        public int Internal_readIndex;
+        /// <summary>
+        /// Exposed for tests. Internal cyclic buffer current write index
+        /// </summary>
+        [NonSerialized]
+        public int Internal_writeIndex;
 
-        void Update()
+        /// <summary>
+        /// Exposed for tests. Gets new audio data from clip
+        /// </summary>
+        public void Update()
         {
-            if (!isEnabled)
+            if (!Internal_isEnabled)
                 return;
             int offset = Microphone.GetPosition(Settings.MicrophoneDevice);
-            if (prevOffset != offset)
+            if (Internal_prevOffset != offset)
             {
-                int count = prevOffset < offset ? offset - prevOffset : ((clip.samples * clip.channels) - prevOffset) + offset;
+                int count = Internal_prevOffset < offset ? offset - Internal_prevOffset : ((Internal_clip.samples * Internal_clip.channels) - Internal_prevOffset) + offset;
 
-                clip.GetData(cyclicBuffer, 0);
+                Internal_clip.GetData(Internal_cyclicAudioBuffer, 0);
 
-                writeIndex += count;
-                if (writeIndex >= cyclicBuffer.Length)
-                    writeIndex -= cyclicBuffer.Length;
+                Internal_writeIndex += count;
+                if (Internal_writeIndex >= Internal_cyclicAudioBuffer.Length)
+                    Internal_writeIndex -= Internal_cyclicAudioBuffer.Length;
 
-                prevOffset = offset;
+                Internal_prevOffset = offset;
             }
         }
         /// <summary>
@@ -69,9 +105,9 @@ namespace VOCASY.Common
             if (effectiveDataCount <= 0)
                 return VoicePacketInfo.InvalidPacket;
 
-            Utils.WriteFromCycle(this.cyclicBuffer, readIndex, buffer, bufferOffset, dataCount, out readIndex);
+            ByteManipulator.WriteFromCycle(this.Internal_cyclicAudioBuffer, Internal_readIndex, buffer, bufferOffset, dataCount, out Internal_readIndex);
 
-            return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Single);
+            return new VoicePacketInfo(0, (ushort)Internal_clip.frequency, (byte)Internal_clip.channels, AudioDataTypeFlag.Single);
         }
         /// <summary>
         /// Gets recorded data and stores it in format Int16
@@ -94,14 +130,14 @@ namespace VOCASY.Common
 
             for (int i = bufferOffset; i < l; i += sizeof(short))
             {
-                Utils.Write(buffer, i, (short)Mathf.Lerp(short.MinValue, short.MaxValue, cyclicBuffer[readIndex]));
+                ByteManipulator.Write(buffer, i, (short)Mathf.Lerp(short.MinValue, short.MaxValue, Internal_cyclicAudioBuffer[Internal_readIndex]));
 
-                readIndex++;
-                if (readIndex >= cyclicBuffer.Length)
-                    readIndex = 0;
+                Internal_readIndex++;
+                if (Internal_readIndex >= Internal_cyclicAudioBuffer.Length)
+                    Internal_readIndex = 0;
             }
 
-            return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Int16);
+            return new VoicePacketInfo(0, (ushort)Internal_clip.frequency, (byte)Internal_clip.channels, AudioDataTypeFlag.Int16);
         }
         /// <summary>
         /// Stops recording
@@ -110,69 +146,82 @@ namespace VOCASY.Common
         {
             Microphone.End(Settings.MicrophoneDevice);
 
-            if (clip != null)
-                Destroy(clip);
+            if (Internal_clip != null)
+                Destroy(Internal_clip);
 
-            clip = null;
+            Internal_clip = null;
 
-            isEnabled = false;
+            Internal_isEnabled = false;
         }
         /// <summary>
         /// Starts recording
         /// </summary>
         public override void StartRecording()
         {
-            int freq = (ushort)Mathf.Clamp((int)Settings.AudioQuality, VoiceChatSettings.MinFrequency, Mathf.Min(maxDevFrequency, VoiceChatSettings.MaxFrequency));
+            int freq = (ushort)Mathf.Clamp((int)Settings.AudioQuality, VoiceChatSettings.MinFrequency, Mathf.Min(Internal_maxDevFrequency, VoiceChatSettings.MaxFrequency));
 
-            clip = Microphone.Start(Settings.MicrophoneDevice, true, 1, freq);
+            Internal_clip = Microphone.Start(Settings.MicrophoneDevice, true, 1, freq);
 
-            if (cyclicBuffer == null)
-                cyclicBuffer = new float[VoiceChatSettings.MaxFrequency / 10];
+            if (Internal_cyclicAudioBuffer == null)
+                Internal_cyclicAudioBuffer = new float[VoiceChatSettings.MaxFrequency / 10];
 
-            readIndex = 0;
-            writeIndex = 0;
+            Internal_readIndex = 0;
+            Internal_writeIndex = 0;
 
-            isEnabled = true;
+            Internal_isEnabled = true;
         }
-
-        void OnFrequencyChanged(FrequencyType prevFrequency)
+        /// <summary>
+        /// Exposed for tests. Internal method invoked in response to settings frequency changed
+        /// </summary>
+        /// <param name="prevFrequency">prev frequency</param>
+        public void Internal_OnFrequencyChanged(FrequencyType prevFrequency)
         {
             //if it was recording restart with new frequency
-            if (isEnabled)
+            if (Internal_isEnabled)
             {
                 StopRecording();
                 StartRecording();
             }
         }
-        void OnMicDeviceChanged(string prevMicDevice)
+        /// <summary>
+        /// Exposed for tests. Internal method invoked in response to settings device changed
+        /// </summary>
+        /// <param name="prevMicDevice">prev mic device</param>
+        public void Internal_OnMicDeviceChanged(string prevMicDevice)
         {
-            bool wasRecording = isEnabled;
+            bool wasRecording = Internal_isEnabled;
 
             //stop recording if it was rec previously
             if (wasRecording)
                 StopRecording();
 
             //update curren frequency limits
-            Microphone.GetDeviceCaps(Settings.MicrophoneDevice, out minDevFrequency, out maxDevFrequency);
+            Microphone.GetDeviceCaps(Settings.MicrophoneDevice, out Internal_minDevFrequency, out Internal_maxDevFrequency);
 
             //restart recording if it was rec previously
             if (wasRecording)
                 StartRecording();
         }
-        void Awake()
+        /// <summary>
+        /// Exposed for tests. Initializes recorder state and settings event responses
+        /// </summary>
+        public void Awake()
         {
-            isEnabled = false;
+            Internal_isEnabled = false;
 
-            Settings.MicrophoneDeviceChanged += OnMicDeviceChanged;
-            Settings.AudioQualityChanged += OnFrequencyChanged;
+            Settings.MicrophoneDeviceChanged += Internal_OnMicDeviceChanged;
+            Settings.AudioQualityChanged += Internal_OnFrequencyChanged;
 
-            OnMicDeviceChanged(null);
-            OnFrequencyChanged(Settings.AudioQuality);
+            Internal_OnMicDeviceChanged(null);
+            Internal_OnFrequencyChanged(Settings.AudioQuality);
         }
-        void OnDestroy()
+        /// <summary>
+        /// Exposed for tests. Removes settings event responses
+        /// </summary>
+        public void OnDestroy()
         {
-            Settings.MicrophoneDeviceChanged -= OnMicDeviceChanged;
-            Settings.AudioQualityChanged -= OnFrequencyChanged;
+            Settings.MicrophoneDeviceChanged -= Internal_OnMicDeviceChanged;
+            Settings.AudioQualityChanged -= Internal_OnFrequencyChanged;
         }
     }
 }

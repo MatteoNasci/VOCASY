@@ -1,6 +1,6 @@
 ﻿using Steamworks;
 using VOCASY;
-using VOCASY.Utility;
+using GENUtility;
 using VOCASY.Common;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Steam/Manipulators/Default")]
@@ -10,16 +10,16 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
 
     public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
 
-    private GamePacket decompressBuffer = GamePacket.CreatePacket(defaultBufferSize);
+    private BytePacket decompressBuffer = new BytePacket(defaultBufferSize);
 
-    public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         //this method is not supported
         info.ValidPacketInfo = false;
         return;
     }
 
-    public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         //writes audio data length
         output.Write(audioDataCount);
@@ -29,7 +29,7 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
         output.WriteByteData(audioData, audioDataOffset, n);
     }
 
-    public override void FromPacketToAudioData(GamePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
     {
         //this method is not supported
         info.ValidPacketInfo = false;
@@ -37,7 +37,7 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
         return;
     }
 
-    public override void FromPacketToAudioDataInt16(GamePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override void FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
     {
         //reads audio data length
         int count = packet.ReadInt();

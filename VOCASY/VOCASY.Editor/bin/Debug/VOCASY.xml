@@ -49,9 +49,34 @@
             Output channels
             </summary>
         </member>
+        <member name="P:VOCASY.Common.Receiver.Volume">
+            <summary>
+            Volume specific for this output source
+            </summary>
+        </member>
         <member name="P:VOCASY.Common.Receiver.AvailableTypes">
             <summary>
             Flag that determines which types of data format this class can process
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_source">
+            <summary>
+            Exposed for tests. Internal audiosource used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_cyclicAudioBuffer">
+            <summary>
+            Exposed for tests. Internal cyclic audioBuffer used to store data and fetch them to the audiosource
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_readIndex">
+            <summary>
+            Exposed for tests. Internal index that indicates the current cyclic buffer read index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Receiver.Internal_writeIndex">
+            <summary>
+            Exposed for tests. Internal index that indicates the current cyclic buffer write index
             </summary>
         </member>
         <member name="M:VOCASY.Common.Receiver.ReceiveAudioData(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo)">
@@ -72,9 +97,41 @@
             <param name="audioDataCount">audio data amount to process</param>
             <param name="info">data info</param>
         </member>
+        <member name="M:VOCASY.Common.Receiver.OnAudioFilterRead(System.Single[],System.Int32)">
+            <summary>
+            Exposed for tests. Audio data from internal buffer is written into the given array
+            </summary>
+            <param name="data">data to fill</param>
+            <param name="channels">channels of data required</param>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.Awake">
+            <summary>
+            Exposed for tests. Gets audiosource from components
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.OnEnable">
+            <summary>
+            Exposed for tests. Enables audiosource
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Receiver.OnDisable">
+            <summary>
+            Exposed for tests. Disables audiosource and resets internal indexes
+            </summary>
+        </member>
         <member name="T:VOCASY.Common.SelfDataTransport">
             <summary>
             Class that fakes network state between self and another client. It should be used for tests and debug
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.SelfDataTransport.FirstPacketByteAvailable">
+            <summary>
+            Header size
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.SelfDataTransport.pLength">
+            <summary>
+            Max final packet length
             </summary>
         </member>
         <member name="P:VOCASY.Common.SelfDataTransport.MaxDataLength">
@@ -87,7 +144,12 @@
             To which id fake packets should be sent
             </summary>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.ProcessReceivedData(VOCASY.Utility.GamePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
+        <member name="F:VOCASY.Common.SelfDataTransport.Internal_packetDataSize">
+            <summary>
+            Exposed for tests. Max payload size that can be processed
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.SelfDataTransport.ProcessReceivedData(GENUtility.BytePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
             <summary>
             Process packet data
             </summary>
@@ -98,14 +160,14 @@
             <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
+        <member name="M:VOCASY.Common.SelfDataTransport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
             <summary>
             Sends a packet to all the other clients that need it
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendTo(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo,System.UInt64)">
+        <member name="M:VOCASY.Common.SelfDataTransport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
             <summary>
             Performs a normal SendToAllOthers
             </summary>
@@ -138,6 +200,51 @@
             Voice chat settings
             </summary>
         </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_isEnabled">
+            <summary>
+            Exposed for tests. True if recorder is currently recording
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_minDevFrequency">
+            <summary>
+            Exposed for tests. Current device min frequency
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_maxDevFrequency">
+            <summary>
+            Exposed for tests. Current device max frequency
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_clip">
+            <summary>
+            Exposed fot tests. Internal clip created by UnityEngine API holding recorded audio data
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_prevOffset">
+            <summary>
+            Exposed for tests. Offset used to keep tracking of last clip buffer index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_cyclicAudioBuffer">
+            <summary>
+            Exposed for tests. Internal cyclic audio buffer which holds audio data received from clip
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_readIndex">
+            <summary>
+            Exposed for tests. Internal cyclic buffer current read index
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Recorder.Internal_writeIndex">
+            <summary>
+            Exposed for tests. Internal cyclic buffer current write index
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Update">
+            <summary>
+            Exposed for tests. Gets new audio data from clip
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.Recorder.GetMicData(System.Single[],System.Int32,System.Int32,System.Int32@)">
             <summary>
             Gets recorded data and stores it in format Single
@@ -168,6 +275,28 @@
             Starts recording
             </summary>
         </member>
+        <member name="M:VOCASY.Common.Recorder.Internal_OnFrequencyChanged(VOCASY.FrequencyType)">
+            <summary>
+            Exposed for tests. Internal method invoked in response to settings frequency changed
+            </summary>
+            <param name="prevFrequency">prev frequency</param>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Internal_OnMicDeviceChanged(System.String)">
+            <summary>
+            Exposed for tests. Internal method invoked in response to settings device changed
+            </summary>
+            <param name="prevMicDevice">prev mic device</param>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.Awake">
+            <summary>
+            Exposed for tests. Initializes recorder state and settings event responses
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Recorder.OnDestroy">
+            <summary>
+            Exposed for tests. Removes settings event responses
+            </summary>
+        </member>
         <member name="T:VOCASY.Common.VoiceDataManipulator">
             <summary>
             Class that converts audio data formats to game packet.
@@ -178,7 +307,7 @@
             Audio data formats that this class can process
             </summary>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoiceDataManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,GENUtility.BytePacket)">
             <summary>
             Processes audio data in format Single into a GamePacket
             </summary>
@@ -188,7 +317,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoiceDataManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,GENUtility.BytePacket)">
             <summary>
             Processes audio data in format Int16 into a GamePacket
             </summary>
@@ -198,7 +327,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoiceDataManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -208,7 +337,7 @@
             <param name="out_audioDataOffset">output array start index</param>
             <param name="dataCount">total number of bytes written</param>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoiceDataManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -233,7 +362,7 @@
             Voice chat workflow
             </summary>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataTransport.ProcessReceivedData(VOCASY.Utility.GamePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
+        <member name="M:VOCASY.Common.VoiceDataTransport.ProcessReceivedData(GENUtility.BytePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
             <summary>
             Process packet data
             </summary>
@@ -244,14 +373,14 @@
             <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataTransport.SendToAllOthers(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo)">
+        <member name="M:VOCASY.Common.VoiceDataTransport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
             <summary>
             Sends a packet to all the other clients
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
         </member>
-        <member name="M:VOCASY.Common.VoiceDataTransport.SendTo(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo,System.UInt64)">
+        <member name="M:VOCASY.Common.VoiceDataTransport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
             <summary>
             Sends a packet to another client
             </summary>
@@ -269,7 +398,7 @@
             Audio data formats that this class can process
             </summary>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacket(System.Single[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,GENUtility.BytePacket)">
             <summary>
             Processes audio data in format Single into a GamePacket
             </summary>
@@ -279,7 +408,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,VOCASY.Utility.GamePacket)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromAudioDataToPacketInt16(System.Byte[],System.Int32,System.Int32,VOCASY.VoicePacketInfo@,GENUtility.BytePacket)">
             <summary>
             Processes audio data in format Int16 into a GamePacket
             </summary>
@@ -289,7 +418,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -299,7 +428,7 @@
             <param name="out_audioDataOffset">output array start index</param>
             <param name="dataCount">total number of bytes written</param>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(VOCASY.Utility.GamePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -431,6 +560,46 @@
             Event called whenever Voice Chat enbaled state has been changed
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_folderName">
+            <summary>
+            Exposed for tests. Folder used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_settingsFileName">
+            <summary>
+            Exposed for tests. Saved settings file name
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_microphoneDevice">
+            <summary>
+            Exposed for tests. Device name
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_voiceChatEnabled">
+            <summary>
+            Exposed for tests. Voice chat status
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_pushToTalk">
+            <summary>
+            Exposed for tests. PTT status
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_muteSelf">
+            <summary>
+            Exposed for tests. True if mic is muted
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_audioQuality">
+            <summary>
+            Exposed for tests. Frequency used
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceChatSettings.Internal_voiceChatVolume">
+            <summary>
+            Exposed for tests. General voice chat volume
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceChatSettings.RestoreToSavedSettings">
             <summary>
             Restore the settings to the saved file values. If file is not found it is created with current settings values
@@ -441,9 +610,19 @@
             Saves current settings to file. If it is not performed changes to the settings will not be recorded
             </summary>
         </member>
+        <member name="M:VOCASY.Common.VoiceChatSettings.OnEnable">
+            <summary>
+            Exposed for tests. Initializes paths and read from file
+            </summary>
+        </member>
         <member name="T:VOCASY.Common.VoiceHandler">
             <summary>
             Class that handles voice input/output
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceHandler.SelfFlag">
+            <summary>
+            Default flag
             </summary>
         </member>
         <member name="F:VOCASY.Common.VoiceHandler.Workflow">
@@ -496,6 +675,21 @@
             Flag that determines which types of data format this class can process
             </summary>
         </member>
+        <member name="P:VOCASY.Common.VoiceHandler.IsInitialized">
+            <summary>
+            True if VoiceHandler has initialized correctly
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceHandler.Internal_selfOutputVolume">
+            <summary>
+            Exposed for tests. Internal local output volume
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceHandler.Internal_initialized">
+            <summary>
+            Exposed for tests. Initialization status
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceHandler.GetMicData(System.Single[],System.Int32,System.Int32,System.Int32@)">
             <summary>
             Gets recorded data and stores it in format Single
@@ -534,12 +728,82 @@
             <param name="audioDataCount">audio data amount to process</param>
             <param name="info">data info</param>
         </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_PTTOffUpdate">
+            <summary>
+            Exposed for tests. Logic used when PTT is off
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_PTTOnUpdate">
+            <summary>
+            Exposed for tests. Logic used when PTT is on
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_OnVoiceChatEnabledChanged">
+            <summary>
+            Exposed for tests. Responds to settings voice chat changed event. Disables-Enables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_InitUpdate">
+            <summary>
+            Exposed for tests. Update used to initialize status
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Internal_NormalUpdate">
+            <summary>
+            Exposed for tests. Update used after initialization occurred
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Update">
+            <summary>
+            Exposed for tests. Updates I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnEnable">
+            <summary>
+            Exposed for tests. Enables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnDisable">
+            <summary>
+            Exposed for tests. Disables I/O system
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.Awake">
+            <summary>
+            Exposed for tests. Initialize status
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.VoiceHandler.OnDestroy">
+            <summary>
+            Exposed for tests. Finalize status
+            </summary>
+        </member>
+        <member name="T:VOCASY.Common.NetworkIdentity">
+            <summary>
+            Class that represents an object which will be treated as unique on the nerwork
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.NetworkIdentity.NetworkId">
+            <summary>
+            Unique network id that identifies this specific object in the network. This value should not change
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.NetworkIdentity.IsLocalPlayer">
+            <summary>
+            True if this object is owned by the local player. This value should not change
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.NetworkIdentity.IsInitialized">
+            <summary>
+            True if INetworkIdentity has been set correctly
+            </summary>
+        </member>
         <member name="T:VOCASY.Common.VoiceReceiver">
             <summary>
             A class that manages audio output
             </summary>
         </member>
-        <member name="F:VOCASY.Common.VoiceReceiver.Volume">
+        <member name="P:VOCASY.Common.VoiceReceiver.Volume">
             <summary>
             Volume specific for this output source
             </summary>
@@ -637,6 +901,26 @@
             Transport used
             </summary>
         </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_handlers">
+            <summary>
+            Exposed for tests. Internal collection of all registered handlers
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_dataBuffer">
+            <summary>
+            Exposed for tests. Internal Single format audio data buffer
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_dataBufferInt16">
+            <summary>
+            Exposed for tests. Internal Int16 format audio data buffer
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.VoiceDataWorkflow.Internal_packetBuffer">
+            <summary>
+            Exposed for tests. Internal BytePacket buffer
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.VoiceDataWorkflow.AddVoiceHandler(VOCASY.Common.VoiceHandler)">
             <summary>
             Adds the handler. Handler should already be initialized before calling this method
@@ -663,6 +947,11 @@
             Processes mic data from the given handler
             </summary>
             <param name="handler">handler which has available mic data</param>
+        </member>
+        <member name="M:VOCASY.Common.VoiceDataWorkflow.OnEnable">
+            <summary>
+            Exposed for tests. Initializes workflow
+            </summary>
         </member>
         <member name="T:VOCASY.FrequencyType">
             <summary>
@@ -693,1026 +982,6 @@
             <summary>
             Best frequency quality
             </summary>
-        </member>
-        <member name="T:VOCASY.INetworkIdentity">
-            <summary>
-            Interface that represents an object which will be treated as unique on the nerwork
-            </summary>
-        </member>
-        <member name="P:VOCASY.INetworkIdentity.NetworkId">
-            <summary>
-            Unique network id that identifies this specific object in the network. This value should not change
-            </summary>
-        </member>
-        <member name="P:VOCASY.INetworkIdentity.IsLocalPlayer">
-            <summary>
-            True if this object is owned by the local player. This value should not change
-            </summary>
-        </member>
-        <member name="P:VOCASY.INetworkIdentity.IsInitialized">
-            <summary>
-            True if INetworkIdentity has been set correctly
-            </summary>
-        </member>
-        <member name="T:VOCASY.Utility.GamePacket">
-            <summary>
-            Class that manages a packet data. Static members should be thread safe, instance members are not thread safe. Ideally GamePackets should be used with a limited set amout of different MaxCapacity values with UsePools active, which will allow for easy pooling with as little allocations as possible. GamePackets that have finished their use should be disposed through DisposePacket
-            </summary>
-        </member>
-        <member name="P:VOCASY.Utility.GamePacket.UsePools">
-            <summary>
-            Determines whenever pools should be used. Pools are divided through MaxCapacity
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.CreatePacket(System.Int32)">
-            <summary>
-            Gets an initializated packet instance
-            </summary>
-            <param name="maxCapacity">max packet capacity</param>
-            <returns>initializated instance</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.CreatePacket(System.Byte[])">
-            <summary>
-            Gets an initializated packet instance. MaxCapacity will be equal to dala.Length
-            </summary>
-            <param name="data">buffer to use as the internal buffer of the packet. MaxCapacity == data.Length</param>
-            <returns>initializated instance</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ClearInternalPools">
-            <summary>
-            Performs a clear in all internal pools, releasing all resources
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.SetUsePools(System.Boolean)">
-            <summary>
-            Setter for the UsePools variable. Pools are divided through MaxCapacity
-            </summary>
-            <param name="usePools">Determines whenever pools should be used. Pools are divided through MaxCapacity</param>
-        </member>
-        <member name="F:VOCASY.Utility.GamePacket.CurrentLength">
-            <summary>
-            Amount of bytes that has been written in the packet. This may not return a correct value if already written data in the packet has been overwritten or if methods other than the given Write methods in this class has been used to modify the internal buffer, and it must be reset manually. GamePackets created through CreatePacket will be already resetted. This value has no impact in the internal logic of GamePacket and should be used as a way to store the current amount of written byte data
-            </summary>
-        </member>
-        <member name="F:VOCASY.Utility.GamePacket.CurrentSeek">
-            <summary>
-            Current seek position in the packet, used for all Read/Write operations
-            </summary>
-        </member>
-        <member name="P:VOCASY.Utility.GamePacket.IsDisposed">
-            <summary>
-            Determines whenever the current instance has been disposed through DestroyPacket. Disposed packets should not be used
-            </summary>
-        </member>
-        <member name="P:VOCASY.Utility.GamePacket.MaxCapacity">
-            <summary>
-            Max capacity of the packet. Write/Read operations that go beyond this limit will throw exceptions
-            </summary>
-        </member>
-        <member name="P:VOCASY.Utility.GamePacket.Data">
-            <summary>
-            Internal buffer used by the packet Changes done to the buffer directly will not automatically modify the other variables
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.DisposePacket">
-            <summary>
-            Operation that disposes the current packet. if UsePools is true the disposed instance will be pooled, id UsePools is false it does nothing
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Copy(VOCASY.Utility.GamePacket,System.Int32@)">
-            <summary>
-            Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
-            </summary>
-            <param name="toCopy">gamepacket to copy from</param>
-            <param name="elementsCopied">effective number of elements copied successfully</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(System.Byte[],System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Reads the internal buffer into the given array
-            </summary>
-            <param name="buffer">buffer on which the internal buffer elements will be written</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="dataOffset">internal buffer offset</param>
-            <param name="lengthToRead">number of bytes to read</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(VOCASY.Utility.GamePacket,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Reads the internal buffer into the given array
-            </summary>
-            <param name="buffer">buffer on which the internal buffer elements will be written. Buffer Seek will not be moved</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="dataOffset">internal buffer offset</param>
-            <param name="lengthToRead">number of bytes to read</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(VOCASY.Utility.GamePacket,System.Int32)">
-            <summary>
-            Reads the internal buffer into the given array
-            </summary>
-            <param name="buffer">buffer on which the internal buffer elements will be written. Buffer Seek will not be moved</param>
-            <param name="lengthToRead">number of bytes to read</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByteData(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            Reads the internal buffer into the given array
-            </summary>
-            <param name="buffer">buffer on which the internal buffer elements will be written</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="lengthToRead">number of bytes to read</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            Writes the given byte array into the internal buffer
-            </summary>
-            <param name="buffer">buffer from which elements will be written on the internal buffer</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="lengthToWrite">number of bytes to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(System.Byte[],System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Writes the given byte array into the internal buffer
-            </summary>
-            <param name="buffer">buffer from which elements will be written on the internal buffer</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="dataOffset">internal buffer offset</param>
-            <param name="lengthToWrite">number of bytes to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(VOCASY.Utility.GamePacket,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Writes the given byte array into the internal buffer
-            </summary>
-            <param name="buffer">buffer from which elements will be written on the internal buffer. Buffer Seek will not be moved</param>
-            <param name="bufferOffset">buffer offset</param>
-            <param name="dataOffset">internal buffer offset</param>
-            <param name="lengthToWrite">number of bytes to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.WriteByteData(VOCASY.Utility.GamePacket,System.Int32)">
-            <summary>
-            Writes the given byte array into the internal buffer
-            </summary>
-            <param name="buffer">buffer from which elements will be written on the internal buffer. Buffer Seek will not be moved</param>
-            <param name="lengthToWrite">number of bytes to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Char[])">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="values">values to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int32,System.Char[])">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <param name="values">values to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.String)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.String,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Char)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Char,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Single)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Single,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Double)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Double,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Boolean)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Boolean,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int16)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int16,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt16)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt16,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Byte)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Byte,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int32,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt32,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int64)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.Int64,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt64)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.UInt64,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.SByte)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Write(System.SByte,System.Int32)">
-            <summary>
-            Writes the value in the packet
-            </summary>
-            <param name="value">value to write</param>
-            <param name="offset">move the seek at this offset</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadChars(System.Char[],System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="out_chars">output char array</param>
-            <param name="out_charsOffset">output char array offset from which to start writing</param>
-            <returns>total number of char elements</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadChars(System.Int32,System.Char[],System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <param name="out_chars">output char array</param>
-            <param name="out_charsOffset">output char array offset from which to start writing</param>
-            <returns>total number of char elements</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadChar">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadChar(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadString">
-            <summary>
-            Reads a value from the packet (Causes char array allocation)
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadString(System.Int32)">
-            <summary>
-            Reads a value from the packet (Causes char array allocation)
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadFloat">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadFloat(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadDouble">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadDouble(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadShort">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadShort(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadUShort">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadUShort(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadInt">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadInt(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadUInt">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadUInt(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadLong">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadLong(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadULong">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadULong(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadBool">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadBool(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByte">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadByte(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadSByte">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ReadSByte(System.Int32)">
-            <summary>
-            Reads a value from the packet
-            </summary>
-            <param name="offset">move the seek at this offset</param>
-            <returns>value</returns>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.ResetSeekLength">
-            <summary>
-            Sets current length and seek to 0
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.#ctor(System.Int32)">
-            <summary>
-            Creates new packet instance with the given capacity
-            </summary>
-            <param name="maxCapacity">packet capacity</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.#ctor(System.Byte[])">
-            <summary>
-            Creates new instance with the given buffer as the internal buffer. MaxCapacity == bufferToUse.Length
-            </summary>
-            <param name="bufferToUse">buffer to use as the internalBuffer</param>
-        </member>
-        <member name="M:VOCASY.Utility.GamePacket.Reset">
-            <summary>
-            Resets internal values to default
-            </summary>
-        </member>
-        <member name="T:VOCASY.Utility.Utils">
-            <summary>
-            Utility class
-            </summary>
-        </member>
-        <member name="F:VOCASY.Utility.Utils.FullByte">
-            <summary>
-            Integer with first 8 bits on. Value = 255;
-            </summary>
-        </member>
-        <member name="F:VOCASY.Utility.Utils.Encoder">
-            <summary>
-            Encoding used when handling strings
-            </summary>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.WriteFromCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32,System.Int32@)">
-            <summary>
-            Writes the given values into the output array. The read of a number of elements superior to the cyclic buffer total length is not supported
-            </summary>
-            <typeparam name="T">type</typeparam>
-            <param name="cyclicBuffer">array from which to get elements, it is considered a cyclic array</param>
-            <param name="bufferStartIndex">buffer start index</param>
-            <param name="output">output array to write</param>
-            <param name="outputStartIndex">output start index</param>
-            <param name="count">amount of elements to write</param>
-            <param name="bufferNewOffset">new buffer start index</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.WriteToCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32,System.Int32@)">
-            <summary>
-            Writes the given values into the output array. The write of a number of elements superior to the cyclic buffer total length is not supported
-            </summary>
-            <typeparam name="T">type</typeparam>
-            <param name="buffer">array from which to get elements</param>
-            <param name="bufferStartIndex">buffer start index</param>
-            <param name="cyclicOutput">output array to write, it is considered a cyclic array</param>
-            <param name="outputStartIndex">output start index</param>
-            <param name="count">amount of elements to write</param>
-            <param name="outputNewOffset">new output start index</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write``1(``0[],System.Int32,``0[],System.Int32,System.Int32)">
-            <summary>
-            Writes the given values into the output array
-            </summary>
-            <typeparam name="T">type</typeparam>
-            <param name="buffer">array from which to get elements</param>
-            <param name="bufferStartIndex">buffer start index</param>
-            <param name="output">output array to write</param>
-            <param name="outputStartIndex">output start index</param>
-            <param name="count">amount of elements to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.String)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-            <returns>Number of bytes used to store the given string starting from startIndex</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadString(System.Byte[],System.Int32,System.Int32@)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <param name="count">Number of bytes used to store the given string starting from startIndex</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Char[])">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-            <returns>Number of bytes used to store the given string starting from startIndex</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadChars(System.Byte[],System.Int32,System.Char[],System.Int32,System.Int32@,System.Int32@)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <param name="output">output char array</param>
-            <param name="outputOffset">output char array offset</param>
-            <param name="byteCount">Number of bytes used to store the given string starting from startIndex</param>
-            <param name="charCount">Number of chars recovered from buffer</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.UInt32)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt32(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt32(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt32(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt32(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Byte)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="index">array index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadByte(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadByte(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.SByte)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="index">array index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadSByte(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadSByte(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Boolean)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="index">array index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadBoolean(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadBoolean(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Int16)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt16(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt16(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Char)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadChar(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadChar(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.UInt16)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt16(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt16(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.UInt64)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt64(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadUInt64(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Int64)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt64(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadInt64(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Single)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadSingle(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadSingle(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Byte[],System.Int32,System.Double)">
-            <summary>
-            Writes the given value in the given byte array
-            </summary>
-            <param name="buffer">byte array to write on</param>
-            <param name="startIndex">array index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadDouble(System.Byte[],System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.ReadDouble(System.Collections.Generic.List{System.Byte},System.Int32)">
-            <summary>
-            Reads a value from the given byte array
-            </summary>
-            <param name="buffer">byte array to read from</param>
-            <param name="startIndex">array index from which to start reading</param>
-            <returns>value read</returns>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.UInt32)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Int32)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Byte)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="index">list index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.SByte)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="index">list index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Boolean)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="index">list index to write on</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Int16)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Char)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.UInt16)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.UInt64)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Int64)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Single)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
-        </member>
-        <member name="M:VOCASY.Utility.Utils.Write(System.Collections.Generic.List{System.Byte},System.Int32,System.Double)">
-            <summary>
-            Writes the given value in the given byte list
-            </summary>
-            <param name="buffer">byte list to write on</param>
-            <param name="startIndex">list index from which to start writing</param>
-            <param name="value">value to write</param>
         </member>
         <member name="T:VOCASY.VoicePacketInfo">
             <summary>

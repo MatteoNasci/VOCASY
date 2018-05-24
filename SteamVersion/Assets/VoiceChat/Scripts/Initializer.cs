@@ -5,16 +5,13 @@ public class Initializer : MonoBehaviour
 {
     public VoiceHandler Prefab;
     public VoiceDataWorkflow Workflow;
-    private ulong otherId = 5;
-    private ulong selfId = 1;
+    public ulong selfId = 1;
     void Start()
     {
 
         SelfDataTransport selfT = Workflow.Transport as SelfDataTransport;
         if (selfT != null)
         {
-            selfT.ReceiverId = otherId;
-
             VoiceHandler obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<VoiceHandler>();
             obj.Identity.IsLocalPlayer = true;
             obj.Identity.NetworkId = selfId;
@@ -22,7 +19,7 @@ public class Initializer : MonoBehaviour
 
             obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<VoiceHandler>();
             obj.Identity.IsLocalPlayer = false;
-            obj.Identity.NetworkId = otherId;
+            obj.Identity.NetworkId = selfT.ReceiverId;
             obj.Identity.IsInitialized = true;
         }
 

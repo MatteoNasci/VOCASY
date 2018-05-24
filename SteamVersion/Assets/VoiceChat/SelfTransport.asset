@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Name: SelfTransport
   m_EditorClassIdentifier: 
   Workflow: {fileID: 11400000, guid: 0c875eab63dd8894a9010908e33179d1, type: 2}
-  ReceiverId: 0
-  packetDataSize: 1016
+  ReceiverId: 111

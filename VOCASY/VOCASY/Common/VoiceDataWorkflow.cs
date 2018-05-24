@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using VOCASY.Utility;
 using UnityEngine;
+using GENUtility;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -23,32 +23,28 @@ namespace VOCASY.Common
         /// </summary>
         public VoiceDataTransport Transport;
 
-        private Dictionary<ulong, VoiceHandler> handlers = new Dictionary<ulong, VoiceHandler>();
+        /// <summary>
+        /// Exposed for tests. Internal collection of all registered handlers
+        /// </summary>
+        [NonSerialized]
+        public Dictionary<ulong, VoiceHandler> Internal_handlers = new Dictionary<ulong, VoiceHandler>();
 
-        private float[] micDataBuffer;
-        private float[] receivedDataBuffer;
-        private byte[] micDataBufferInt16;
-        private byte[] receivedDataBufferInt16;
-        private GamePacket packetReceiver;
-        private GamePacket packetSender;
+        /// <summary>
+        /// Exposed for tests. Internal Single format audio data buffer
+        /// </summary>
+        [NonSerialized]
+        public float[] Internal_dataBuffer;
+        /// <summary>
+        /// Exposed for tests. Internal Int16 format audio data buffer
+        /// </summary>
+        [NonSerialized]
+        public byte[] Internal_dataBufferInt16;
+        /// <summary>
+        /// Exposed for tests. Internal BytePacket buffer
+        /// </summary>
+        [NonSerialized]
+        public BytePacket Internal_packetBuffer;
 
-        void OnEnable()
-        {
-            if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0)
-            {
-                micDataBuffer = new float[(VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20];
-                receivedDataBuffer = new float[(VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20];
-            }
-            if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0)
-            {
-                micDataBufferInt16 = new byte[micDataBuffer.Length * 2];
-                receivedDataBufferInt16 = new byte[receivedDataBuffer.Length * 2];
-            }
-
-            packetReceiver = GamePacket.CreatePacket(Transport.MaxDataLength);
-
-            packetSender = GamePacket.CreatePacket(Transport.MaxDataLength);
-        }
         /// <summary>
         /// Adds the handler. Handler should already be initialized before calling this method
         /// </summary>
@@ -62,7 +58,7 @@ namespace VOCASY.Common
                 throw new ArgumentException("the given handler type is incompatible with the current audio data manipulator");
 
             //handler is added and callback for when mic data is available is set on the handler
-            handlers.Add(handler.Identity.NetworkId, handler);
+            Internal_handlers.Add(handler.Identity.NetworkId, handler);
         }
         /// <summary>
         /// Removes the handler
@@ -71,7 +67,7 @@ namespace VOCASY.Common
         public void RemoveVoiceHandler(VoiceHandler handler)
         {
             //handler and callback are removed
-            handlers.Remove(handler.Identity.NetworkId);
+            Internal_handlers.Remove(handler.Identity.NetworkId);
         }
         /// <summary>
         /// Process the received packet data.
@@ -87,16 +83,16 @@ namespace VOCASY.Common
                 return;
 
             //resets packet buffer
-            packetReceiver.ResetSeekLength();
+            Internal_packetBuffer.ResetSeekLength();
 
             //receive packet
-            VoicePacketInfo info = Transport.ProcessReceivedData(packetReceiver, receivedData, startIndex, length, netId);
+            VoicePacketInfo info = Transport.ProcessReceivedData(Internal_packetBuffer, receivedData, startIndex, length, netId);
 
             //if packet is invalid or if there is not an handler for the given netid discard the packet received
-            if (!info.ValidPacketInfo || !handlers.ContainsKey(info.NetId))
+            if (!info.ValidPacketInfo || !Internal_handlers.ContainsKey(info.NetId))
                 return;
 
-            VoiceHandler handler = handlers[info.NetId];
+            VoiceHandler handler = Internal_handlers[info.NetId];
 
             //Do nothing if handler is either muted or if it is a recorder
             if (handler.IsOutputMuted || handler.IsRecorder)
@@ -113,20 +109,20 @@ namespace VOCASY.Common
 
             int count;
             //packet received Seek to zero to prepare for data manipulation
-            packetReceiver.CurrentSeek = 0;
+            Internal_packetBuffer.CurrentSeek = 0;
 
             //Different methods between Int16 and Single format. Data manipulation is done and, if no error occurred, audio data is sent to the handler in order to be used as output sound
             if (useSingle)
             {
-                Manipulator.FromPacketToAudioData(packetReceiver, ref info, receivedDataBuffer, 0, out count);
+                Manipulator.FromPacketToAudioData(Internal_packetBuffer, ref info, Internal_dataBuffer, 0, out count);
                 if (info.ValidPacketInfo)
-                    handler.ReceiveAudioData(receivedDataBuffer, 0, count, info);
+                    handler.ReceiveAudioData(Internal_dataBuffer, 0, count, info);
             }
             else
             {
-                Manipulator.FromPacketToAudioDataInt16(packetReceiver, ref info, receivedDataBufferInt16, 0, out count);
+                Manipulator.FromPacketToAudioDataInt16(Internal_packetBuffer, ref info, Internal_dataBufferInt16, 0, out count);
                 if (info.ValidPacketInfo)
-                    handler.ReceiveAudioDataInt16(receivedDataBufferInt16, 0, count, info);
+                    handler.ReceiveAudioDataInt16(Internal_dataBufferInt16, 0, count, info);
             }
         }
         /// <summary>
@@ -152,27 +148,43 @@ namespace VOCASY.Common
             //Retrive data from handler input
             int count;
             if (useSingle)
-                info = handler.GetMicData(micDataBuffer, 0, micDataBuffer.Length, out count);
+                info = handler.GetMicData(Internal_dataBuffer, 0, Internal_dataBuffer.Length, out count);
             else
-                info = handler.GetMicDataInt16(micDataBufferInt16, 0, micDataBufferInt16.Length, out count);
+                info = handler.GetMicDataInt16(Internal_dataBufferInt16, 0, Internal_dataBufferInt16.Length, out count);
 
             //if data is valid go on
             if (info.ValidPacketInfo)
             {
                 //packet buffer used to create the final packet is prepared
-                packetSender.ResetSeekLength();
+                Internal_packetBuffer.ResetSeekLength();
 
                 //data recovered from input is manipulated and stored into the gamepacket
                 if (useSingle)
-                    Manipulator.FromAudioDataToPacket(micDataBuffer, 0, count, ref info, packetSender);
+                    Manipulator.FromAudioDataToPacket(Internal_dataBuffer, 0, count, ref info, Internal_packetBuffer);
                 else
-                    Manipulator.FromAudioDataToPacketInt16(micDataBufferInt16, 0, count, ref info, packetSender);
+                    Manipulator.FromAudioDataToPacketInt16(Internal_dataBufferInt16, 0, count, ref info, Internal_packetBuffer);
 
-                packetSender.CurrentSeek = 0;
+                Internal_packetBuffer.CurrentSeek = 0;
 
                 //if packet is valid send to transport
                 if (info.ValidPacketInfo)
-                    Transport.SendToAllOthers(packetSender, info);
+                    Transport.SendToAllOthers(Internal_packetBuffer, info);
+            }
+        }
+        /// <summary>
+        /// Exposed for tests. Initializes workflow
+        /// </summary>
+        public void OnEnable()
+        {
+            if (Application.isPlaying)
+            {
+                if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0)
+                    Internal_dataBuffer = new float[(VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20];
+
+                if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0)
+                    Internal_dataBufferInt16 = new byte[Internal_dataBuffer.Length * 2];
+
+                Internal_packetBuffer = new BytePacket(Transport.MaxDataLength);
             }
         }
     }

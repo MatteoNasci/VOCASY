@@ -11,3 +11,6 @@ D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.cs
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.csproj.CopyComplete
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.exe
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\obj\Debug\VOCASY.Tests.Adv.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\GENUtility.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\GENUtility.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests.Adv\bin\Debug\GENUtility.xml

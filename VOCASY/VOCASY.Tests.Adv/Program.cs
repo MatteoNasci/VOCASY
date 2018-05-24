@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VOCASY.Utility;
+using GENUtility;
 namespace VOCASY.Tests.Adv
 {
     [Serializable]
@@ -97,8 +97,8 @@ namespace VOCASY.Tests.Adv
 
             for (int i = 0; i < cycles; i++)
             {
-                GamePacket p = GamePacket.CreatePacket(40000);
-                GamePacket p2 = GamePacket.CreatePacket(40000);
+                BytePacket p = new BytePacket(40000);
+                BytePacket p2 = new BytePacket(40000);
                 Boh value = Boh.Item1 | Boh.Item10 | Boh.Item11;
                 watch.Reset();
                 watch.Start();

@@ -43,15 +43,15 @@ namespace VOCASY.Common
         /// </summary>
         public string FolderName
         {
-            get { return folderName; }
+            get { return Internal_folderName; }
             set
             {
-                if (!value.Equals(folderName))
+                if (!value.Equals(Internal_folderName))
                 {
                     if (File.Exists(SavedCustomValuesPath))
                         File.Delete(SavedCustomValuesPath);
 
-                    folderName = value;
+                    Internal_folderName = value;
 
                     SavedCustomValuesDirectoryPath = Path.Combine(Application.persistentDataPath, FolderName);
 
@@ -66,15 +66,15 @@ namespace VOCASY.Common
         /// </summary>
         public string SettingsFileName
         {
-            get { return settingsFileName; }
+            get { return Internal_settingsFileName; }
             set
             {
-                if (!value.Equals(settingsFileName))
+                if (!value.Equals(Internal_settingsFileName))
                 {
                     if (File.Exists(SavedCustomValuesPath))
                         File.Delete(SavedCustomValuesPath);
 
-                    settingsFileName = value;
+                    Internal_settingsFileName = value;
 
                     SavedCustomValuesPath = Path.Combine(SavedCustomValuesDirectoryPath, SettingsFileName);
 
@@ -95,12 +95,12 @@ namespace VOCASY.Common
         /// </summary>
         public bool MuteSelf
         {
-            get { return muteSelf; }
+            get { return Internal_muteSelf; }
             set
             {
-                if (muteSelf != value)
+                if (Internal_muteSelf != value)
                 {
-                    muteSelf = value;
+                    Internal_muteSelf = value;
                     if (MuteSelfChanged != null)
                         MuteSelfChanged.Invoke();
                 }
@@ -111,12 +111,12 @@ namespace VOCASY.Common
         /// </summary>
         public bool PushToTalk
         {
-            get { return pushToTalk; }
+            get { return Internal_pushToTalk; }
             set
             {
-                if (pushToTalk != value)
+                if (Internal_pushToTalk != value)
                 {
-                    pushToTalk = value;
+                    Internal_pushToTalk = value;
                     if (PushToTalkChanged != null)
                         PushToTalkChanged.Invoke();
                 }
@@ -131,14 +131,14 @@ namespace VOCASY.Common
         /// </summary>
         public FrequencyType AudioQuality
         {
-            get { return audioQuality; }
+            get { return Internal_audioQuality; }
             set
             {
                 FrequencyType newF = (FrequencyType)Mathf.Clamp((int)value, MinFrequency, MaxFrequency);
-                if (audioQuality != newF)
+                if (Internal_audioQuality != newF)
                 {
-                    FrequencyType prev = audioQuality;
-                    audioQuality = newF;
+                    FrequencyType prev = Internal_audioQuality;
+                    Internal_audioQuality = newF;
                     if (AudioQualityChanged != null)
                         AudioQualityChanged.Invoke(prev);
                 }
@@ -149,13 +149,13 @@ namespace VOCASY.Common
         /// </summary>
         public string MicrophoneDevice
         {
-            get { return microphoneDevice; }
+            get { return Internal_microphoneDevice; }
             set
             {
-                if (!value.Equals(microphoneDevice))
+                if (!value.Equals(Internal_microphoneDevice))
                 {
-                    string prev = microphoneDevice;
-                    microphoneDevice = value;
+                    string prev = Internal_microphoneDevice;
+                    Internal_microphoneDevice = value;
                     if (MicrophoneDeviceChanged != null)
                         MicrophoneDeviceChanged.Invoke(prev);
                 }
@@ -166,12 +166,12 @@ namespace VOCASY.Common
         /// </summary>
         public bool VoiceChatEnabled
         {
-            get { return voiceChatEnabled; }
+            get { return Internal_voiceChatEnabled; }
             set
             {
-                if (voiceChatEnabled != value)
+                if (Internal_voiceChatEnabled != value)
                 {
-                    voiceChatEnabled = value;
+                    Internal_voiceChatEnabled = value;
                     if (VoiceChatEnabledChanged != null)
                         VoiceChatEnabledChanged.Invoke();
                 }
@@ -180,7 +180,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Determines volume of voice chat data received from network
         /// </summary>
-        public float VoiceChatVolume { get { return voiceChatVolume; } set { voiceChatVolume = value; } }
+        public float VoiceChatVolume { get { return Internal_voiceChatVolume; } set { Internal_voiceChatVolume = value; } }
 
         /// <summary>
         /// Event called whenever push to talk mode has been changed
@@ -203,30 +203,39 @@ namespace VOCASY.Common
         /// </summary>
         public event OnSettingChanged VoiceChatEnabledChanged;
 
-        [SerializeField]
-        private string folderName = "Communication";
-
-        [SerializeField]
-        private string settingsFileName = "VoiceChatSettings.txt";
-
-        [SerializeField]
-        private string microphoneDevice = string.Empty;
-
-        [SerializeField]
-        private bool voiceChatEnabled = true;
-
-        [SerializeField]
-        private bool pushToTalk = true;
-
-        [SerializeField]
-        private bool muteSelf = false;
-
-        [SerializeField]
-        private FrequencyType audioQuality = (FrequencyType)MaxFrequency;
-
+        /// <summary>
+        /// Exposed for tests. Folder used
+        /// </summary>
+        public string Internal_folderName = "Communication";
+        /// <summary>
+        /// Exposed for tests. Saved settings file name
+        /// </summary>
+        public string Internal_settingsFileName = "VoiceChatSettings.txt";
+        /// <summary>
+        /// Exposed for tests. Device name
+        /// </summary>
+        public string Internal_microphoneDevice = string.Empty;
+        /// <summary>
+        /// Exposed for tests. Voice chat status
+        /// </summary>
+        public bool Internal_voiceChatEnabled = true;
+        /// <summary>
+        /// Exposed for tests. PTT status
+        /// </summary>
+        public bool Internal_pushToTalk = true;
+        /// <summary>
+        /// Exposed for tests. True if mic is muted
+        /// </summary>
+        public bool Internal_muteSelf = false;
+        /// <summary>
+        /// Exposed for tests. Frequency used
+        /// </summary>
+        public FrequencyType Internal_audioQuality = (FrequencyType)MaxFrequency;
+        /// <summary>
+        /// Exposed for tests. General voice chat volume
+        /// </summary>
         [Range(0f, 1f)]
-        [SerializeField]
-        private float voiceChatVolume = 1f;
+        public float Internal_voiceChatVolume = 1f;
 
         /// <summary>
         /// Restore the settings to the saved file values. If file is not found it is created with current settings values
@@ -248,8 +257,10 @@ namespace VOCASY.Common
 
             File.WriteAllText(SavedCustomValuesPath, JsonUtility.ToJson(this));
         }
-
-        void OnEnable()
+        /// <summary>
+        /// Exposed for tests. Initializes paths and read from file
+        /// </summary>
+        public void OnEnable()
         {
             SavedCustomValuesDirectoryPath = Path.Combine(Application.persistentDataPath, FolderName);
 

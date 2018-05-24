@@ -9,7 +9,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Volume specific for this output source
         /// </summary>
-        public float Volume;
+        public abstract float Volume { get; set; }
         /// <summary>
         /// Flag that determines which types of data format this class can process
         /// </summary>

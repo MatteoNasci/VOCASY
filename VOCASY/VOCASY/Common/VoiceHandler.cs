@@ -7,7 +7,10 @@ namespace VOCASY.Common
     /// </summary>
     public class VoiceHandler : MonoBehaviour
     {
-        private const AudioDataTypeFlag SelfFlag = AudioDataTypeFlag.Both;
+        /// <summary>
+        /// Default flag
+        /// </summary>
+        public const AudioDataTypeFlag SelfFlag = AudioDataTypeFlag.Both;
         /// <summary>
         /// Voice chat workflow
         /// </summary>
@@ -39,7 +42,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Volume specific for this output source
         /// </summary>
-        public float SelfOutputVolume { get { return selfOutputVolume; } set { selfOutputVolume = Mathf.Clamp01(value); } }
+        public float SelfOutputVolume { get { return Internal_selfOutputVolume; } set { Internal_selfOutputVolume = Mathf.Clamp01(value); } }
         /// <summary>
         /// Effective volume of this output source
         /// </summary>
@@ -47,11 +50,22 @@ namespace VOCASY.Common
         /// <summary>
         /// Flag that determines which types of data format this class can process
         /// </summary>
-        public AudioDataTypeFlag AvailableTypes { get; private set; }
+        public AudioDataTypeFlag AvailableTypes { get; protected set; }
+        /// <summary>
+        /// True if VoiceHandler has initialized correctly
+        /// </summary>
+        public bool IsInitialized { get { return Internal_initialized; } }
 
-        private float selfOutputVolume;
-
-        private bool initialized;
+        /// <summary>
+        /// Exposed for tests. Internal local output volume
+        /// </summary>
+        [NonSerialized]
+        public float Internal_selfOutputVolume;
+        /// <summary>
+        /// Exposed for tests. Initialization status
+        /// </summary>
+        [NonSerialized]
+        public bool Internal_initialized;
 
         /// <summary>
         /// Gets recorded data and stores it in format Single
@@ -119,70 +133,18 @@ namespace VOCASY.Common
             if (Receiver.enabled)
                 Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
         }
-
-        void Update()
-        {
-            if (initialized)
-            {
-                NormalUpdate();
-            }
-            else
-            {
-                InitUpdate();
-            }
-        }
-        void OnEnable()
-        {
-            if (initialized)
-            {
-                //If this is a recorder && ptt is off start recording
-                if (IsRecorder)
-                    Recorder.enabled = IsRecorder;
-
-                //Set receiver enable status
-                Receiver.enabled = !IsRecorder;
-                //Add self to the workflow
-                Workflow.AddVoiceHandler(this);
-            }
-        }
-        void OnDisable()
-        {
-            if (initialized)
-            {
-                //If this is a recorder stop recording
-                if (IsRecorder)
-                    Recorder.StopRecording();
-
-                Recorder.enabled = false;
-                //Make sure to disables receiver
-                Receiver.enabled = false;
-                //Removes self from the workflow
-                Workflow.RemoveVoiceHandler(this);
-            }
-        }
-        void Awake()
-        {
-            initialized = false;
-            selfOutputVolume = 1f;
-
-            Recorder.enabled = false;
-            Receiver.enabled = false;
-
-            Workflow.Settings.VoiceChatEnabledChanged += OnVoiceChatEnabledChanged;
-
-            OnVoiceChatEnabledChanged();
-        }
-        void OnDestroy()
-        {
-            Workflow.Settings.VoiceChatEnabledChanged -= OnVoiceChatEnabledChanged;
-        }
-
-        void PTTOffUpdate()
+        /// <summary>
+        /// Exposed for tests. Logic used when PTT is off
+        /// </summary>
+        public void Internal_PTTOffUpdate()
         {
             if (!Recorder.IsEnabled)
                 Recorder.StartRecording();
         }
-        void PTTOnUpdate()
+        /// <summary>
+        /// Exposed for tests. Logic used when PTT is on
+        /// </summary>
+        public void Internal_PTTOnUpdate()
         {
             if (Input.GetKey(Workflow.Settings.PushToTalkKey))
             {
@@ -193,15 +155,21 @@ namespace VOCASY.Common
             else if (Recorder.IsEnabled) //if ptt key is not pressed and recorder is recording stop recording
                 Recorder.StopRecording();
         }
-        void OnVoiceChatEnabledChanged()
+        /// <summary>
+        /// Exposed for tests. Responds to settings voice chat changed event. Disables-Enables I/O system
+        /// </summary>
+        public void Internal_OnVoiceChatEnabledChanged()
         {
             this.enabled = Workflow.Settings.VoiceChatEnabled;
         }
-        void InitUpdate()
+        /// <summary>
+        /// Exposed for tests. Update used to initialize status
+        /// </summary>
+        public void Internal_InitUpdate()
         {
             if (Identity != null && Identity.IsInitialized)
             {
-                initialized = true;
+                Internal_initialized = true;
 
                 if (Receiver == null || Recorder == null)
                     throw new NullReferenceException("VoiceHandler requeires 2 valid components VoiceReceiver and VoiceRecorder");
@@ -218,7 +186,10 @@ namespace VOCASY.Common
                 OnEnable();
             }
         }
-        void NormalUpdate()
+        /// <summary>
+        /// Exposed for tests. Update used after initialization occurred
+        /// </summary>
+        public void Internal_NormalUpdate()
         {
             //If it is not a recorder update output volume
             if (!IsRecorder)
@@ -229,13 +200,84 @@ namespace VOCASY.Common
 
             //custom ptt update
             if (Workflow.Settings.PushToTalk)
-                PTTOnUpdate();
+                Internal_PTTOnUpdate();
             else
-                PTTOffUpdate();
+                Internal_PTTOffUpdate();
 
             //if the are mic data recorded available inform the workflow
             if (Recorder.IsEnabled && Recorder.MicDataAvailable > 0)
                 Workflow.ProcessMicData(this);
+        }
+        /// <summary>
+        /// Exposed for tests. Updates I/O system
+        /// </summary>
+        public void Update()
+        {
+            if (Internal_initialized)
+            {
+                Internal_NormalUpdate();
+            }
+            else
+            {
+                Internal_InitUpdate();
+            }
+        }
+        /// <summary>
+        /// Exposed for tests. Enables I/O system
+        /// </summary>
+        public void OnEnable()
+        {
+            if (Internal_initialized)
+            {
+                //If this is a recorder && ptt is off start recording
+                if (IsRecorder)
+                    Recorder.enabled = IsRecorder;
+
+                //Set receiver enable status
+                Receiver.enabled = !IsRecorder;
+                //Add self to the workflow
+                Workflow.AddVoiceHandler(this);
+            }
+        }
+        /// <summary>
+        /// Exposed for tests. Disables I/O system
+        /// </summary>
+        public void OnDisable()
+        {
+            if (Internal_initialized)
+            {
+                //If this is a recorder stop recording
+                if (IsRecorder)
+                    Recorder.StopRecording();
+
+                Recorder.enabled = false;
+                //Make sure to disables receiver
+                Receiver.enabled = false;
+                //Removes self from the workflow
+                Workflow.RemoveVoiceHandler(this);
+            }
+        }
+        /// <summary>
+        /// Exposed for tests. Initialize status
+        /// </summary>
+        public void Awake()
+        {
+            Internal_initialized = false;
+            Internal_selfOutputVolume = 1f;
+
+            Recorder.enabled = false;
+            Receiver.enabled = false;
+
+            Workflow.Settings.VoiceChatEnabledChanged += Internal_OnVoiceChatEnabledChanged;
+
+            Internal_OnVoiceChatEnabledChanged();
+        }
+        /// <summary>
+        /// Exposed for tests. Finalize status
+        /// </summary>
+        public void OnDestroy()
+        {
+            Workflow.Settings.VoiceChatEnabledChanged -= Internal_OnVoiceChatEnabledChanged;
         }
     }
 }

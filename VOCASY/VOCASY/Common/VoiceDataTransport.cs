@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using VOCASY.Utility;
+using GENUtility;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -26,19 +26,19 @@ namespace VOCASY.Common
         /// <param name="length">Raw data length</param>
         /// <param name="netId">Sender net id</param>
         /// <returns>data info</returns>
-        public abstract VoicePacketInfo ProcessReceivedData(GamePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId);
+        public abstract VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId);
         /// <summary>
         /// Sends a packet to all the other clients
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
-        public abstract void SendToAllOthers(GamePacket data, VoicePacketInfo info);
+        public abstract void SendToAllOthers(BytePacket data, VoicePacketInfo info);
         /// <summary>
         /// Sends a packet to another client
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
         /// <param name="receiverID">Receiver to which the packet should be sent</param>
-        public abstract void SendTo(GamePacket data, VoicePacketInfo info, ulong receiverID);
+        public abstract void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID);
     }
 }

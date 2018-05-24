@@ -15,10 +15,13 @@ D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\Unity.Cecil.Mdb.dll
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\UnityEditor.xml
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\UnityEngine.xml
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\VOCASY.pdb
-D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\VOCASY.xml
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\obj\Debug\VOCASY.Editor.csprojResolveAssemblyReference.cache
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\obj\Debug\VOCASY.Editor.csproj.CoreCompileInputs.cache
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\obj\Debug\VOCASY.Editor.csproj.CopyComplete
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\obj\Debug\VOCASY.Editor.dll
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\obj\Debug\VOCASY.Editor.pdb
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\VOCASY.Editor.xml
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\VOCASY.xml
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\GENUtility.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\GENUtility.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Editor\bin\Debug\GENUtility.xml

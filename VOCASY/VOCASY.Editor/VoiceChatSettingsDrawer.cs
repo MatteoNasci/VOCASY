@@ -10,19 +10,25 @@ namespace VOCASY.Editor
     public class VoiceChatSettingsDrawer : UnityEditor.Editor
     {
         /// <summary>
-        /// Method that modifies SOEvent inspector view
+        /// Method that modifies VoiceChatSettings inspector view
         /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            //GUI.enabled = Application.isPlaying;
+            VoiceChatSettings settings = target as VoiceChatSettings;
+            using (new GUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Save Current Settings"))
+                {
+                    settings.SaveCurrentSettings();
+                }
 
-            VoiceChatSettings e = target as VoiceChatSettings;
-            if (GUILayout.Button("Save Current Settings"))
-                e.SaveCurrentSettings();
-            else if (GUILayout.Button("Restore to Saved Settings"))
-                e.RestoreToSavedSettings();
+                else if (GUILayout.Button("Restore to Saved Settings"))
+                {
+                    settings.RestoreToSavedSettings();
+                }
+            }
         }
     }
 }

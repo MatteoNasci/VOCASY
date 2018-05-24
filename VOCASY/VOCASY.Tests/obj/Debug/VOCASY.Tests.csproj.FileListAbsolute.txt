@@ -18,3 +18,6 @@ D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\obj\Debug\VOCASY.Tests.csproj.Cor
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\obj\Debug\VOCASY.Tests.csproj.CopyComplete
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\obj\Debug\VOCASY.Tests.dll
 D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\obj\Debug\VOCASY.Tests.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\bin\Debug\GENUtility.dll
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\bin\Debug\GENUtility.pdb
+D:\GitProjects\Self\VOCASY\VOCASY\VOCASY.Tests\bin\Debug\GENUtility.xml

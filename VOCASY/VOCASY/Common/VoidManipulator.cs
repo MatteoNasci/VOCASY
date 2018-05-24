@@ -1,5 +1,5 @@
-﻿using VOCASY.Utility;
-using UnityEngine;
+﻿using UnityEngine;
+using GENUtility;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -20,9 +20,9 @@ namespace VOCASY.Common
         /// <param name="audioDataCount">number of bytes to process</param>
         /// <param name="info">data info</param>
         /// <param name="output">gamepacket on which data will be written</param>
-        public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+        public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
         {
-            int outputAvailableSpace = output.MaxCapacity - output.CurrentSeek;
+            int outputAvailableSpace = output.Data.Length - output.CurrentSeek;
             if (outputAvailableSpace < (audioDataCount * sizeof(float)) + sizeof(int))
                 audioDataCount = (outputAvailableSpace / sizeof(float)) - sizeof(int);
 
@@ -41,9 +41,9 @@ namespace VOCASY.Common
         /// <param name="audioDataCount">number of bytes to process</param>
         /// <param name="info">data info</param>
         /// <param name="output">gamepacket on which data will be written</param>
-        public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+        public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
         {
-            int outputAvailableSpace = output.MaxCapacity - output.CurrentSeek;
+            int outputAvailableSpace = output.Data.Length - output.CurrentSeek;
             if (outputAvailableSpace < audioDataCount + sizeof(int))
                 audioDataCount = outputAvailableSpace - sizeof(int);
 
@@ -58,7 +58,7 @@ namespace VOCASY.Common
         /// <param name="out_audioData">output array on which data will be written</param>
         /// <param name="out_audioDataOffset">output array start index</param>
         /// <param name="dataCount">total number of bytes written</param>
-        public override void FromPacketToAudioData(GamePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+        public override void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
         {
             dataCount = packet.ReadInt();
             int length = dataCount + out_audioDataOffset;
@@ -75,7 +75,7 @@ namespace VOCASY.Common
         /// <param name="out_audioData">output array on which data will be written</param>
         /// <param name="out_audioDataOffset">output array start index</param>
         /// <param name="dataCount">total number of bytes written</param>
-        public override void FromPacketToAudioDataInt16(GamePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+        public override void FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
         {
             dataCount = packet.ReadInt();
             packet.ReadByteData(out_audioData, out_audioDataOffset, dataCount);
