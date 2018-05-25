@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.IO;
-namespace VOCASY.Common
+namespace VOCASY
 {
     /// <summary>
     /// Class that manages and holds voice chat settings
     /// </summary>
-    [CreateAssetMenu(menuName = "VOCASY/Settings")]
-    public class VoiceChatSettings : ScriptableObject
+    public abstract class VoiceChatSettings : ScriptableObject
     {
         /// <summary>
         /// Delegate used on some settings changed
@@ -25,33 +24,33 @@ namespace VOCASY.Common
         /// <summary>
         /// Minimum frequency possible
         /// </summary>
-        public const ushort MinFrequency = (ushort)FrequencyType.LowerThanAverageQuality;
+        public abstract ushort MinFrequency { get; }
         /// <summary>
         /// Maximum frequency possible
         /// </summary>
-        public const ushort MaxFrequency = (ushort)FrequencyType.BestQuality;
+        public abstract ushort MaxFrequency { get; }
         /// <summary>
-        /// Minimum frequency possible
+        /// Minimum channels possible
         /// </summary>
-        public const byte MinChannels = 1;
+        public abstract byte MinChannels { get; }
         /// <summary>
-        /// Maximum frequency possible
+        /// Maximum channels possible
         /// </summary>
-        public const byte MaxChannels = 2;
+        public abstract byte MaxChannels { get; }
         /// <summary>
         /// Name of the folder used to store files
         /// </summary>
-        public string FolderName
+        public virtual string FolderName
         {
-            get { return Internal_folderName; }
+            get { return folderName; }
             set
             {
-                if (!value.Equals(Internal_folderName))
+                if (!value.Equals(folderName))
                 {
                     if (File.Exists(SavedCustomValuesPath))
                         File.Delete(SavedCustomValuesPath);
 
-                    Internal_folderName = value;
+                    folderName = value;
 
                     SavedCustomValuesDirectoryPath = Path.Combine(Application.persistentDataPath, FolderName);
 
@@ -64,17 +63,17 @@ namespace VOCASY.Common
         /// <summary>
         /// Name of the file used to store settings
         /// </summary>
-        public string SettingsFileName
+        public virtual string SettingsFileName
         {
-            get { return Internal_settingsFileName; }
+            get { return settingsFileName; }
             set
             {
-                if (!value.Equals(Internal_settingsFileName))
+                if (!value.Equals(settingsFileName))
                 {
                     if (File.Exists(SavedCustomValuesPath))
                         File.Delete(SavedCustomValuesPath);
 
-                    Internal_settingsFileName = value;
+                    settingsFileName = value;
 
                     SavedCustomValuesPath = Path.Combine(SavedCustomValuesDirectoryPath, SettingsFileName);
 
@@ -85,22 +84,22 @@ namespace VOCASY.Common
         /// <summary>
         /// File complete path name that contains saved settings.
         /// </summary>
-        public string SavedCustomValuesPath { get; private set; }
+        public string SavedCustomValuesPath { get; protected set; }
         /// <summary>
         /// Directory full path that contains files.
         /// </summary>
-        public string SavedCustomValuesDirectoryPath { get; private set; }
+        public string SavedCustomValuesDirectoryPath { get; protected set; }
         /// <summary>
         /// Determines whenever self should be muted
         /// </summary>
         public bool MuteSelf
         {
-            get { return Internal_muteSelf; }
+            get { return muteSelf; }
             set
             {
-                if (Internal_muteSelf != value)
+                if (muteSelf != value)
                 {
-                    Internal_muteSelf = value;
+                    muteSelf = value;
                     if (MuteSelfChanged != null)
                         MuteSelfChanged.Invoke();
                 }
@@ -111,12 +110,12 @@ namespace VOCASY.Common
         /// </summary>
         public bool PushToTalk
         {
-            get { return Internal_pushToTalk; }
+            get { return pushToTalk; }
             set
             {
-                if (Internal_pushToTalk != value)
+                if (pushToTalk != value)
                 {
-                    Internal_pushToTalk = value;
+                    pushToTalk = value;
                     if (PushToTalkChanged != null)
                         PushToTalkChanged.Invoke();
                 }
@@ -131,14 +130,14 @@ namespace VOCASY.Common
         /// </summary>
         public FrequencyType AudioQuality
         {
-            get { return Internal_audioQuality; }
+            get { return audioQuality; }
             set
             {
                 FrequencyType newF = (FrequencyType)Mathf.Clamp((int)value, MinFrequency, MaxFrequency);
-                if (Internal_audioQuality != newF)
+                if (audioQuality != newF)
                 {
-                    FrequencyType prev = Internal_audioQuality;
-                    Internal_audioQuality = newF;
+                    FrequencyType prev = audioQuality;
+                    audioQuality = newF;
                     if (AudioQualityChanged != null)
                         AudioQualityChanged.Invoke(prev);
                 }
@@ -149,13 +148,13 @@ namespace VOCASY.Common
         /// </summary>
         public string MicrophoneDevice
         {
-            get { return Internal_microphoneDevice; }
+            get { return microphoneDevice; }
             set
             {
-                if (!value.Equals(Internal_microphoneDevice))
+                if (!value.Equals(microphoneDevice))
                 {
-                    string prev = Internal_microphoneDevice;
-                    Internal_microphoneDevice = value;
+                    string prev = microphoneDevice;
+                    microphoneDevice = value;
                     if (MicrophoneDeviceChanged != null)
                         MicrophoneDeviceChanged.Invoke(prev);
                 }
@@ -166,12 +165,12 @@ namespace VOCASY.Common
         /// </summary>
         public bool VoiceChatEnabled
         {
-            get { return Internal_voiceChatEnabled; }
+            get { return voiceChatEnabled; }
             set
             {
-                if (Internal_voiceChatEnabled != value)
+                if (voiceChatEnabled != value)
                 {
-                    Internal_voiceChatEnabled = value;
+                    voiceChatEnabled = value;
                     if (VoiceChatEnabledChanged != null)
                         VoiceChatEnabledChanged.Invoke();
                 }
@@ -180,7 +179,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Determines volume of voice chat data received from network
         /// </summary>
-        public float VoiceChatVolume { get { return Internal_voiceChatVolume; } set { Internal_voiceChatVolume = value; } }
+        public float VoiceChatVolume { get { return voiceChatVolume; } set { voiceChatVolume = value; } }
 
         /// <summary>
         /// Event called whenever push to talk mode has been changed
@@ -203,64 +202,44 @@ namespace VOCASY.Common
         /// </summary>
         public event OnSettingChanged VoiceChatEnabledChanged;
 
-        /// <summary>
-        /// Exposed for tests. Folder used
-        /// </summary>
-        public string Internal_folderName = "Communication";
-        /// <summary>
-        /// Exposed for tests. Saved settings file name
-        /// </summary>
-        public string Internal_settingsFileName = "VoiceChatSettings.txt";
-        /// <summary>
-        /// Exposed for tests. Device name
-        /// </summary>
-        public string Internal_microphoneDevice = string.Empty;
-        /// <summary>
-        /// Exposed for tests. Voice chat status
-        /// </summary>
-        public bool Internal_voiceChatEnabled = true;
-        /// <summary>
-        /// Exposed for tests. PTT status
-        /// </summary>
-        public bool Internal_pushToTalk = true;
-        /// <summary>
-        /// Exposed for tests. True if mic is muted
-        /// </summary>
-        public bool Internal_muteSelf = false;
-        /// <summary>
-        /// Exposed for tests. Frequency used
-        /// </summary>
-        public FrequencyType Internal_audioQuality = (FrequencyType)MaxFrequency;
-        /// <summary>
-        /// Exposed for tests. General voice chat volume
-        /// </summary>
+        [SerializeField]
+        private string folderName = "Communication";
+
+        [SerializeField]
+        private string settingsFileName = "VoiceChatSettings.txt";
+
+        [SerializeField]
+        private string microphoneDevice = string.Empty;
+
+        [SerializeField]
+        private bool voiceChatEnabled = true;
+
+        [SerializeField]
+        private bool pushToTalk = true;
+
+        [SerializeField]
+        private bool muteSelf = false;
+
+        [SerializeField]
+        private FrequencyType audioQuality = FrequencyType.BestQuality;
+
+        [SerializeField]
         [Range(0f, 1f)]
-        public float Internal_voiceChatVolume = 1f;
+        private float voiceChatVolume = 1f;
 
         /// <summary>
         /// Restore the settings to the saved file values. If file is not found it is created with current settings values
         /// </summary>
-        public void RestoreToSavedSettings()
-        {
-            if (File.Exists(SavedCustomValuesPath))
-                JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedCustomValuesPath), this);
-            else
-                SaveCurrentSettings();
-        }
+        public abstract void RestoreToSavedSettings();
         /// <summary>
         /// Saves current settings to file. If it is not performed changes to the settings will not be recorded
         /// </summary>
-        public void SaveCurrentSettings()
-        {
-            if (!Directory.Exists(SavedCustomValuesDirectoryPath))
-                Directory.CreateDirectory(SavedCustomValuesDirectoryPath);
+        public abstract void SaveCurrentSettings();
 
-            File.WriteAllText(SavedCustomValuesPath, JsonUtility.ToJson(this));
-        }
         /// <summary>
-        /// Exposed for tests. Initializes paths and read from file
+        /// Initializes paths and gets values from file
         /// </summary>
-        public void OnEnable()
+        protected virtual void OnEnable()
         {
             SavedCustomValuesDirectoryPath = Path.Combine(Application.persistentDataPath, FolderName);
 

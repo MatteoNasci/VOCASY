@@ -9,7 +9,7 @@ namespace VOCASY.Tests.Adv
 {
     [Serializable]
     [Flags]
-    public enum Boh : long
+    public enum Boh : ulong
     {
         None = 0,
         Item = 1,
@@ -43,40 +43,40 @@ namespace VOCASY.Tests.Adv
         Item28 = 1 << 28,
         Item29 = 1 << 29,
         Item30 = 1 << 30,
-        Item31 = 1 << 31,
-        Item32 = 1 << 32,
-        Item33 = 1 << 33,
-        Item34 = 1 << 34,
-        Item35 = 1 << 35,
-        Item36 = 1 << 36,
-        Item37 = 1 << 37,
-        Item38 = 1 << 38,
-        Item39 = 1 << 39,
-        Item40 = 1 << 40,
-        Item41 = 1 << 41,
-        Item42 = 1 << 42,
-        Item43 = 1 << 43,
-        Item44 = 1 << 44,
-        Item45 = 1 << 45,
-        Item46 = 1 << 46,
-        Item47 = 1 << 47,
-        Item48 = 1 << 48,
-        Item49 = 1 << 49,
-        Item50 = 1 << 50,
-        Item51 = 1 << 51,
-        Item52 = 1 << 52,
-        Item53 = 1 << 53,
-        Item54 = 1 << 54,
-        Item55 = 1 << 55,
-        Item56 = 1 << 56,
-        Item57 = 1 << 57,
-        Item58 = 1 << 58,
-        Item59 = 1 << 59,
-        Item60 = 1 << 60,
-        Item61 = 1 << 61,
-        Item62 = 1 << 62,
-        Item63 = 1 << 63,
-        All = long.MaxValue,
+        Item31 = (ulong)1 << 31,
+        Item32 = (ulong)1 << 32,
+        Item33 = (ulong)1 << 33,
+        Item34 = (ulong)1 << 34,
+        Item35 = (ulong)1 << 35,
+        Item36 = (ulong)1 << 36,
+        Item37 = (ulong)1 << 37,
+        Item38 = (ulong)1 << 38,
+        Item39 = (ulong)1 << 39,
+        Item40 = (ulong)1 << 40,
+        Item41 = (ulong)1 << 41,
+        Item42 = (ulong)1 << 42,
+        Item43 = (ulong)1 << 43,
+        Item44 = (ulong)1 << 44,
+        Item45 = (ulong)1 << 45,
+        Item46 = (ulong)1 << 46,
+        Item47 = (ulong)1 << 47,
+        Item48 = (ulong)1 << 48,
+        Item49 = (ulong)1 << 49,
+        Item50 = (ulong)1 << 50,
+        Item51 = (ulong)1 << 51,
+        Item52 = (ulong)1 << 52,
+        Item53 = (ulong)1 << 53,
+        Item54 = (ulong)1 << 54,
+        Item55 = (ulong)1 << 55,
+        Item56 = (ulong)1 << 56,
+        Item57 = (ulong)1 << 57,
+        Item58 = (ulong)1 << 58,
+        Item59 = (ulong)1 << 59,
+        Item60 = (ulong)1 << 60,
+        Item61 = (ulong)1 << 61,
+        Item62 = (ulong)1 << 62,
+        Item63 = (ulong)1 << 63,
+        All = ulong.MaxValue,
     }
     class Program
     {
@@ -107,8 +107,7 @@ namespace VOCASY.Tests.Adv
                 bool res2 = false;
                 for (int z = 0; z < n; z++)
                 {
-                    if (!res && !res1)
-                        res2 = true;
+ 
                 }
                 watch.Stop();
 
@@ -126,9 +125,7 @@ namespace VOCASY.Tests.Adv
                 watch.Start();
                 for (int z = 0; z < n; z++)
                 {
-                    if (!res)
-                        if (!res1)
-                            res2 = true;
+ 
                 }
                 watch.Stop();
 

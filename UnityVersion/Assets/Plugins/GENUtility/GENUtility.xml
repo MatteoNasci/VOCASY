@@ -26,15 +26,15 @@
         </member>
         <member name="F:GENUtility.BytePacket.Data">
             <summary>
-            Internal buffer used by the packet Changes done to the buffer directly will not automatically modify the other variables
+            Internal buffer used by the packet. Changes done to the buffer directly will not automatically modify the other variables
             </summary>
         </member>
-        <member name="M:GENUtility.BytePacket.Copy(GENUtility.BytePacket,System.Int32@)">
+        <member name="M:GENUtility.BytePacket.Copy(GENUtility.BytePacket)">
             <summary>
             Copies n elements from internal buffer of the given gamepacket starting from its seek position to the current instance. Elements copied are equal to the minimum between the packet to (copy current length - seek pos), the space effectively available starting from vopy seek pos and the space available in the current instance buffer.
             </summary>
             <param name="toCopy">gamepacket to copy from</param>
-            <param name="elementsCopied">effective number of elements copied successfully</param>
+            <returns>effective number of elements copied successfully</returns>
         </member>
         <member name="M:GENUtility.BytePacket.ReadByteData(System.Byte[],System.Int32,System.Int32,System.Int32)">
             <summary>

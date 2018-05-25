@@ -8,48 +8,19 @@ namespace VOCASY.Common
     /// Class that manages the workflow of audio data from input to output
     /// </summary>
     [CreateAssetMenu(fileName = "VoiceManager", menuName = "VOCASY/Workflow")]
-    public class VoiceDataWorkflow : ScriptableObject
+    public class Workflow : VoiceDataWorkflow
     {
-        /// <summary>
-        /// Voice chat settings
-        /// </summary>
-        public VoiceChatSettings Settings;
-        /// <summary>
-        /// Manipulator used
-        /// </summary>
-        public VoiceDataManipulator Manipulator;
-        /// <summary>
-        /// Transport used
-        /// </summary>
-        public VoiceDataTransport Transport;
+        private Dictionary<ulong, VoiceHandler> handlers;
 
-        /// <summary>
-        /// Exposed for tests. Internal collection of all registered handlers
-        /// </summary>
-        [NonSerialized]
-        public Dictionary<ulong, VoiceHandler> Internal_handlers;
-
-        /// <summary>
-        /// Exposed for tests. Internal Single format audio data buffer
-        /// </summary>
-        [NonSerialized]
-        public float[] Internal_dataBuffer;
-        /// <summary>
-        /// Exposed for tests. Internal Int16 format audio data buffer
-        /// </summary>
-        [NonSerialized]
-        public byte[] Internal_dataBufferInt16;
-        /// <summary>
-        /// Exposed for tests. Internal BytePacket buffer
-        /// </summary>
-        [NonSerialized]
-        public BytePacket Internal_packetBuffer;
+        private float[] dataBuffer;
+        private byte[] dataBufferInt16;
+        private BytePacket packetBuffer;
 
         /// <summary>
         /// Adds the handler. Handler should already be initialized before calling this method
         /// </summary>
         /// <param name="handler">handler to add</param>
-        public void AddVoiceHandler(VoiceHandler handler)
+        public override void AddVoiceHandler(VoiceHandler handler)
         {
             //Compatibility check between handler to add and manipulator
             AudioDataTypeFlag res = Manipulator.AvailableTypes & handler.AvailableTypes;
@@ -58,16 +29,16 @@ namespace VOCASY.Common
                 throw new ArgumentException("the given handler type is incompatible with the current audio data manipulator");
 
             //handler is added and callback for when mic data is available is set on the handler
-            Internal_handlers.Add(handler.Identity.NetworkId, handler);
+            handlers.Add(handler.NetID, handler);
         }
         /// <summary>
         /// Removes the handler
         /// </summary>
         /// <param name="handler">handler to remove</param>
-        public void RemoveVoiceHandler(VoiceHandler handler)
+        public override void RemoveVoiceHandler(VoiceHandler handler)
         {
             //handler and callback are removed
-            Internal_handlers.Remove(handler.Identity.NetworkId);
+            handlers.Remove(handler.NetID);
         }
         /// <summary>
         /// Process the received packet data.
@@ -76,23 +47,23 @@ namespace VOCASY.Common
         /// <param name="startIndex">received raw data start index</param>
         /// <param name="length">received raw data length</param>
         /// <param name="netId">sender net id</param>
-        public void ProcessReceivedPacket(byte[] receivedData, int startIndex, int length, ulong netId)
+        public override void ProcessReceivedPacket(byte[] receivedData, int startIndex, int length, ulong netId)
         {
             //If voice chat is disabled do nothing
             if (!Settings.VoiceChatEnabled)
                 return;
 
             //resets packet buffer
-            Internal_packetBuffer.ResetSeekLength();
+            packetBuffer.ResetSeekLength();
 
             //receive packet
-            VoicePacketInfo info = Transport.ProcessReceivedData(Internal_packetBuffer, receivedData, startIndex, length, netId);
+            VoicePacketInfo info = Transport.ProcessReceivedData(packetBuffer, receivedData, startIndex, length, netId);
 
             //if packet is invalid or if there is not an handler for the given netid discard the packet received
-            if (!info.ValidPacketInfo || !Internal_handlers.ContainsKey(info.NetId))
+            if (!info.ValidPacketInfo || !handlers.ContainsKey(info.NetId))
                 return;
 
-            VoiceHandler handler = Internal_handlers[info.NetId];
+            VoiceHandler handler = handlers[info.NetId];
 
             //Do nothing if handler is either muted or if it is a recorder
             if (handler.IsOutputMuted || handler.IsRecorder)
@@ -109,27 +80,27 @@ namespace VOCASY.Common
 
             int count;
             //packet received Seek to zero to prepare for data manipulation
-            Internal_packetBuffer.CurrentSeek = 0;
+            packetBuffer.CurrentSeek = 0;
 
             //Different methods between Int16 and Single format. Data manipulation is done and, if no error occurred, audio data is sent to the handler in order to be used as output sound
             if (useSingle)
             {
-                Manipulator.FromPacketToAudioData(Internal_packetBuffer, ref info, Internal_dataBuffer, 0, out count);
+                Manipulator.FromPacketToAudioData(packetBuffer, ref info, dataBuffer, 0, out count);
                 if (info.ValidPacketInfo)
-                    handler.ReceiveAudioData(Internal_dataBuffer, 0, count, info);
+                    handler.ReceiveAudioData(dataBuffer, 0, count, info);
             }
             else
             {
-                Manipulator.FromPacketToAudioDataInt16(Internal_packetBuffer, ref info, Internal_dataBufferInt16, 0, out count);
+                Manipulator.FromPacketToAudioDataInt16(packetBuffer, ref info, dataBufferInt16, 0, out count);
                 if (info.ValidPacketInfo)
-                    handler.ReceiveAudioDataInt16(Internal_dataBufferInt16, 0, count, info);
+                    handler.ReceiveAudioDataInt16(dataBufferInt16, 0, count, info);
             }
         }
         /// <summary>
         /// Processes mic data from the given handler
         /// </summary>
         /// <param name="handler">handler which has available mic data</param>
-        public void ProcessMicData(VoiceHandler handler)
+        public override void ProcessMicData(VoiceHandler handler)
         {
             //If voice chat is disabled or if the given handler is not a recorder do nothing
             if (!Settings.VoiceChatEnabled || Settings.MuteSelf || !handler.IsRecorder)
@@ -148,59 +119,53 @@ namespace VOCASY.Common
             //Retrive data from handler input
             int count;
             if (useSingle)
-                info = handler.GetMicData(Internal_dataBuffer, 0, Internal_dataBuffer.Length, out count);
+                info = handler.GetMicData(dataBuffer, 0, dataBuffer.Length, out count);
             else
-                info = handler.GetMicDataInt16(Internal_dataBufferInt16, 0, Internal_dataBufferInt16.Length, out count);
+                info = handler.GetMicDataInt16(dataBufferInt16, 0, dataBufferInt16.Length, out count);
 
             //if data is valid go on
             if (info.ValidPacketInfo)
             {
                 //packet buffer used to create the final packet is prepared
-                Internal_packetBuffer.ResetSeekLength();
+                packetBuffer.ResetSeekLength();
 
                 //data recovered from input is manipulated and stored into the gamepacket
                 if (useSingle)
-                    Manipulator.FromAudioDataToPacket(Internal_dataBuffer, 0, count, ref info, Internal_packetBuffer);
+                    Manipulator.FromAudioDataToPacket(dataBuffer, 0, count, ref info, packetBuffer);
                 else
-                    Manipulator.FromAudioDataToPacketInt16(Internal_dataBufferInt16, 0, count, ref info, Internal_packetBuffer);
+                    Manipulator.FromAudioDataToPacketInt16(dataBufferInt16, 0, count, ref info, packetBuffer);
 
-                Internal_packetBuffer.CurrentSeek = 0;
+                packetBuffer.CurrentSeek = 0;
 
                 //if packet is valid send to transport
                 if (info.ValidPacketInfo)
-                    Transport.SendToAllOthers(Internal_packetBuffer, info);
+                    Transport.SendToAllOthers(packetBuffer, info);
             }
         }
         /// <summary>
-        /// Exposed for tests. Initializes workflow. If fields are not setted when this method is called the workflow will remain in an uninitialized state untill a new call to this method is made with setted fields
+        /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill a new call to this method is made with setted fields
         /// </summary>
-        public void OnEnable()
+        public override void Initialize()
         {
-            Internal_handlers = new Dictionary<ulong, VoiceHandler>();
+            handlers = new Dictionary<ulong, VoiceHandler>();
 
             if (Manipulator)
             {
-                int length = (VoiceChatSettings.MaxFrequency * VoiceChatSettings.MaxChannels) / 20;
+                int length = (Settings.MaxFrequency * Settings.MaxChannels) / 20;
 
-                if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0)
-                    Internal_dataBuffer = new float[length];
+                dataBuffer = (Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0 ? new float[length] : null;
 
-                if ((Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0)
-                    Internal_dataBufferInt16 = new byte[length * 2];
+                dataBufferInt16 = (Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0 ? new byte[length * 2] : null;
             }
 
-            if (Transport)
-                Internal_packetBuffer = new BytePacket(Transport.MaxDataLength);
+            packetBuffer = Transport ? new BytePacket(Transport.MaxDataLength) : null;
         }
-        /// <summary>
-        /// Exposed for tests. Finalizes workflow
-        /// </summary>
-        public void OnDisable()
+        void OnDisable()
         {
-            Internal_handlers = null;
-            Internal_dataBuffer = null;
-            Internal_dataBufferInt16 = null;
-            Internal_packetBuffer = null;
+            handlers = null;
+            dataBuffer = null;
+            dataBufferInt16 = null;
+            packetBuffer = null;
         }
     }
 }

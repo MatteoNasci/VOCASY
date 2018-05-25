@@ -4,12 +4,12 @@
         <name>VOCASY.Editor</name>
     </assembly>
     <members>
-        <member name="T:VOCASY.Editor.VoiceChatSettingsDrawer">
+        <member name="T:VOCASY.Editor.SettingsDrawer">
             <summary>
             Class that modifies VoiceChatSettings inspector view
             </summary>
         </member>
-        <member name="M:VOCASY.Editor.VoiceChatSettingsDrawer.OnInspectorGUI">
+        <member name="M:VOCASY.Editor.SettingsDrawer.OnInspectorGUI">
             <summary>
             Method that modifies VoiceChatSettings inspector view
             </summary>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using GENUtility;
-namespace VOCASY.Common
+namespace VOCASY
 {
     /// <summary>
     /// Class that converts audio data formats to game packet.

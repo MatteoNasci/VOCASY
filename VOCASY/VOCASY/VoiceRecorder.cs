@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace VOCASY.Common
+namespace VOCASY
 {
     /// <summary>
     /// A class that manages audio input

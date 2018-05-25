@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using GENUtility;
-using System;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -20,17 +19,14 @@ namespace VOCASY.Common
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
-        public override int MaxDataLength { get { return Internal_packetDataSize; } }
+        public override int MaxDataLength { get { return packetDataSize; } }
         /// <summary>
         /// To which id fake packets should be sent
         /// </summary>
         public ulong ReceiverId;
 
-        /// <summary>
-        /// Exposed for tests. Max payload size that can be processed
-        /// </summary>
-        [NonSerialized]
-        public int Internal_packetDataSize = pLength - FirstPacketByteAvailable;
+        [SerializeField]
+        private int packetDataSize = pLength - FirstPacketByteAvailable;
 
         /// <summary>
         /// Process packet data
@@ -65,14 +61,13 @@ namespace VOCASY.Common
         public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
         {
             //Debug.Log("packet sent to all others");
-            BytePacket toSend = new BytePacket(Internal_packetDataSize);
+            BytePacket toSend = new BytePacket(packetDataSize);
             toSend.Write(ReceiverId, 0);
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
 
-            int n;
-            toSend.Copy(data, out n);
+            int n = toSend.Copy(data);
 
             toSend.CurrentSeek = sizeof(ulong);
 
