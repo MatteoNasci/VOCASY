@@ -30,6 +30,8 @@ public class VoiceDataWorkflowTest
     FieldInfo workflowDataBuffer;
     FieldInfo workflowPacketBuffer;
 
+    #region Setup
+
     [OneTimeSetUp]
     public void SetupReflections()
     {
@@ -84,7 +86,6 @@ public class VoiceDataWorkflowTest
         handler2.Workflow = workflow;
         handler2.IsRec = false;
         handler2.ID = 2;
-
     }
     [TearDown]
     public void Teardown()
@@ -97,7 +98,21 @@ public class VoiceDataWorkflowTest
         GameObject.DestroyImmediate(go1);
         GameObject.DestroyImmediate(go2);
 
+        dataRecordedInt16 = null;
+        dataRecordedSingle = null;
+        dataReceived = null;
     }
+    [OneTimeTearDown]
+    public void TeardownReflections()
+    {
+        workflowHandlers = null;
+        workflowOnDisable = null;
+        workflowPacketBuffer = null;
+        workflowDataBufferInt16 = null;
+        workflowDataBuffer = null;
+    }
+
+    #endregion
 
     #region Workflow Init
 
@@ -425,6 +440,22 @@ public class VoiceDataWorkflowTest
 
     #region ProcessReceivedPacket
 
+    [Test]
+    public void TestProcessReceivedPacketNullArrayException()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        Assert.Throws<ArgumentNullException>(() => workflow.ProcessReceivedPacket(null, 0, dataReceived.Length, 2));
+    }
     [Test]
     public void TestProcessReceivedPacketEarlyOutChatDisabled()
     {
@@ -812,127 +843,541 @@ public class VoiceDataWorkflowTest
     #endregion
 
     #region ProcessMicData
-    /*
+
     [Test]
-    public void TestProcessMicDataEarlyOutChatDisabled()
+    public void TestProcessMicDataEarlyOutDisabledChat()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = false;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder1.Internal_maxDevFrequency = 48000;
-        recorder1.StartRecording();
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        settings.VoiceChatEnabled = false;
         workflow.ProcessMicData(handler1);
-        Assert.That(transport.SentPacketPayloadSize, Is.EqualTo(0));
+        Assert.That(handler1.GetDataInt16, Is.False);
     }
     [Test]
-    public void TestProcessMicDataEarlyOutChatDisabled2()
+    public void TestProcessMicDataEarlyOutDisabledChat2()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = false;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder1.Internal_maxDevFrequency = 48000;
-        recorder1.StartRecording();
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        settings.VoiceChatEnabled = false;
         workflow.ProcessMicData(handler1);
-        Assert.That(manipulator.UsedInt16, Is.False);
+        Assert.That(handler1.GetDataSingle, Is.False);
     }
     [Test]
-    public void TestProcessMicDataEarlyOutChatDisabled3()
+    public void TestProcessMicDataEarlyOutInputMuted()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = false;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder1.Internal_maxDevFrequency = 48000;
-        recorder1.StartRecording();
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        settings.MuteSelf = true;
         workflow.ProcessMicData(handler1);
-        Assert.That(manipulator.UsedSingle, Is.False);
+        Assert.That(handler1.GetDataInt16, Is.False);
     }
     [Test]
-    public void TestProcessMicDataEarlyOutMuteSelf()
+    public void TestProcessMicDataEarlyOutInputMuted2()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_muteSelf = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
-        workflow.ProcessMicData(handler2);
-        Assert.That(transport.SentPacketPayloadSize, Is.EqualTo(0));
-    }
-    [Test]
-    public void TestProcessMicDataEarlyOutMuteSelf2()
-    {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_muteSelf = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
-        workflow.ProcessMicData(handler2);
-        Assert.That(manipulator.UsedInt16, Is.False);
-    }
-    [Test]
-    public void TestProcessMicDataEarlyOutMuteSelf3()
-    {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_muteSelf = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
-        workflow.ProcessMicData(handler2);
-        Assert.That(manipulator.UsedSingle, Is.False);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        settings.MuteSelf = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(handler1.GetDataSingle, Is.False);
     }
     [Test]
     public void TestProcessMicDataEarlyOutNotRecorder()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler2);
-        Assert.That(transport.SentPacketPayloadSize, Is.EqualTo(0));
+        Assert.That(handler2.GetDataSingle, Is.False);
     }
     [Test]
     public void TestProcessMicDataEarlyOutNotRecorder2()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler2);
-        Assert.That(manipulator.UsedInt16, Is.False);
+        Assert.That(handler2.GetDataInt16, Is.False);
     }
     [Test]
-    public void TestProcessMicDataEarlyOutNotRecorder3()
+    public void TestProcessMicDataArgExceptionIncompatibleFormats()
     {
-        handler1.Internal_InitUpdate();
-        handler2.Internal_InitUpdate();
-        settings.Internal_voiceChatEnabled = true;
-        settings.Internal_microphoneDevice = null;
-        settings.Internal_audioQuality = FrequencyType.BestQuality;
-        recorder2.Internal_maxDevFrequency = 48000;
-        recorder2.StartRecording();
-        workflow.ProcessMicData(handler2);
-        Assert.That(manipulator.UsedSingle, Is.False);
-    }*/
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        handler1.Flag = AudioDataTypeFlag.None;
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
+    }
+    [Test]
+    public void TestProcessMicDataArgExceptionIncompatibleFormats2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        manipulator.Flag = AudioDataTypeFlag.None;
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
+    }
+    [Test]
+    public void TestProcessMicDataArgExceptionIncompatibleFormats3()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Int16;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        handler1.Flag = AudioDataTypeFlag.Single;
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
+    }
+    [Test]
+    public void TestProcessMicDataArgExceptionIncompatibleFormats4()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Single;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        handler1.Flag = AudioDataTypeFlag.Int16;
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
+    }
+    [Test]
+    public void TestProcessMicDataGetData()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        workflow.ProcessMicData(handler1);
+        Assert.That(handler1.GetDataInt16, Is.True);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        workflow.ProcessMicData(handler1);
+        Assert.That(handler1.GetDataSingle, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetData2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        workflow.ProcessMicData(handler1);
+        Assert.That(handler1.GetDataSingle, Is.True);
+    }
+    [Test]
+    public void TestProcessMicDataGetData2RedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        workflow.ProcessMicData(handler1);
+        Assert.That(handler1.GetDataInt16, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataInvalidPacketEarlyOut()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = false;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacketInt16, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataInvalidPacketEarlyOutRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = false;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacket, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulated()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacketInt16, Is.True);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulatedRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacket, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulated2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacketInt16, Is.False);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulatedRedLight2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(manipulator.FromAudioToPacket, Is.True);
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulatedInvalidPacket()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        manipulator.UseInfo = true;
+        manipulator.Info.ValidPacketInfo = false;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSent, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataGetDataManipulatedInvalidPacketRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        manipulator.UseInfo = true;
+        manipulator.Info.ValidPacketInfo = false;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccess()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSent, Is.Not.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccessRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccess2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Int16;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSent, Is.Not.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccessRedLight2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Int16;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccess3()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Single;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSent, Is.Not.EqualTo(0));
+    }
+    [Test]
+    public void TestProcessMicDataSuccessRedLight3()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Single;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Single;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        transport.Info.Channels = 1;
+        transport.Info.Format = AudioDataTypeFlag.Int16;
+        transport.Info.Frequency = 48000;
+        transport.Info.NetId = 2;
+        transport.Info.ValidPacketInfo = true;
+        handler1.DataRec = dataRecordedSingle;
+        handler1.DataRecInt16 = dataRecordedInt16;
+        handler1.Info.ValidPacketInfo = true;
+        workflow.ProcessMicData(handler1);
+        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+    }
 
     #endregion
 }

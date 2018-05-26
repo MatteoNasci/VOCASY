@@ -20,11 +20,11 @@ public class SupportTransport : VoiceDataTransport
 
     public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
     {
-        DataSent = data.CurrentLength;
+        DataSentTo = data.CurrentLength;
     }
 
     public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
     {
-        DataSentTo = data.CurrentLength;
+        DataSent = data.CurrentLength;
     }
 }
