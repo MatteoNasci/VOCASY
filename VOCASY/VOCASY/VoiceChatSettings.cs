@@ -133,7 +133,7 @@ namespace VOCASY
             get { return audioQuality; }
             set
             {
-                FrequencyType newF = (FrequencyType)Mathf.Clamp((int)value, MinFrequency, MaxFrequency);
+                FrequencyType newF = (FrequencyType)Mathf.Clamp((ushort)value, MinFrequency, MaxFrequency);
                 if (audioQuality != newF)
                 {
                     FrequencyType prev = audioQuality;
@@ -151,6 +151,9 @@ namespace VOCASY
             get { return microphoneDevice; }
             set
             {
+                if (value == null)
+                    value = string.Empty;
+
                 if (!value.Equals(microphoneDevice))
                 {
                     string prev = microphoneDevice;
@@ -179,7 +182,7 @@ namespace VOCASY
         /// <summary>
         /// Determines volume of voice chat data received from network
         /// </summary>
-        public float VoiceChatVolume { get { return voiceChatVolume; } set { voiceChatVolume = value; } }
+        public float VoiceChatVolume { get { return voiceChatVolume; } set { voiceChatVolume = Mathf.Clamp01(value); } }
 
         /// <summary>
         /// Event called whenever push to talk mode has been changed

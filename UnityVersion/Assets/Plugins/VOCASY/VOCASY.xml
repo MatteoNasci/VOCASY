@@ -170,7 +170,7 @@
             Header size
             </summary>
         </member>
-        <member name="F:VOCASY.Common.SelfDataTransport.pLength">
+        <member name="F:VOCASY.Common.SelfDataTransport.PLength">
             <summary>
             Max final packet length
             </summary>
@@ -205,7 +205,7 @@
         </member>
         <member name="M:VOCASY.Common.SelfDataTransport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
             <summary>
-            Performs a normal SendToAllOthers
+            Performs a normal SendToAllOthers to the given id
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
@@ -326,6 +326,11 @@
             Class that manages the workflow of audio data from input to output
             </summary>
         </member>
+        <member name="P:VOCASY.Common.Workflow.FormatToUse">
+            <summary>
+            Format to use. This is only a preference and will only be followed when more than 1 format is available for use in the current setup. It can only refer to a single format
+            </summary>
+        </member>
         <member name="M:VOCASY.Common.Workflow.AddVoiceHandler(VOCASY.VoiceHandler)">
             <summary>
             Adds the handler. Handler should already be initialized before calling this method
@@ -355,7 +360,7 @@
         </member>
         <member name="M:VOCASY.Common.Workflow.Initialize">
             <summary>
-            Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill a new call to this method is made with setted fields
+            Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill it is re-initialized
             </summary>
         </member>
         <member name="T:VOCASY.Common.VoidManipulator">

@@ -14,6 +14,8 @@ public class SupportHandler : VoiceHandler
     public VoicePacketInfo Info;
     public float[] DataRec;
     public byte[] DataRecInt16;
+    public float[] ReceivedData;
+    public byte[] ReceivedDataInt16;
     public override bool IsRecorder { get { return IsRec; } }
     public AudioDataTypeFlag Flag { get { return this.AvailableTypes; } set { this.AvailableTypes = value; } }
 
@@ -37,11 +39,15 @@ public class SupportHandler : VoiceHandler
 
     public override void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
     {
+        ReceivedData = new float[audioDataCount];
+        ByteManipulator.Write(audioData, audioDataOffset, ReceivedData, 0, audioDataCount);
         ReceiveDataSingle = true;
     }
 
     public override void ReceiveAudioDataInt16(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
     {
+        ReceivedDataInt16 = new byte[audioDataCount];
+        ByteManipulator.Write(audioData, audioDataOffset, ReceivedDataInt16, 0, audioDataCount);
         ReceiveDataInt16 = true;
     }
 }

@@ -10,6 +10,21 @@ namespace VOCASY.Common
     [CreateAssetMenu(fileName = "VoiceManager", menuName = "VOCASY/Workflow")]
     public class Workflow : VoiceDataWorkflow
     {
+        /// <summary>
+        /// Format to use. This is only a preference and will only be followed when more than 1 format is available for use in the current setup. It can only refer to a single format
+        /// </summary>
+        public AudioDataTypeFlag FormatToUse
+        {
+            get { return formatToUse; }
+            set
+            {
+                if (value == AudioDataTypeFlag.None || value == AudioDataTypeFlag.Both)
+                    return;
+                formatToUse = value;
+            }
+        }
+        private AudioDataTypeFlag formatToUse = AudioDataTypeFlag.Int16;
+
         private Dictionary<ulong, VoiceHandler> handlers;
 
         private float[] dataBuffer;
@@ -75,8 +90,11 @@ namespace VOCASY.Common
             if (res == AudioDataTypeFlag.None)
                 throw new ArgumentException("the given handler type is incompatible with the current audio data manipulator and the received packet format");
 
-            //determine which data format to use. Gives priority to Int16 format
-            bool useSingle = (res & AudioDataTypeFlag.Int16) == 0;
+            //determine which data format to use.
+            if (res == AudioDataTypeFlag.Both)
+                res = formatToUse;
+
+            bool useSingle = res == AudioDataTypeFlag.Single;
 
             int count;
             //packet received Seek to zero to prepare for data manipulation
@@ -113,8 +131,11 @@ namespace VOCASY.Common
 
             VoicePacketInfo info;
 
-            //determine which data format to use. Gives priority to Int16 format
-            bool useSingle = (res & AudioDataTypeFlag.Int16) == 0;
+            //determine which data format to use.
+            if (res == AudioDataTypeFlag.Both)
+                res = formatToUse;
+
+            bool useSingle = res == AudioDataTypeFlag.Single;
 
             //Retrive data from handler input
             int count;
@@ -143,7 +164,7 @@ namespace VOCASY.Common
             }
         }
         /// <summary>
-        /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill a new call to this method is made with setted fields
+        /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill it is re-initialized
         /// </summary>
         public override void Initialize()
         {
@@ -156,6 +177,11 @@ namespace VOCASY.Common
                 dataBuffer = (Manipulator.AvailableTypes & AudioDataTypeFlag.Single) != 0 ? new float[length] : null;
 
                 dataBufferInt16 = (Manipulator.AvailableTypes & AudioDataTypeFlag.Int16) != 0 ? new byte[length * 2] : null;
+            }
+            else
+            {
+                dataBuffer = null;
+                dataBufferInt16 = null;
             }
 
             packetBuffer = Transport ? new BytePacket(Transport.MaxDataLength) : null;

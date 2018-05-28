@@ -8,6 +8,7 @@ public class SupportTransport : VoiceDataTransport
     public int DataReceived;
     public int MaxDataL = 1024;
     public VoicePacketInfo Info;
+    public byte[] SentArray;
     public override int MaxDataLength { get { return MaxDataL; } }
 
     public override VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
@@ -20,11 +21,15 @@ public class SupportTransport : VoiceDataTransport
 
     public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
     {
+        SentArray = new byte[data.Data.Length];
+        ByteManipulator.Write<byte>(data.Data, 0, SentArray, 0, SentArray.Length);
         DataSentTo = data.CurrentLength;
     }
 
     public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
     {
+        SentArray = new byte[data.Data.Length];
+        ByteManipulator.Write<byte>(data.Data, 0, SentArray, 0, SentArray.Length);
         DataSent = data.CurrentLength;
     }
 }
