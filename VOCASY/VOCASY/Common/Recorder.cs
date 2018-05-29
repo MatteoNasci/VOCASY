@@ -69,7 +69,7 @@ namespace VOCASY.Common
             if (effectiveDataCount <= 0)
                 return VoicePacketInfo.InvalidPacket;
 
-            ByteManipulator.WriteFromCycle(this.cyclicAudioBuffer, readIndex, buffer, bufferOffset, dataCount, out readIndex);
+            readIndex = ByteManipulator.WriteFromCycle(this.cyclicAudioBuffer, readIndex, buffer, bufferOffset, dataCount);
 
             return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Single);
         }

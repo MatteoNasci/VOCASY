@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
+using System;
 namespace VOCASY
 {
     /// <summary>
@@ -45,6 +46,9 @@ namespace VOCASY
             get { return folderName; }
             set
             {
+                if (value == null)
+                    throw new NullReferenceException("Folder name cannot be null");
+
                 if (!value.Equals(folderName))
                 {
                     if (File.Exists(SavedCustomValuesPath))
@@ -68,6 +72,9 @@ namespace VOCASY
             get { return settingsFileName; }
             set
             {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentException("Settings file name cannot be null or empty string");
+
                 if (!value.Equals(settingsFileName))
                 {
                     if (File.Exists(SavedCustomValuesPath))

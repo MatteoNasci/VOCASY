@@ -1,10 +1,10 @@
 ﻿using VOCASY;
 public class SupportSettings : VoiceChatSettings
 {
-    public ushort MinF;
-    public ushort MaxF;
-    public byte MinC;
-    public byte MaxC;
+    public ushort MinF = 12000;
+    public ushort MaxF = 48000;
+    public byte MinC = 1;
+    public byte MaxC = 2;
     public bool RestoreSettings = false;
     public bool SaveSettings = false;
     public override ushort MinFrequency { get { return MinF; } }

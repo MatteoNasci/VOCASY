@@ -120,12 +120,12 @@ public class SettingsTest
     [Test]
     public void TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException()
     {
-        Assert.Throws<UnauthorizedAccessException>(() => settings.SettingsFileName = "");
+        Assert.Throws<ArgumentException>(() => settings.SettingsFileName = "");
     }
     [Test]
     public void TestChangeFileNameNullStringNullReferenceException()
     {
-        Assert.Throws<NullReferenceException>(() => settings.SettingsFileName = null);
+        Assert.Throws<ArgumentException>(() => settings.SettingsFileName = null);
     }
     [Test]
     public void TestChangeFileNameFileCreated()

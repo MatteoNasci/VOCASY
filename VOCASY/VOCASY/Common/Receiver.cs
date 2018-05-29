@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GENUtility;
+using System;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -55,7 +56,7 @@ namespace VOCASY.Common
 
             //operations to convert the given audio data stored at tot frequency and tot channels into audio data with Frequency and Channels compatible with output source, inserting results into internal cyclic buffer
             float frequencyPerc = OutputBaseFrequencyInverse * info.Frequency;
-            float channelsPerc = OutputBaseChannels / info.Channels;
+            float channelsPerc = OutputBaseChannels / (float)info.Channels;
 
             int bufferLength = cyclicAudioBuffer.Length;
             float index = writeIndex;
@@ -94,13 +95,13 @@ namespace VOCASY.Common
             //if given audio data is already configured the same as the output source copy elements directly into internal cyclic buffer
             if (info.Frequency == OutputBaseFrequency && info.Channels == OutputBaseChannels)
             {
-                ByteManipulator.WriteToCycle(audioData, audioDataOffset, cyclicAudioBuffer, writeIndex, audioDataCount, out writeIndex);
+                writeIndex = ByteManipulator.WriteToCycle(audioData, audioDataOffset, cyclicAudioBuffer, writeIndex, audioDataCount);
                 return;
             }
 
             //operations to convert the given audio data stored at tot frequency and tot channels into audio data with Frequency and Channels compatible with output source, inserting results into internal cyclic buffer
             float frequencyPerc = OutputBaseFrequencyInverse * info.Frequency;
-            float channelsPerc = OutputBaseChannels / info.Channels;
+            float channelsPerc = OutputBaseChannels / (float)info.Channels;
 
             int bufferLength = cyclicAudioBuffer.Length;
             float index = writeIndex;
@@ -129,14 +130,18 @@ namespace VOCASY.Common
                 return;
 
             //supply data to the audiosource
-            ByteManipulator.WriteFromCycle(cyclicAudioBuffer, readIndex, data, 0, count, out readIndex);
+            readIndex = ByteManipulator.WriteFromCycle(cyclicAudioBuffer, readIndex, data, 0, count);
         }
 
 
         private void OnEnable()
         {
-            if(!source)
-                source = GetComponent<AudioSource>();
+            if (!source)
+            {
+                source = this.GetComponent<AudioSource>();
+                if (!source)
+                    throw new NullReferenceException("Receiver component requires an audiosource attached to the same gameobject");
+            }
 
             source.enabled = true;
             source.Play();

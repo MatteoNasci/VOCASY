@@ -526,7 +526,7 @@
             Byte size in bits. Value = 8
             </summary>
         </member>
-        <member name="M:GENUtility.ByteManipulator.WriteFromCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32,System.Int32@)">
+        <member name="M:GENUtility.ByteManipulator.WriteFromCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32)">
             <summary>
             Writes the given values into the output array. The read of a number of elements superior to the cyclic buffer total length is not supported
             </summary>
@@ -536,9 +536,9 @@
             <param name="output">output array to write</param>
             <param name="outputStartIndex">output start index</param>
             <param name="count">amount of elements to write</param>
-            <param name="bufferNewOffset">new buffer start index</param>
+            <returns>new buffer start index</returns>
         </member>
-        <member name="M:GENUtility.ByteManipulator.WriteToCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32,System.Int32@)">
+        <member name="M:GENUtility.ByteManipulator.WriteToCycle``1(``0[],System.Int32,``0[],System.Int32,System.Int32)">
             <summary>
             Writes the given values into the output array. The write of a number of elements superior to the cyclic buffer total length is not supported
             </summary>
@@ -548,7 +548,7 @@
             <param name="cyclicOutput">output array to write, it is considered a cyclic array</param>
             <param name="outputStartIndex">output start index</param>
             <param name="count">amount of elements to write</param>
-            <param name="outputNewOffset">new output start index</param>
+            <returns>new output start index</returns>
         </member>
         <member name="M:GENUtility.ByteManipulator.Write``1(``0[],System.Int32,``0[],System.Int32,System.Int32)">
             <summary>
