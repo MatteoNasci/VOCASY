@@ -6,28 +6,28 @@ using UnityEngine;
 using VOCASY;
 public class SupportWorkflow : VoiceDataWorkflow
 {
+    public byte[] receivedData;
+    public ulong receivedID;
     public override void AddVoiceHandler(VoiceHandler handler)
     {
-        throw new NotImplementedException();
     }
 
     public override void Initialize()
     {
-        throw new NotImplementedException();
     }
 
     public override void ProcessMicData(VoiceHandler handler)
     {
-        throw new NotImplementedException();
     }
 
     public override void ProcessReceivedPacket(byte[] receivedData, int startIndex, int length, ulong netId)
     {
-        throw new NotImplementedException();
+        this.receivedData = new byte[length];
+        Array.Copy(receivedData, startIndex, this.receivedData, 0, length);
+        this.receivedID = netId;
     }
 
     public override void RemoveVoiceHandler(VoiceHandler handler)
     {
-        throw new NotImplementedException();
     }
 }

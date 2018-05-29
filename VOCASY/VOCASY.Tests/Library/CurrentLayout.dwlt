@@ -106,10 +106,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 731
-  m_MinSize: {x: 885, y: 342}
-  m_MaxSize: {x: 16010, y: 8042}
+  m_MinSize: {x: 887, y: 342}
+  m_MaxSize: {x: 16012, y: 8042}
   vertical: 0
-  controlID: 144
+  controlID: 159
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -177,8 +177,8 @@ MonoBehaviour:
     y: 0
     width: 298
     height: 382
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -229,8 +229,8 @@ MonoBehaviour:
     y: 0
     width: 325
     height: 382
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 204, y: 221}
+  m_MaxSize: {x: 4004, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -284,8 +284,8 @@ MonoBehaviour:
     y: 0
     width: 604
     height: 731
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
@@ -517,9 +517,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: b243feff
-    m_LastClickedID: -113742
-    m_ExpandedIDs: b243feff7c5afeff167bfeffde7efeff3482feff8a87feff988cfeff9890feffae94feffae98feffd0a8feffc6aefeff24b2feff24c2feff8cc8feffa6d7feff70dffeff8ae5feffe0f3feff0afbfeff1afefeff8e01ffff2208ffffb41affff2222ffff662afffffa4bffff386bffffd684ffffbc8dffff0ab1ffff72ccffff80cfffffa6d5ffffdaf3ffff96fbffff00000000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 10e3feff64f2feffd600ffff1810ffff1442ffffa851ffff9055fffff25affffb65fffffb870ffffde73ffff2e75ffff6ea6ffffc6a8ffff0aaefffffcb2ffffd6b7ffffc4beffffe8cbffff48d1ffff6ed8ffff24f8ffff94fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -537,8 +537,7 @@ MonoBehaviour:
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 8}
     m_SearchString: 
-  m_ExpandedScenes:
-  - test
+  m_ExpandedScenes: []
   m_CurrenRootInstanceID: 0
   m_Locked: 0
   m_CurrentSortingName: TransformSorting
@@ -739,7 +738,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 26270000
     m_LastClickedID: 10022
-    m_ExpandedIDs: 00000000b8290000e6290000ea290000f62900002c2a0000
+    m_ExpandedIDs: 00000000d2290000002a0000042a0000102a0000442a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -767,7 +766,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b8290000e6290000ea290000f62900002c2a0000
+    m_ExpandedIDs: 00000000d2290000002a0000042a0000102a0000442a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -996,7 +995,7 @@ MonoBehaviour:
       name: Assembly-CSharp-Editor.dll
       fullName: D:/GitProjects/Self/VOCASY/VOCASY/VOCASY.Tests/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
       resultStatus: 1
-      duration: 14.456704
+      duration: 26.653715
       messages: 
       output: 
       stacktrace: 
@@ -1008,7 +1007,7 @@ MonoBehaviour:
       name: HandlerTest
       fullName: HandlerTest
       resultStatus: 1
-      duration: 0.0023949
+      duration: 0.0010619
       messages: 
       output: 
       stacktrace: 
@@ -1020,7 +1019,7 @@ MonoBehaviour:
       name: ReceiverTest
       fullName: ReceiverTest
       resultStatus: 1
-      duration: 0.0001778
+      duration: 0.0001051
       messages: 
       output: 
       stacktrace: 
@@ -1032,7 +1031,7 @@ MonoBehaviour:
       name: RecorderTest
       fullName: RecorderTest
       resultStatus: 1
-      duration: 0.0001766
+      duration: 0.000075
       messages: 
       output: 
       stacktrace: 
@@ -1044,7 +1043,7 @@ MonoBehaviour:
       name: SelfDataTransportTest
       fullName: SelfDataTransportTest
       resultStatus: 1
-      duration: 0.0806031
+      duration: 1.7640756
       messages: 
       output: 
       stacktrace: 
@@ -1056,7 +1055,679 @@ MonoBehaviour:
       name: TestPacketPayloadMaxSize
       fullName: SelfDataTransportTest.TestPacketPayloadMaxSize
       resultStatus: 1
-      duration: 0.0550118
+      duration: 0.0233173
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataChann]'
+      name: TestProcessReceivedDataChann
+      fullName: SelfDataTransportTest.TestProcessReceivedDataChann
+      resultStatus: 1
+      duration: 0.0189317
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataChannRedLight]'
+      name: TestProcessReceivedDataChannRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataChannRedLight
+      resultStatus: 1
+      duration: 0.0175198
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataFormat]'
+      name: TestProcessReceivedDataFormat
+      fullName: SelfDataTransportTest.TestProcessReceivedDataFormat
+      resultStatus: 1
+      duration: 0.0154619
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataFormatRedLight]'
+      name: TestProcessReceivedDataFormatRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataFormatRedLight
+      resultStatus: 1
+      duration: 0.0199585
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataFreq]'
+      name: TestProcessReceivedDataFreq
+      fullName: SelfDataTransportTest.TestProcessReceivedDataFreq
+      resultStatus: 1
+      duration: 0.0183774
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataFreqRedLight]'
+      name: TestProcessReceivedDataFreqRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataFreqRedLight
+      resultStatus: 1
+      duration: 0.0152087
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataId]'
+      name: TestProcessReceivedDataId
+      fullName: SelfDataTransportTest.TestProcessReceivedDataId
+      resultStatus: 1
+      duration: 0.0198748
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataIdRedLight]'
+      name: TestProcessReceivedDataIdRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataIdRedLight
+      resultStatus: 1
+      duration: 0.0181005
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataLength]'
+      name: TestProcessReceivedDataLength
+      fullName: SelfDataTransportTest.TestProcessReceivedDataLength
+      resultStatus: 1
+      duration: 0.0179958
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataLengthRedLight]'
+      name: TestProcessReceivedDataLengthRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataLengthRedLight
+      resultStatus: 1
+      duration: 0.019729
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity]'
+      name: TestProcessReceivedDataPayloadIntegrity
+      fullName: SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity
+      resultStatus: 1
+      duration: 0.0168818
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity2]'
+      name: TestProcessReceivedDataPayloadIntegrity2
+      fullName: SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity2
+      resultStatus: 1
+      duration: 0.0203204
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity2RedLight]'
+      name: TestProcessReceivedDataPayloadIntegrity2RedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrity2RedLight
+      resultStatus: 1
+      duration: 0.0186769
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrityRedLight]'
+      name: TestProcessReceivedDataPayloadIntegrityRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataPayloadIntegrityRedLight
+      resultStatus: 1
+      duration: 0.0211374
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataValidPacket]'
+      name: TestProcessReceivedDataValidPacket
+      fullName: SelfDataTransportTest.TestProcessReceivedDataValidPacket
+      resultStatus: 1
+      duration: 0.0189025
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestProcessReceivedDataValidPacketRedLight]'
+      name: TestProcessReceivedDataValidPacketRedLight
+      fullName: SelfDataTransportTest.TestProcessReceivedDataValidPacketRedLight
+      resultStatus: 1
+      duration: 0.0189365
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectChannels]'
+      name: TestSendToAllOthersCorrectChannels
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectChannels
+      resultStatus: 1
+      duration: 0.0191044
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectChannelsRedLight]'
+      name: TestSendToAllOthersCorrectChannelsRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectChannelsRedLight
+      resultStatus: 1
+      duration: 0.0170599
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectFormat]'
+      name: TestSendToAllOthersCorrectFormat
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectFormat
+      resultStatus: 1
+      duration: 0.0177911
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectFormatRedLight]'
+      name: TestSendToAllOthersCorrectFormatRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectFormatRedLight
+      resultStatus: 1
+      duration: 0.0187014
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectFrequency]'
+      name: TestSendToAllOthersCorrectFrequency
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectFrequency
+      resultStatus: 1
+      duration: 0.019618
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectFrequencyRedLight]'
+      name: TestSendToAllOthersCorrectFrequencyRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectFrequencyRedLight
+      resultStatus: 1
+      duration: 0.0179804
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectId]'
+      name: TestSendToAllOthersCorrectId
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectId
+      resultStatus: 1
+      duration: 0.0177816
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectIdRedLight]'
+      name: TestSendToAllOthersCorrectIdRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectIdRedLight
+      resultStatus: 1
+      duration: 0.018597
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData]'
+      name: TestSendToAllOthersCorrectPayloadData
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData
+      resultStatus: 1
+      duration: 0.0182953
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData2]'
+      name: TestSendToAllOthersCorrectPayloadData2
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData2
+      resultStatus: 1
+      duration: 0.0218769
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData2RedLight]'
+      name: TestSendToAllOthersCorrectPayloadData2RedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData2RedLight
+      resultStatus: 1
+      duration: 0.0187737
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData3]'
+      name: TestSendToAllOthersCorrectPayloadData3
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData3
+      resultStatus: 1
+      duration: 0.0186765
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData3RedLight]'
+      name: TestSendToAllOthersCorrectPayloadData3RedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData3RedLight
+      resultStatus: 1
+      duration: 0.0167529
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData4]'
+      name: TestSendToAllOthersCorrectPayloadData4
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData4
+      resultStatus: 1
+      duration: 0.0264336
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData4RedLight]'
+      name: TestSendToAllOthersCorrectPayloadData4RedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData4RedLight
+      resultStatus: 1
+      duration: 0.0179286
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData5]'
+      name: TestSendToAllOthersCorrectPayloadData5
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData5
+      resultStatus: 1
+      duration: 0.0196764
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData5RedLight]'
+      name: TestSendToAllOthersCorrectPayloadData5RedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadData5RedLight
+      resultStatus: 1
+      duration: 0.01897
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadDataRedLight]'
+      name: TestSendToAllOthersCorrectPayloadDataRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadDataRedLight
+      resultStatus: 1
+      duration: 0.0204709
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadLength]'
+      name: TestSendToAllOthersCorrectPayloadLength
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadLength
+      resultStatus: 1
+      duration: 0.0205404
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToAllOthersCorrectPayloadLengthRedLight]'
+      name: TestSendToAllOthersCorrectPayloadLengthRedLight
+      fullName: SelfDataTransportTest.TestSendToAllOthersCorrectPayloadLengthRedLight
+      resultStatus: 1
+      duration: 0.0186659
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectChannels]'
+      name: TestSendToCorrectChannels
+      fullName: SelfDataTransportTest.TestSendToCorrectChannels
+      resultStatus: 1
+      duration: 0.0200498
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectChannelsRedLight]'
+      name: TestSendToCorrectChannelsRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectChannelsRedLight
+      resultStatus: 1
+      duration: 0.0192825
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectFormat]'
+      name: TestSendToCorrectFormat
+      fullName: SelfDataTransportTest.TestSendToCorrectFormat
+      resultStatus: 1
+      duration: 0.0186635
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectFormatRedLight]'
+      name: TestSendToCorrectFormatRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectFormatRedLight
+      resultStatus: 1
+      duration: 0.016572
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectFrequency]'
+      name: TestSendToCorrectFrequency
+      fullName: SelfDataTransportTest.TestSendToCorrectFrequency
+      resultStatus: 1
+      duration: 0.0187899
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectFrequencyRedLight]'
+      name: TestSendToCorrectFrequencyRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectFrequencyRedLight
+      resultStatus: 1
+      duration: 0.0167229
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectId]'
+      name: TestSendToCorrectId
+      fullName: SelfDataTransportTest.TestSendToCorrectId
+      resultStatus: 1
+      duration: 0.017882
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectIdRedLight]'
+      name: TestSendToCorrectIdRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectIdRedLight
+      resultStatus: 1
+      duration: 0.0174617
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData]'
+      name: TestSendToCorrectPayloadData
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData
+      resultStatus: 1
+      duration: 0.0180748
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData2]'
+      name: TestSendToCorrectPayloadData2
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData2
+      resultStatus: 1
+      duration: 0.0193315
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData2RedLight]'
+      name: TestSendToCorrectPayloadData2RedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData2RedLight
+      resultStatus: 1
+      duration: 0.0187428
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData3]'
+      name: TestSendToCorrectPayloadData3
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData3
+      resultStatus: 1
+      duration: 0.0178856
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData3RedLight]'
+      name: TestSendToCorrectPayloadData3RedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData3RedLight
+      resultStatus: 1
+      duration: 0.0189941
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData4]'
+      name: TestSendToCorrectPayloadData4
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData4
+      resultStatus: 1
+      duration: 0.0204969
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData4RedLight]'
+      name: TestSendToCorrectPayloadData4RedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData4RedLight
+      resultStatus: 1
+      duration: 0.0159131
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData5]'
+      name: TestSendToCorrectPayloadData5
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData5
+      resultStatus: 1
+      duration: 0.0173878
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadData5RedLight]'
+      name: TestSendToCorrectPayloadData5RedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadData5RedLight
+      resultStatus: 1
+      duration: 0.0180191
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadDataRedLight]'
+      name: TestSendToCorrectPayloadDataRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadDataRedLight
+      resultStatus: 1
+      duration: 0.0179393
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadLength]'
+      name: TestSendToCorrectPayloadLength
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadLength
+      resultStatus: 1
+      duration: 0.016252
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][SelfDataTransportTest.TestSendToCorrectPayloadLengthRedLight]'
+      name: TestSendToCorrectPayloadLengthRedLight
+      fullName: SelfDataTransportTest.TestSendToCorrectPayloadLengthRedLight
+      resultStatus: 1
+      duration: 0.01705
       messages: 
       output: 
       stacktrace: 
@@ -1068,7 +1739,7 @@ MonoBehaviour:
       name: SettingsTest
       fullName: SettingsTest
       resultStatus: 1
-      duration: 2.961047
+      duration: 1.9557745
       messages: 
       output: 
       stacktrace: 
@@ -1080,7 +1751,7 @@ MonoBehaviour:
       name: TestChangeFileName
       fullName: SettingsTest.TestChangeFileName
       resultStatus: 1
-      duration: 0.0533735
+      duration: 0.0217869
       messages: 
       output: 
       stacktrace: 
@@ -1092,7 +1763,7 @@ MonoBehaviour:
       name: TestChangeFileName2
       fullName: SettingsTest.TestChangeFileName2
       resultStatus: 1
-      duration: 0.0368034
+      duration: 0.0213487
       messages: 
       output: 
       stacktrace: 
@@ -1104,7 +1775,7 @@ MonoBehaviour:
       name: TestChangeFileNameDeletePrevFile
       fullName: SettingsTest.TestChangeFileNameDeletePrevFile
       resultStatus: 1
-      duration: 0.0423556
+      duration: 0.0234698
       messages: 
       output: 
       stacktrace: 
@@ -1116,7 +1787,7 @@ MonoBehaviour:
       name: TestChangeFileNameEmptyStringWithExtension
       fullName: SettingsTest.TestChangeFileNameEmptyStringWithExtension
       resultStatus: 1
-      duration: 0.0404321
+      duration: 0.0203322
       messages: 
       output: 
       stacktrace: 
@@ -1128,7 +1799,7 @@ MonoBehaviour:
       name: TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException
       fullName: SettingsTest.TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException
       resultStatus: 1
-      duration: 0.0421759
+      duration: 0.0213369
       messages: 
       output: 
       stacktrace: 
@@ -1140,7 +1811,7 @@ MonoBehaviour:
       name: TestChangeFileNameFileCreated
       fullName: SettingsTest.TestChangeFileNameFileCreated
       resultStatus: 1
-      duration: 0.0235358
+      duration: 0.0205475
       messages: 
       output: 
       stacktrace: 
@@ -1152,7 +1823,7 @@ MonoBehaviour:
       name: TestChangeFileNameNullStringNullReferenceException
       fullName: SettingsTest.TestChangeFileNameNullStringNullReferenceException
       resultStatus: 1
-      duration: 0.0312774
+      duration: 0.0192323
       messages: 
       output: 
       stacktrace: 
@@ -1164,7 +1835,7 @@ MonoBehaviour:
       name: TestChangeFolderName
       fullName: SettingsTest.TestChangeFolderName
       resultStatus: 1
-      duration: 0.02496
+      duration: 0.0210587
       messages: 
       output: 
       stacktrace: 
@@ -1176,7 +1847,7 @@ MonoBehaviour:
       name: TestChangeFolderName2
       fullName: SettingsTest.TestChangeFolderName2
       resultStatus: 1
-      duration: 0.0342032
+      duration: 0.0200604
       messages: 
       output: 
       stacktrace: 
@@ -1188,7 +1859,7 @@ MonoBehaviour:
       name: TestChangeFolderNameDeletePrevFile
       fullName: SettingsTest.TestChangeFolderNameDeletePrevFile
       resultStatus: 1
-      duration: 0.0332183
+      duration: 0.0229985
       messages: 
       output: 
       stacktrace: 
@@ -1200,7 +1871,7 @@ MonoBehaviour:
       name: TestChangeFolderNameEmptyString
       fullName: SettingsTest.TestChangeFolderNameEmptyString
       resultStatus: 1
-      duration: 0.0407126
+      duration: 0.0195093
       messages: 
       output: 
       stacktrace: 
@@ -1212,7 +1883,7 @@ MonoBehaviour:
       name: TestChangeFolderNameFileCreated
       fullName: SettingsTest.TestChangeFolderNameFileCreated
       resultStatus: 1
-      duration: 0.0363009
+      duration: 0.0199292
       messages: 
       output: 
       stacktrace: 
@@ -1224,7 +1895,7 @@ MonoBehaviour:
       name: TestChangeFolderNameNullStringNullReferenceException
       fullName: SettingsTest.TestChangeFolderNameNullStringNullReferenceException
       resultStatus: 1
-      duration: 0.0319303
+      duration: 0.0189823
       messages: 
       output: 
       stacktrace: 
@@ -1236,7 +1907,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQuality
       fullName: SettingsTest.TestChangeValueAudioQuality
       resultStatus: 1
-      duration: 0.0335837
+      duration: 0.0213036
       messages: 
       output: 
       stacktrace: 
@@ -1248,7 +1919,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQuality2
       fullName: SettingsTest.TestChangeValueAudioQuality2
       resultStatus: 1
-      duration: 0.028796
+      duration: 0.0185271
       messages: 
       output: 
       stacktrace: 
@@ -1260,7 +1931,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQuality3
       fullName: SettingsTest.TestChangeValueAudioQuality3
       resultStatus: 1
-      duration: 0.0293673
+      duration: 0.0207467
       messages: 
       output: 
       stacktrace: 
@@ -1272,7 +1943,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQuality4
       fullName: SettingsTest.TestChangeValueAudioQuality4
       resultStatus: 1
-      duration: 0.0374866
+      duration: 0.0207762
       messages: 
       output: 
       stacktrace: 
@@ -1284,7 +1955,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQualityEventInvoked
       fullName: SettingsTest.TestChangeValueAudioQualityEventInvoked
       resultStatus: 1
-      duration: 0.0320256
+      duration: 0.0214562
       messages: 
       output: 
       stacktrace: 
@@ -1296,7 +1967,7 @@ MonoBehaviour:
       name: TestChangeValueAudioQualityEventNotInvoked
       fullName: SettingsTest.TestChangeValueAudioQualityEventNotInvoked
       resultStatus: 1
-      duration: 0.0294972
+      duration: 0.0230791
       messages: 
       output: 
       stacktrace: 
@@ -1308,7 +1979,7 @@ MonoBehaviour:
       name: TestChangeValueChatEnabled
       fullName: SettingsTest.TestChangeValueChatEnabled
       resultStatus: 1
-      duration: 0.0351375
+      duration: 0.0226686
       messages: 
       output: 
       stacktrace: 
@@ -1320,7 +1991,7 @@ MonoBehaviour:
       name: TestChangeValueChatEnabled2
       fullName: SettingsTest.TestChangeValueChatEnabled2
       resultStatus: 1
-      duration: 0.0282868
+      duration: 0.0216398
       messages: 
       output: 
       stacktrace: 
@@ -1332,7 +2003,7 @@ MonoBehaviour:
       name: TestChangeValueChatEnabledEventInvoked
       fullName: SettingsTest.TestChangeValueChatEnabledEventInvoked
       resultStatus: 1
-      duration: 0.0292479
+      duration: 0.0210382
       messages: 
       output: 
       stacktrace: 
@@ -1344,7 +2015,7 @@ MonoBehaviour:
       name: TestChangeValueChatEnabledEventNotInvoked
       fullName: SettingsTest.TestChangeValueChatEnabledEventNotInvoked
       resultStatus: 1
-      duration: 0.0288453
+      duration: 0.0201584
       messages: 
       output: 
       stacktrace: 
@@ -1356,7 +2027,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceName
       fullName: SettingsTest.TestChangeValueDeviceName
       resultStatus: 1
-      duration: 0.032745
+      duration: 0.0199304
       messages: 
       output: 
       stacktrace: 
@@ -1368,7 +2039,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceName2
       fullName: SettingsTest.TestChangeValueDeviceName2
       resultStatus: 1
-      duration: 0.0305888
+      duration: 0.0216114
       messages: 
       output: 
       stacktrace: 
@@ -1380,7 +2051,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceNameEmptyString
       fullName: SettingsTest.TestChangeValueDeviceNameEmptyString
       resultStatus: 1
-      duration: 0.0316297
+      duration: 0.0221345
       messages: 
       output: 
       stacktrace: 
@@ -1392,7 +2063,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceNameEventInvoked
       fullName: SettingsTest.TestChangeValueDeviceNameEventInvoked
       resultStatus: 1
-      duration: 0.0359872
+      duration: 0.0206672
       messages: 
       output: 
       stacktrace: 
@@ -1404,7 +2075,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceNameEventNotInvoked
       fullName: SettingsTest.TestChangeValueDeviceNameEventNotInvoked
       resultStatus: 1
-      duration: 0.0471584
+      duration: 0.0220776
       messages: 
       output: 
       stacktrace: 
@@ -1416,7 +2087,7 @@ MonoBehaviour:
       name: TestChangeValueDeviceNameNullStringToEmptyString
       fullName: SettingsTest.TestChangeValueDeviceNameNullStringToEmptyString
       resultStatus: 1
-      duration: 0.0353149
+      duration: 0.0200316
       messages: 
       output: 
       stacktrace: 
@@ -1428,7 +2099,7 @@ MonoBehaviour:
       name: TestChangeValueMuteSelf
       fullName: SettingsTest.TestChangeValueMuteSelf
       resultStatus: 1
-      duration: 0.0342178
+      duration: 0.0207368
       messages: 
       output: 
       stacktrace: 
@@ -1440,7 +2111,7 @@ MonoBehaviour:
       name: TestChangeValueMuteSelf2
       fullName: SettingsTest.TestChangeValueMuteSelf2
       resultStatus: 1
-      duration: 0.0391521
+      duration: 0.0200821
       messages: 
       output: 
       stacktrace: 
@@ -1452,7 +2123,7 @@ MonoBehaviour:
       name: TestChangeValueMuteSelfEventInvoked
       fullName: SettingsTest.TestChangeValueMuteSelfEventInvoked
       resultStatus: 1
-      duration: 0.0271589
+      duration: 0.0208067
       messages: 
       output: 
       stacktrace: 
@@ -1464,7 +2135,7 @@ MonoBehaviour:
       name: TestChangeValueMuteSelfEventNotInvoked
       fullName: SettingsTest.TestChangeValueMuteSelfEventNotInvoked
       resultStatus: 1
-      duration: 0.0288552
+      duration: 0.0205519
       messages: 
       output: 
       stacktrace: 
@@ -1476,7 +2147,7 @@ MonoBehaviour:
       name: TestChangeValuePTT
       fullName: SettingsTest.TestChangeValuePTT
       resultStatus: 1
-      duration: 0.0286995
+      duration: 0.0239355
       messages: 
       output: 
       stacktrace: 
@@ -1488,7 +2159,7 @@ MonoBehaviour:
       name: TestChangeValuePTT2
       fullName: SettingsTest.TestChangeValuePTT2
       resultStatus: 1
-      duration: 0.0288611
+      duration: 0.0201177
       messages: 
       output: 
       stacktrace: 
@@ -1500,7 +2171,7 @@ MonoBehaviour:
       name: TestChangeValuePTTEventInvoked
       fullName: SettingsTest.TestChangeValuePTTEventInvoked
       resultStatus: 1
-      duration: 0.0204926
+      duration: 0.0219831
       messages: 
       output: 
       stacktrace: 
@@ -1512,7 +2183,7 @@ MonoBehaviour:
       name: TestChangeValuePTTEventNotInvoked
       fullName: SettingsTest.TestChangeValuePTTEventNotInvoked
       resultStatus: 1
-      duration: 0.0315433
+      duration: 0.0192375
       messages: 
       output: 
       stacktrace: 
@@ -1524,7 +2195,7 @@ MonoBehaviour:
       name: TestChangeValuePTTKey
       fullName: SettingsTest.TestChangeValuePTTKey
       resultStatus: 1
-      duration: 0.0413688
+      duration: 0.0208912
       messages: 
       output: 
       stacktrace: 
@@ -1536,7 +2207,7 @@ MonoBehaviour:
       name: TestChangeValuePTTKey2
       fullName: SettingsTest.TestChangeValuePTTKey2
       resultStatus: 1
-      duration: 0.0427954
+      duration: 0.0211077
       messages: 
       output: 
       stacktrace: 
@@ -1548,7 +2219,7 @@ MonoBehaviour:
       name: TestChangeValueVoiceChatVolume
       fullName: SettingsTest.TestChangeValueVoiceChatVolume
       resultStatus: 1
-      duration: 0.037304
+      duration: 0.0191699
       messages: 
       output: 
       stacktrace: 
@@ -1560,7 +2231,7 @@ MonoBehaviour:
       name: TestChangeValueVoiceChatVolume2
       fullName: SettingsTest.TestChangeValueVoiceChatVolume2
       resultStatus: 1
-      duration: 0.0423584
+      duration: 0.0214498
       messages: 
       output: 
       stacktrace: 
@@ -1572,7 +2243,7 @@ MonoBehaviour:
       name: TestChangeValueVoiceChatVolume3
       fullName: SettingsTest.TestChangeValueVoiceChatVolume3
       resultStatus: 1
-      duration: 0.0334671
+      duration: 0.0193686
       messages: 
       output: 
       stacktrace: 
@@ -1584,7 +2255,7 @@ MonoBehaviour:
       name: TestChangeValueVoiceChatVolume4
       fullName: SettingsTest.TestChangeValueVoiceChatVolume4
       resultStatus: 1
-      duration: 0.0455205
+      duration: 0.0205676
       messages: 
       output: 
       stacktrace: 
@@ -1596,7 +2267,7 @@ MonoBehaviour:
       name: TestConstMaxChannels
       fullName: SettingsTest.TestConstMaxChannels
       resultStatus: 1
-      duration: 0.0332985
+      duration: 0.0206771
       messages: 
       output: 
       stacktrace: 
@@ -1608,7 +2279,7 @@ MonoBehaviour:
       name: TestConstMaxFrequency
       fullName: SettingsTest.TestConstMaxFrequency
       resultStatus: 1
-      duration: 0.0416785
+      duration: 0.0206881
       messages: 
       output: 
       stacktrace: 
@@ -1620,7 +2291,7 @@ MonoBehaviour:
       name: TestConstMinChannels
       fullName: SettingsTest.TestConstMinChannels
       resultStatus: 1
-      duration: 0.0422158
+      duration: 0.0201323
       messages: 
       output: 
       stacktrace: 
@@ -1632,7 +2303,7 @@ MonoBehaviour:
       name: TestConstMinFrequency
       fullName: SettingsTest.TestConstMinFrequency
       resultStatus: 1
-      duration: 0.0381107
+      duration: 0.018396
       messages: 
       output: 
       stacktrace: 
@@ -1644,7 +2315,7 @@ MonoBehaviour:
       name: TestInitSavedFilePathValue
       fullName: SettingsTest.TestInitSavedFilePathValue
       resultStatus: 1
-      duration: 0.0346117
+      duration: 0.0211243
       messages: 
       output: 
       stacktrace: 
@@ -1656,7 +2327,7 @@ MonoBehaviour:
       name: TestInitSavedFolderPathValue
       fullName: SettingsTest.TestInitSavedFolderPathValue
       resultStatus: 1
-      duration: 0.0399636
+      duration: 0.0215771
       messages: 
       output: 
       stacktrace: 
@@ -1668,7 +2339,7 @@ MonoBehaviour:
       name: TestRestoreSettingsFileContentValid
       fullName: SettingsTest.TestRestoreSettingsFileContentValid
       resultStatus: 1
-      duration: 0.0467168
+      duration: 0.0233414
       messages: 
       output: 
       stacktrace: 
@@ -1680,7 +2351,7 @@ MonoBehaviour:
       name: TestRestoreSettingsFileContentValid2
       fullName: SettingsTest.TestRestoreSettingsFileContentValid2
       resultStatus: 1
-      duration: 0.039642
+      duration: 0.0225113
       messages: 
       output: 
       stacktrace: 
@@ -1692,7 +2363,7 @@ MonoBehaviour:
       name: TestRestoreSettingsFileCreated
       fullName: SettingsTest.TestRestoreSettingsFileCreated
       resultStatus: 1
-      duration: 0.0627072
+      duration: 0.0221886
       messages: 
       output: 
       stacktrace: 
@@ -1704,7 +2375,7 @@ MonoBehaviour:
       name: TestSaveSettingsFileContentValid
       fullName: SettingsTest.TestSaveSettingsFileContentValid
       resultStatus: 1
-      duration: 0.0352782
+      duration: 0.0193141
       messages: 
       output: 
       stacktrace: 
@@ -1716,7 +2387,7 @@ MonoBehaviour:
       name: TestSaveSettingsFileContentValid2
       fullName: SettingsTest.TestSaveSettingsFileContentValid2
       resultStatus: 1
-      duration: 0.0417223
+      duration: 0.0264035
       messages: 
       output: 
       stacktrace: 
@@ -1728,7 +2399,7 @@ MonoBehaviour:
       name: TestSaveSettingsFileCreated
       fullName: SettingsTest.TestSaveSettingsFileCreated
       resultStatus: 1
-      duration: 0.0427717
+      duration: 0.0212938
       messages: 
       output: 
       stacktrace: 
@@ -1740,7 +2411,7 @@ MonoBehaviour:
       name: TestValuesInitSettings
       fullName: SettingsTest.TestValuesInitSettings
       resultStatus: 1
-      duration: 0.0364349
+      duration: 0.0207454
       messages: 
       output: 
       stacktrace: 
@@ -1752,7 +2423,7 @@ MonoBehaviour:
       name: TestValuesInitSettings2
       fullName: SettingsTest.TestValuesInitSettings2
       resultStatus: 1
-      duration: 0.0405739
+      duration: 0.0203433
       messages: 
       output: 
       stacktrace: 
@@ -1764,7 +2435,7 @@ MonoBehaviour:
       name: TestValuesInitSettings3
       fullName: SettingsTest.TestValuesInitSettings3
       resultStatus: 1
-      duration: 0.040489
+      duration: 0.0297295
       messages: 
       output: 
       stacktrace: 
@@ -1776,7 +2447,679 @@ MonoBehaviour:
       name: TestValuesInitSettings4
       fullName: SettingsTest.TestValuesInitSettings4
       resultStatus: 1
-      duration: 0.046934
+      duration: 0.0208379
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest][suite]'
+      name: VoiceChatSettingsTest
+      fullName: VoiceChatSettingsTest
+      resultStatus: 1
+      duration: 1.8073711
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileName]'
+      name: TestChangeFileName
+      fullName: VoiceChatSettingsTest.TestChangeFileName
+      resultStatus: 1
+      duration: 0.0210749
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileName2]'
+      name: TestChangeFileName2
+      fullName: VoiceChatSettingsTest.TestChangeFileName2
+      resultStatus: 1
+      duration: 0.01974
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileNameDeletePrevFile]'
+      name: TestChangeFileNameDeletePrevFile
+      fullName: VoiceChatSettingsTest.TestChangeFileNameDeletePrevFile
+      resultStatus: 1
+      duration: 0.0229052
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileNameEmptyStringWithExtension]'
+      name: TestChangeFileNameEmptyStringWithExtension
+      fullName: VoiceChatSettingsTest.TestChangeFileNameEmptyStringWithExtension
+      resultStatus: 1
+      duration: 0.0182885
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException]'
+      name: TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException
+      fullName: VoiceChatSettingsTest.TestChangeFileNameEmptyStringWithoutExtensionNoAuthorizationException
+      resultStatus: 1
+      duration: 0.0208047
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileNameFileCreated]'
+      name: TestChangeFileNameFileCreated
+      fullName: VoiceChatSettingsTest.TestChangeFileNameFileCreated
+      resultStatus: 1
+      duration: 0.0205238
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFileNameNullStringNullReferenceException]'
+      name: TestChangeFileNameNullStringNullReferenceException
+      fullName: VoiceChatSettingsTest.TestChangeFileNameNullStringNullReferenceException
+      resultStatus: 1
+      duration: 0.0206778
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderName]'
+      name: TestChangeFolderName
+      fullName: VoiceChatSettingsTest.TestChangeFolderName
+      resultStatus: 1
+      duration: 0.0197582
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderName2]'
+      name: TestChangeFolderName2
+      fullName: VoiceChatSettingsTest.TestChangeFolderName2
+      resultStatus: 1
+      duration: 0.0183072
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderNameDeletePrevFile]'
+      name: TestChangeFolderNameDeletePrevFile
+      fullName: VoiceChatSettingsTest.TestChangeFolderNameDeletePrevFile
+      resultStatus: 1
+      duration: 0.0231881
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderNameEmptyString]'
+      name: TestChangeFolderNameEmptyString
+      fullName: VoiceChatSettingsTest.TestChangeFolderNameEmptyString
+      resultStatus: 1
+      duration: 0.0190273
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderNameFileCreated]'
+      name: TestChangeFolderNameFileCreated
+      fullName: VoiceChatSettingsTest.TestChangeFolderNameFileCreated
+      resultStatus: 1
+      duration: 0.0210915
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeFolderNameNullStringNullReferenceException]'
+      name: TestChangeFolderNameNullStringNullReferenceException
+      fullName: VoiceChatSettingsTest.TestChangeFolderNameNullStringNullReferenceException
+      resultStatus: 1
+      duration: 0.022906
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQuality]'
+      name: TestChangeValueAudioQuality
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQuality
+      resultStatus: 1
+      duration: 0.0216039
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQuality2]'
+      name: TestChangeValueAudioQuality2
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQuality2
+      resultStatus: 1
+      duration: 0.021884
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQuality3]'
+      name: TestChangeValueAudioQuality3
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQuality3
+      resultStatus: 1
+      duration: 0.0227764
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQuality4]'
+      name: TestChangeValueAudioQuality4
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQuality4
+      resultStatus: 1
+      duration: 0.0184754
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQualityEventInvoked]'
+      name: TestChangeValueAudioQualityEventInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQualityEventInvoked
+      resultStatus: 1
+      duration: 0.0199455
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueAudioQualityEventNotInvoked]'
+      name: TestChangeValueAudioQualityEventNotInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueAudioQualityEventNotInvoked
+      resultStatus: 1
+      duration: 0.0198139
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueChatEnabled]'
+      name: TestChangeValueChatEnabled
+      fullName: VoiceChatSettingsTest.TestChangeValueChatEnabled
+      resultStatus: 1
+      duration: 0.0219141
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueChatEnabled2]'
+      name: TestChangeValueChatEnabled2
+      fullName: VoiceChatSettingsTest.TestChangeValueChatEnabled2
+      resultStatus: 1
+      duration: 0.0203741
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueChatEnabledEventInvoked]'
+      name: TestChangeValueChatEnabledEventInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueChatEnabledEventInvoked
+      resultStatus: 1
+      duration: 0.0205681
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueChatEnabledEventNotInvoked]'
+      name: TestChangeValueChatEnabledEventNotInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueChatEnabledEventNotInvoked
+      resultStatus: 1
+      duration: 0.0214625
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceName]'
+      name: TestChangeValueDeviceName
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceName
+      resultStatus: 1
+      duration: 0.0210002
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceName2]'
+      name: TestChangeValueDeviceName2
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceName2
+      resultStatus: 1
+      duration: 0.0199569
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceNameEmptyString]'
+      name: TestChangeValueDeviceNameEmptyString
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceNameEmptyString
+      resultStatus: 1
+      duration: 0.0232631
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceNameEventInvoked]'
+      name: TestChangeValueDeviceNameEventInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceNameEventInvoked
+      resultStatus: 1
+      duration: 0.0232185
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceNameEventNotInvoked]'
+      name: TestChangeValueDeviceNameEventNotInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceNameEventNotInvoked
+      resultStatus: 1
+      duration: 0.0206293
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueDeviceNameNullStringToEmptyString]'
+      name: TestChangeValueDeviceNameNullStringToEmptyString
+      fullName: VoiceChatSettingsTest.TestChangeValueDeviceNameNullStringToEmptyString
+      resultStatus: 1
+      duration: 0.0208438
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueMuteSelf]'
+      name: TestChangeValueMuteSelf
+      fullName: VoiceChatSettingsTest.TestChangeValueMuteSelf
+      resultStatus: 1
+      duration: 0.0213052
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueMuteSelf2]'
+      name: TestChangeValueMuteSelf2
+      fullName: VoiceChatSettingsTest.TestChangeValueMuteSelf2
+      resultStatus: 1
+      duration: 0.0189017
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueMuteSelfEventInvoked]'
+      name: TestChangeValueMuteSelfEventInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueMuteSelfEventInvoked
+      resultStatus: 1
+      duration: 0.0196061
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueMuteSelfEventNotInvoked]'
+      name: TestChangeValueMuteSelfEventNotInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValueMuteSelfEventNotInvoked
+      resultStatus: 1
+      duration: 0.0210121
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTT]'
+      name: TestChangeValuePTT
+      fullName: VoiceChatSettingsTest.TestChangeValuePTT
+      resultStatus: 1
+      duration: 0.0209457
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTT2]'
+      name: TestChangeValuePTT2
+      fullName: VoiceChatSettingsTest.TestChangeValuePTT2
+      resultStatus: 1
+      duration: 0.0198356
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTTEventInvoked]'
+      name: TestChangeValuePTTEventInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValuePTTEventInvoked
+      resultStatus: 1
+      duration: 0.022155
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTTEventNotInvoked]'
+      name: TestChangeValuePTTEventNotInvoked
+      fullName: VoiceChatSettingsTest.TestChangeValuePTTEventNotInvoked
+      resultStatus: 1
+      duration: 0.0230712
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTTKey]'
+      name: TestChangeValuePTTKey
+      fullName: VoiceChatSettingsTest.TestChangeValuePTTKey
+      resultStatus: 1
+      duration: 0.0213337
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValuePTTKey2]'
+      name: TestChangeValuePTTKey2
+      fullName: VoiceChatSettingsTest.TestChangeValuePTTKey2
+      resultStatus: 1
+      duration: 0.022938
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueVoiceChatVolume]'
+      name: TestChangeValueVoiceChatVolume
+      fullName: VoiceChatSettingsTest.TestChangeValueVoiceChatVolume
+      resultStatus: 1
+      duration: 0.0242516
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueVoiceChatVolume2]'
+      name: TestChangeValueVoiceChatVolume2
+      fullName: VoiceChatSettingsTest.TestChangeValueVoiceChatVolume2
+      resultStatus: 1
+      duration: 0.018195
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueVoiceChatVolume3]'
+      name: TestChangeValueVoiceChatVolume3
+      fullName: VoiceChatSettingsTest.TestChangeValueVoiceChatVolume3
+      resultStatus: 1
+      duration: 0.0233331
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestChangeValueVoiceChatVolume4]'
+      name: TestChangeValueVoiceChatVolume4
+      fullName: VoiceChatSettingsTest.TestChangeValueVoiceChatVolume4
+      resultStatus: 1
+      duration: 0.0212598
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestInitSavedFilePathValue]'
+      name: TestInitSavedFilePathValue
+      fullName: VoiceChatSettingsTest.TestInitSavedFilePathValue
+      resultStatus: 1
+      duration: 0.0207834
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestInitSavedFolderPathValue]'
+      name: TestInitSavedFolderPathValue
+      fullName: VoiceChatSettingsTest.TestInitSavedFolderPathValue
+      resultStatus: 1
+      duration: 0.0205712
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestRestoreSettingsFileContentValid]'
+      name: TestRestoreSettingsFileContentValid
+      fullName: VoiceChatSettingsTest.TestRestoreSettingsFileContentValid
+      resultStatus: 1
+      duration: 0.0192394
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestRestoreSettingsFileContentValid2]'
+      name: TestRestoreSettingsFileContentValid2
+      fullName: VoiceChatSettingsTest.TestRestoreSettingsFileContentValid2
+      resultStatus: 1
+      duration: 0.0191742
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestRestoreSettingsFileCreated]'
+      name: TestRestoreSettingsFileCreated
+      fullName: VoiceChatSettingsTest.TestRestoreSettingsFileCreated
+      resultStatus: 1
+      duration: 0.0191648
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestSaveSettingsFileContentValid]'
+      name: TestSaveSettingsFileContentValid
+      fullName: VoiceChatSettingsTest.TestSaveSettingsFileContentValid
+      resultStatus: 1
+      duration: 0.0201058
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestSaveSettingsFileContentValid2]'
+      name: TestSaveSettingsFileContentValid2
+      fullName: VoiceChatSettingsTest.TestSaveSettingsFileContentValid2
+      resultStatus: 1
+      duration: 0.0200379
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestSaveSettingsFileCreated]'
+      name: TestSaveSettingsFileCreated
+      fullName: VoiceChatSettingsTest.TestSaveSettingsFileCreated
+      resultStatus: 1
+      duration: 0.0220799
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestValuesInitSettings]'
+      name: TestValuesInitSettings
+      fullName: VoiceChatSettingsTest.TestValuesInitSettings
+      resultStatus: 1
+      duration: 0.0220693
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestValuesInitSettings2]'
+      name: TestValuesInitSettings2
+      fullName: VoiceChatSettingsTest.TestValuesInitSettings2
+      resultStatus: 1
+      duration: 0.0207442
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestValuesInitSettings3]'
+      name: TestValuesInitSettings3
+      fullName: VoiceChatSettingsTest.TestValuesInitSettings3
+      resultStatus: 1
+      duration: 0.0233966
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    - id: '[Assembly-CSharp-Editor][VoiceChatSettingsTest.TestValuesInitSettings4]'
+      name: TestValuesInitSettings4
+      fullName: VoiceChatSettingsTest.TestValuesInitSettings4
+      resultStatus: 1
+      duration: 0.0216181
       messages: 
       output: 
       stacktrace: 
@@ -1788,7 +3131,7 @@ MonoBehaviour:
       name: VoiceDataWorkflowTest
       fullName: VoiceDataWorkflowTest
       resultStatus: 1
-      duration: 10.882316
+      duration: 20.709398
       messages: 
       output: 
       stacktrace: 
@@ -1800,7 +3143,7 @@ MonoBehaviour:
       name: TestAddHandlerCount
       fullName: VoiceDataWorkflowTest.TestAddHandlerCount
       resultStatus: 1
-      duration: 0.0499558
+      duration: 0.0306548
       messages: 
       output: 
       stacktrace: 
@@ -1812,7 +3155,7 @@ MonoBehaviour:
       name: TestAddHandlerCountRedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerCountRedLight
       resultStatus: 1
-      duration: 0.0423896
+      duration: 0.0168213
       messages: 
       output: 
       stacktrace: 
@@ -1824,7 +3167,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException
       resultStatus: 1
-      duration: 0.0287435
+      duration: 0.0199261
       messages: 
       output: 
       stacktrace: 
@@ -1836,7 +3179,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException2
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException2
       resultStatus: 1
-      duration: 0.0333158
+      duration: 0.0212638
       messages: 
       output: 
       stacktrace: 
@@ -1848,7 +3191,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException2RedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException2RedLight
       resultStatus: 1
-      duration: 0.0356858
+      duration: 0.0246952
       messages: 
       output: 
       stacktrace: 
@@ -1860,7 +3203,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException3
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException3
       resultStatus: 1
-      duration: 0.033142
+      duration: 0.3256321
       messages: 
       output: 
       stacktrace: 
@@ -1872,7 +3215,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException3RedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException3RedLight
       resultStatus: 1
-      duration: 0.0278941
+      duration: 0.3070302
       messages: 
       output: 
       stacktrace: 
@@ -1884,7 +3227,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException4
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException4
       resultStatus: 1
-      duration: 0.0332713
+      duration: 0.3107228
       messages: 
       output: 
       stacktrace: 
@@ -1896,7 +3239,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException4RedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException4RedLight
       resultStatus: 1
-      duration: 0.03689
+      duration: 0.3128305
       messages: 
       output: 
       stacktrace: 
@@ -1908,7 +3251,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException5
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException5
       resultStatus: 1
-      duration: 0.0264647
+      duration: 0.3186122
       messages: 
       output: 
       stacktrace: 
@@ -1920,7 +3263,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgException5RedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgException5RedLight
       resultStatus: 1
-      duration: 0.0352331
+      duration: 0.312992
       messages: 
       output: 
       stacktrace: 
@@ -1932,7 +3275,7 @@ MonoBehaviour:
       name: TestAddHandlerFlagArgExceptionRedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerFlagArgExceptionRedLight
       resultStatus: 1
-      duration: 0.0329133
+      duration: 0.3045342
       messages: 
       output: 
       stacktrace: 
@@ -1944,7 +3287,7 @@ MonoBehaviour:
       name: TestAddHandlerKeyArgException
       fullName: VoiceDataWorkflowTest.TestAddHandlerKeyArgException
       resultStatus: 1
-      duration: 0.027565
+      duration: 0.305798
       messages: 
       output: 
       stacktrace: 
@@ -1956,7 +3299,7 @@ MonoBehaviour:
       name: TestAddHandlerKeyArgExceptionRedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerKeyArgExceptionRedLight
       resultStatus: 1
-      duration: 0.0242105
+      duration: 0.305764
       messages: 
       output: 
       stacktrace: 
@@ -1968,7 +3311,7 @@ MonoBehaviour:
       name: TestAddHandlerNetId
       fullName: VoiceDataWorkflowTest.TestAddHandlerNetId
       resultStatus: 1
-      duration: 0.0349004
+      duration: 0.3039614
       messages: 
       output: 
       stacktrace: 
@@ -1980,7 +3323,7 @@ MonoBehaviour:
       name: TestAddHandlerNetIdRedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerNetIdRedLight
       resultStatus: 1
-      duration: 0.0295968
+      duration: 0.3073806
       messages: 
       output: 
       stacktrace: 
@@ -1992,7 +3335,7 @@ MonoBehaviour:
       name: TestAddHandlerRef
       fullName: VoiceDataWorkflowTest.TestAddHandlerRef
       resultStatus: 1
-      duration: 0.0344035
+      duration: 0.3065758
       messages: 
       output: 
       stacktrace: 
@@ -2004,7 +3347,7 @@ MonoBehaviour:
       name: TestAddHandlerRefRedLight
       fullName: VoiceDataWorkflowTest.TestAddHandlerRefRedLight
       resultStatus: 1
-      duration: 0.0347985
+      duration: 0.3056996
       messages: 
       output: 
       stacktrace: 
@@ -2016,7 +3359,7 @@ MonoBehaviour:
       name: TestFinalizeBufferInt16
       fullName: VoiceDataWorkflowTest.TestFinalizeBufferInt16
       resultStatus: 1
-      duration: 0.0277826
+      duration: 0.3120024
       messages: 
       output: 
       stacktrace: 
@@ -2028,7 +3371,7 @@ MonoBehaviour:
       name: TestFinalizeBufferSingle
       fullName: VoiceDataWorkflowTest.TestFinalizeBufferSingle
       resultStatus: 1
-      duration: 0.0261107
+      duration: 0.3061563
       messages: 
       output: 
       stacktrace: 
@@ -2040,7 +3383,7 @@ MonoBehaviour:
       name: TestFinalizeHandlers
       fullName: VoiceDataWorkflowTest.TestFinalizeHandlers
       resultStatus: 1
-      duration: 0.028926
+      duration: 0.3113546
       messages: 
       output: 
       stacktrace: 
@@ -2052,7 +3395,7 @@ MonoBehaviour:
       name: TestInitializedDataBuffer
       fullName: VoiceDataWorkflowTest.TestInitializedDataBuffer
       resultStatus: 1
-      duration: 0.0362832
+      duration: 0.3072858
       messages: 
       output: 
       stacktrace: 
@@ -2064,7 +3407,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferFormatBoth
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferFormatBoth
       resultStatus: 1
-      duration: 0.0269313
+      duration: 0.3056321
       messages: 
       output: 
       stacktrace: 
@@ -2076,7 +3419,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferFormatInt16
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferFormatInt16
       resultStatus: 1
-      duration: 0.0325305
+      duration: 0.3068192
       messages: 
       output: 
       stacktrace: 
@@ -2088,7 +3431,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferFormatSingle
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferFormatSingle
       resultStatus: 1
-      duration: 0.0354472
+      duration: 0.3064104
       messages: 
       output: 
       stacktrace: 
@@ -2100,7 +3443,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferInt16
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferInt16
       resultStatus: 1
-      duration: 0.0332199
+      duration: 0.3048289
       messages: 
       output: 
       stacktrace: 
@@ -2112,7 +3455,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferInt16FormatBoth
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferInt16FormatBoth
       resultStatus: 1
-      duration: 0.042253
+      duration: 0.3147892
       messages: 
       output: 
       stacktrace: 
@@ -2124,7 +3467,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferInt16FormatInt16
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferInt16FormatInt16
       resultStatus: 1
-      duration: 0.0248908
+      duration: 0.3066173
       messages: 
       output: 
       stacktrace: 
@@ -2136,7 +3479,7 @@ MonoBehaviour:
       name: TestInitializedDataBufferInt16FormatSingle
       fullName: VoiceDataWorkflowTest.TestInitializedDataBufferInt16FormatSingle
       resultStatus: 1
-      duration: 0.0360366
+      duration: 0.3132895
       messages: 
       output: 
       stacktrace: 
@@ -2148,7 +3491,7 @@ MonoBehaviour:
       name: TestInitializedHandlers
       fullName: VoiceDataWorkflowTest.TestInitializedHandlers
       resultStatus: 1
-      duration: 0.0330871
+      duration: 0.305252
       messages: 
       output: 
       stacktrace: 
@@ -2160,7 +3503,7 @@ MonoBehaviour:
       name: TestInitializedPacketBuffer
       fullName: VoiceDataWorkflowTest.TestInitializedPacketBuffer
       resultStatus: 1
-      duration: 0.0294083
+      duration: 0.3087341
       messages: 
       output: 
       stacktrace: 
@@ -2172,7 +3515,7 @@ MonoBehaviour:
       name: TestNotInitializedDataBuffer
       fullName: VoiceDataWorkflowTest.TestNotInitializedDataBuffer
       resultStatus: 1
-      duration: 0.0332191
+      duration: 0.3038784
       messages: 
       output: 
       stacktrace: 
@@ -2184,7 +3527,7 @@ MonoBehaviour:
       name: TestNotInitializedDataBufferInt16
       fullName: VoiceDataWorkflowTest.TestNotInitializedDataBufferInt16
       resultStatus: 1
-      duration: 0.0369295
+      duration: 0.3043414
       messages: 
       output: 
       stacktrace: 
@@ -2196,7 +3539,7 @@ MonoBehaviour:
       name: TestNotInitializedHandlers
       fullName: VoiceDataWorkflowTest.TestNotInitializedHandlers
       resultStatus: 1
-      duration: 0.0257876
+      duration: 0.3092623
       messages: 
       output: 
       stacktrace: 
@@ -2208,7 +3551,7 @@ MonoBehaviour:
       name: TestNotInitializedPacketBuffer
       fullName: VoiceDataWorkflowTest.TestNotInitializedPacketBuffer
       resultStatus: 1
-      duration: 0.0225481
+      duration: 0.3190112
       messages: 
       output: 
       stacktrace: 
@@ -2220,7 +3563,7 @@ MonoBehaviour:
       name: TestProcessMicDataArgExceptionIncompatibleFormats
       fullName: VoiceDataWorkflowTest.TestProcessMicDataArgExceptionIncompatibleFormats
       resultStatus: 1
-      duration: 0.0338697
+      duration: 0.3033482
       messages: 
       output: 
       stacktrace: 
@@ -2232,7 +3575,7 @@ MonoBehaviour:
       name: TestProcessMicDataArgExceptionIncompatibleFormats2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataArgExceptionIncompatibleFormats2
       resultStatus: 1
-      duration: 0.023985
+      duration: 0.3055945
       messages: 
       output: 
       stacktrace: 
@@ -2244,7 +3587,7 @@ MonoBehaviour:
       name: TestProcessMicDataArgExceptionIncompatibleFormats3
       fullName: VoiceDataWorkflowTest.TestProcessMicDataArgExceptionIncompatibleFormats3
       resultStatus: 1
-      duration: 0.0193619
+      duration: 0.3126594
       messages: 
       output: 
       stacktrace: 
@@ -2256,7 +3599,7 @@ MonoBehaviour:
       name: TestProcessMicDataArgExceptionIncompatibleFormats4
       fullName: VoiceDataWorkflowTest.TestProcessMicDataArgExceptionIncompatibleFormats4
       resultStatus: 1
-      duration: 0.028476
+      duration: 0.305265
       messages: 
       output: 
       stacktrace: 
@@ -2268,7 +3611,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutDisabledChat
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutDisabledChat
       resultStatus: 1
-      duration: 0.0209529
+      duration: 0.2192607
       messages: 
       output: 
       stacktrace: 
@@ -2280,7 +3623,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutDisabledChat2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutDisabledChat2
       resultStatus: 1
-      duration: 0.0221337
+      duration: 0.0243887
       messages: 
       output: 
       stacktrace: 
@@ -2292,7 +3635,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutInputMuted
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutInputMuted
       resultStatus: 1
-      duration: 0.0352544
+      duration: 0.023179
       messages: 
       output: 
       stacktrace: 
@@ -2304,7 +3647,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutInputMuted2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutInputMuted2
       resultStatus: 1
-      duration: 0.036745
+      duration: 0.0210267
       messages: 
       output: 
       stacktrace: 
@@ -2316,7 +3659,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutNotRecorder
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutNotRecorder
       resultStatus: 1
-      duration: 0.0230972
+      duration: 0.028222
       messages: 
       output: 
       stacktrace: 
@@ -2328,7 +3671,7 @@ MonoBehaviour:
       name: TestProcessMicDataEarlyOutNotRecorder2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataEarlyOutNotRecorder2
       resultStatus: 1
-      duration: 0.0272505
+      duration: 0.0212926
       messages: 
       output: 
       stacktrace: 
@@ -2340,7 +3683,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData
       resultStatus: 1
-      duration: 0.03823
+      duration: 0.0209153
       messages: 
       output: 
       stacktrace: 
@@ -2352,7 +3695,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData2
       resultStatus: 1
-      duration: 0.0324751
+      duration: 0.0205436
       messages: 
       output: 
       stacktrace: 
@@ -2364,7 +3707,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData2RedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData2RedLight
       resultStatus: 1
-      duration: 0.0183091
+      duration: 0.0239324
       messages: 
       output: 
       stacktrace: 
@@ -2376,7 +3719,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData3
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData3
       resultStatus: 1
-      duration: 0.0380586
+      duration: 0.0309913
       messages: 
       output: 
       stacktrace: 
@@ -2388,7 +3731,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData3RedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData3RedLight
       resultStatus: 1
-      duration: 0.0264161
+      duration: 0.0209489
       messages: 
       output: 
       stacktrace: 
@@ -2400,7 +3743,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData4
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData4
       resultStatus: 1
-      duration: 0.0313358
+      duration: 0.0195851
       messages: 
       output: 
       stacktrace: 
@@ -2412,7 +3755,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetData4RedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetData4RedLight
       resultStatus: 1
-      duration: 0.0198731
+      duration: 0.0215296
       messages: 
       output: 
       stacktrace: 
@@ -2424,7 +3767,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataInvalidPacketEarlyOut
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataInvalidPacketEarlyOut
       resultStatus: 1
-      duration: 0.0310893
+      duration: 0.0224801
       messages: 
       output: 
       stacktrace: 
@@ -2436,7 +3779,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataInvalidPacketEarlyOutRedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataInvalidPacketEarlyOutRedLight
       resultStatus: 1
-      duration: 0.0298401
+      duration: 0.0213918
       messages: 
       output: 
       stacktrace: 
@@ -2448,7 +3791,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulated
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulated
       resultStatus: 1
-      duration: 0.0260609
+      duration: 0.019104
       messages: 
       output: 
       stacktrace: 
@@ -2460,7 +3803,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulated2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulated2
       resultStatus: 1
-      duration: 0.0280576
+      duration: 0.0215209
       messages: 
       output: 
       stacktrace: 
@@ -2472,7 +3815,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulatedInvalidPacket
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulatedInvalidPacket
       resultStatus: 1
-      duration: 0.0252227
+      duration: 0.0195982
       messages: 
       output: 
       stacktrace: 
@@ -2484,7 +3827,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulatedInvalidPacketRedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulatedInvalidPacketRedLight
       resultStatus: 1
-      duration: 0.0340265
+      duration: 0.0197483
       messages: 
       output: 
       stacktrace: 
@@ -2496,7 +3839,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulatedRedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulatedRedLight
       resultStatus: 1
-      duration: 0.0289643
+      duration: 0.0230237
       messages: 
       output: 
       stacktrace: 
@@ -2508,7 +3851,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataManipulatedRedLight2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataManipulatedRedLight2
       resultStatus: 1
-      duration: 0.0293882
+      duration: 0.0204855
       messages: 
       output: 
       stacktrace: 
@@ -2520,7 +3863,7 @@ MonoBehaviour:
       name: TestProcessMicDataGetDataRedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataGetDataRedLight
       resultStatus: 1
-      duration: 0.0314489
+      duration: 0.0214182
       messages: 
       output: 
       stacktrace: 
@@ -2532,7 +3875,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccess
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccess
       resultStatus: 1
-      duration: 0.0243721
+      duration: 0.0203994
       messages: 
       output: 
       stacktrace: 
@@ -2544,7 +3887,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccess2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccess2
       resultStatus: 1
-      duration: 0.0302495
+      duration: 0.0199154
       messages: 
       output: 
       stacktrace: 
@@ -2556,7 +3899,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccess3
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccess3
       resultStatus: 1
-      duration: 0.0336086
+      duration: 0.0207094
       messages: 
       output: 
       stacktrace: 
@@ -2568,7 +3911,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessRedLight
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessRedLight
       resultStatus: 1
-      duration: 0.0327418
+      duration: 0.0199565
       messages: 
       output: 
       stacktrace: 
@@ -2580,7 +3923,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessRedLight2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessRedLight2
       resultStatus: 1
-      duration: 0.0384896
+      duration: 0.0201062
       messages: 
       output: 
       stacktrace: 
@@ -2592,7 +3935,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessRedLight3
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessRedLight3
       resultStatus: 1
-      duration: 0.0297935
+      duration: 0.0219287
       messages: 
       output: 
       stacktrace: 
@@ -2604,7 +3947,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessValidData
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessValidData
       resultStatus: 1
-      duration: 0.0229989
+      duration: 0.0195216
       messages: 
       output: 
       stacktrace: 
@@ -2616,7 +3959,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessValidData2
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessValidData2
       resultStatus: 1
-      duration: 0.0400722
+      duration: 0.0209983
       messages: 
       output: 
       stacktrace: 
@@ -2628,7 +3971,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessValidData3
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessValidData3
       resultStatus: 1
-      duration: 0.0478917
+      duration: 0.0212349
       messages: 
       output: 
       stacktrace: 
@@ -2640,7 +3983,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessValidData4
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessValidData4
       resultStatus: 1
-      duration: 0.0284803
+      duration: 0.0212669
       messages: 
       output: 
       stacktrace: 
@@ -2652,7 +3995,7 @@ MonoBehaviour:
       name: TestProcessMicDataSuccessValidData5
       fullName: VoiceDataWorkflowTest.TestProcessMicDataSuccessValidData5
       resultStatus: 1
-      duration: 0.0244926
+      duration: 0.0222854
       messages: 
       output: 
       stacktrace: 
@@ -2664,7 +4007,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketArgExceptionIncompatibleFormat
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketArgExceptionIncompatibleFormat
       resultStatus: 1
-      duration: 0.0352055
+      duration: 0.0175498
       messages: 
       output: 
       stacktrace: 
@@ -2676,7 +4019,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketArgExceptionIncompatibleFormat2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketArgExceptionIncompatibleFormat2
       resultStatus: 1
-      duration: 0.0347883
+      duration: 0.0194101
       messages: 
       output: 
       stacktrace: 
@@ -2688,7 +4031,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketArgExceptionIncompatibleFormat3
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketArgExceptionIncompatibleFormat3
       resultStatus: 1
-      duration: 0.0302553
+      duration: 0.0207407
       messages: 
       output: 
       stacktrace: 
@@ -2700,7 +4043,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketArgExceptionIncompatibleFormat4
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketArgExceptionIncompatibleFormat4
       resultStatus: 1
-      duration: 0.0291756
+      duration: 0.0196492
       messages: 
       output: 
       stacktrace: 
@@ -2712,7 +4055,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketArgExceptionIncompatibleFormat5
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketArgExceptionIncompatibleFormat5
       resultStatus: 1
-      duration: 0.0371401
+      duration: 0.0204551
       messages: 
       output: 
       stacktrace: 
@@ -2724,7 +4067,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutChatDisabled
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutChatDisabled
       resultStatus: 1
-      duration: 0.032666
+      duration: 0.0219231
       messages: 
       output: 
       stacktrace: 
@@ -2736,7 +4079,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutInvalidId
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutInvalidId
       resultStatus: 1
-      duration: 0.0280663
+      duration: 0.02054
       messages: 
       output: 
       stacktrace: 
@@ -2748,7 +4091,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutInvalidTransportPacket
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutInvalidTransportPacket
       resultStatus: 1
-      duration: 0.026168
+      duration: 0.0211792
       messages: 
       output: 
       stacktrace: 
@@ -2760,7 +4103,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutOutputInvalidManipulatorPacket
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutOutputInvalidManipulatorPacket
       resultStatus: 1
-      duration: 0.0402598
+      duration: 0.0218409
       messages: 
       output: 
       stacktrace: 
@@ -2772,7 +4115,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutOutputMuted
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutOutputMuted
       resultStatus: 1
-      duration: 0.0250054
+      duration: 0.0205523
       messages: 
       output: 
       stacktrace: 
@@ -2784,7 +4127,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutOutputMuted2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutOutputMuted2
       resultStatus: 1
-      duration: 0.0450887
+      duration: 0.0181072
       messages: 
       output: 
       stacktrace: 
@@ -2796,7 +4139,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketEarlyOutOutputNotReceiver
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketEarlyOutOutputNotReceiver
       resultStatus: 1
-      duration: 0.031956
+      duration: 0.0234089
       messages: 
       output: 
       stacktrace: 
@@ -2808,7 +4151,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketNullArrayException
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketNullArrayException
       resultStatus: 1
-      duration: 0.0338666
+      duration: 0.0189901
       messages: 
       output: 
       stacktrace: 
@@ -2820,7 +4163,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16Path
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16Path
       resultStatus: 1
-      duration: 0.0247502
+      duration: 0.0206613
       messages: 
       output: 
       stacktrace: 
@@ -2832,7 +4175,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16Path2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16Path2
       resultStatus: 1
-      duration: 0.0331934
+      duration: 0.0186109
       messages: 
       output: 
       stacktrace: 
@@ -2844,7 +4187,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16Path3
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16Path3
       resultStatus: 1
-      duration: 0.0270356
+      duration: 0.0211804
       messages: 
       output: 
       stacktrace: 
@@ -2856,7 +4199,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16Path4
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16Path4
       resultStatus: 1
-      duration: 0.0343494
+      duration: 0.0200303
       messages: 
       output: 
       stacktrace: 
@@ -2868,7 +4211,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData
       resultStatus: 1
-      duration: 0.0185138
+      duration: 0.0182479
       messages: 
       output: 
       stacktrace: 
@@ -2880,7 +4223,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData2
       resultStatus: 1
-      duration: 0.0269269
+      duration: 0.0183565
       messages: 
       output: 
       stacktrace: 
@@ -2892,7 +4235,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData3
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData3
       resultStatus: 1
-      duration: 0.0286842
+      duration: 0.0211515
       messages: 
       output: 
       stacktrace: 
@@ -2904,7 +4247,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData4
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData4
       resultStatus: 1
-      duration: 0.0343668
+      duration: 0.0189693
       messages: 
       output: 
       stacktrace: 
@@ -2916,7 +4259,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData5
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData5
       resultStatus: 1
-      duration: 0.0251776
+      duration: 0.0199873
       messages: 
       output: 
       stacktrace: 
@@ -2928,7 +4271,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData6
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData6
       resultStatus: 1
-      duration: 0.0280212
+      duration: 0.0218734
       messages: 
       output: 
       stacktrace: 
@@ -2940,7 +4283,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData7
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData7
       resultStatus: 1
-      duration: 0.0214123
+      duration: 0.0199426
       messages: 
       output: 
       stacktrace: 
@@ -2952,7 +4295,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData8
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData8
       resultStatus: 1
-      duration: 0.0219346
+      duration: 0.0182052
       messages: 
       output: 
       stacktrace: 
@@ -2964,7 +4307,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessInt16PathValidData9
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessInt16PathValidData9
       resultStatus: 1
-      duration: 0.0298781
+      duration: 0.017826
       messages: 
       output: 
       stacktrace: 
@@ -2976,7 +4319,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessSinglePath
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessSinglePath
       resultStatus: 1
-      duration: 0.0345856
+      duration: 0.0196969
       messages: 
       output: 
       stacktrace: 
@@ -2988,7 +4331,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessSinglePath2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessSinglePath2
       resultStatus: 1
-      duration: 0.0294802
+      duration: 0.0205957
       messages: 
       output: 
       stacktrace: 
@@ -3000,7 +4343,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketSuccessSinglePath3
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketSuccessSinglePath3
       resultStatus: 1
-      duration: 0.0666234
+      duration: 0.0195642
       messages: 
       output: 
       stacktrace: 
@@ -3012,7 +4355,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketValidFormat
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketValidFormat
       resultStatus: 1
-      duration: 0.032965
+      duration: 0.0314595
       messages: 
       output: 
       stacktrace: 
@@ -3024,7 +4367,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketValidFormat2
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketValidFormat2
       resultStatus: 1
-      duration: 0.0445088
+      duration: 0.0145959
       messages: 
       output: 
       stacktrace: 
@@ -3036,7 +4379,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketValidFormat3
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketValidFormat3
       resultStatus: 1
-      duration: 0.0259361
+      duration: 0.0212013
       messages: 
       output: 
       stacktrace: 
@@ -3048,7 +4391,7 @@ MonoBehaviour:
       name: TestProcessReceivedPacketValidFormat4
       fullName: VoiceDataWorkflowTest.TestProcessReceivedPacketValidFormat4
       resultStatus: 1
-      duration: 0.0397308
+      duration: 0.0189949
       messages: 
       output: 
       stacktrace: 
@@ -3060,7 +4403,7 @@ MonoBehaviour:
       name: TestRemoveHandlerCount
       fullName: VoiceDataWorkflowTest.TestRemoveHandlerCount
       resultStatus: 1
-      duration: 0.0298402
+      duration: 0.0197005
       messages: 
       output: 
       stacktrace: 
@@ -3072,7 +4415,7 @@ MonoBehaviour:
       name: TestRemoveHandlerCountRedLight
       fullName: VoiceDataWorkflowTest.TestRemoveHandlerCountRedLight
       resultStatus: 1
-      duration: 0.0242915
+      duration: 0.0226449
       messages: 
       output: 
       stacktrace: 
@@ -3084,7 +4427,7 @@ MonoBehaviour:
       name: TestRemoveHandlerDoubleNoException
       fullName: VoiceDataWorkflowTest.TestRemoveHandlerDoubleNoException
       resultStatus: 1
-      duration: 0.0431134
+      duration: 0.0205692
       messages: 
       output: 
       stacktrace: 
@@ -3096,7 +4439,7 @@ MonoBehaviour:
       name: TestRemoveHandlerDoubleNoExceptionRedLight
       fullName: VoiceDataWorkflowTest.TestRemoveHandlerDoubleNoExceptionRedLight
       resultStatus: 1
-      duration: 0.0252005
+      duration: 0.0199857
       messages: 
       output: 
       stacktrace: 
@@ -3108,7 +4451,7 @@ MonoBehaviour:
       name: VoicePacketInfoTest
       fullName: VoicePacketInfoTest
       resultStatus: 1
-      duration: 0.4158959
+      duration: 0.2668221
       messages: 
       output: 
       stacktrace: 
@@ -3120,7 +4463,7 @@ MonoBehaviour:
       name: TestDefaultPacketChannels
       fullName: VoicePacketInfoTest.TestDefaultPacketChannels
       resultStatus: 1
-      duration: 0.004301
+      duration: 0.0049727
       messages: 
       output: 
       stacktrace: 
@@ -3132,7 +4475,7 @@ MonoBehaviour:
       name: TestDefaultPacketFormat
       fullName: VoicePacketInfoTest.TestDefaultPacketFormat
       resultStatus: 1
-      duration: 0.015036
+      duration: 0.0056956
       messages: 
       output: 
       stacktrace: 
@@ -3144,7 +4487,7 @@ MonoBehaviour:
       name: TestDefaultPacketFrequency
       fullName: VoicePacketInfoTest.TestDefaultPacketFrequency
       resultStatus: 1
-      duration: 0.0074836
+      duration: 0.0061768
       messages: 
       output: 
       stacktrace: 
@@ -3156,7 +4499,7 @@ MonoBehaviour:
       name: TestDefaultPacketNetId
       fullName: VoicePacketInfoTest.TestDefaultPacketNetId
       resultStatus: 1
-      duration: 0.0076235
+      duration: 0.0065086
       messages: 
       output: 
       stacktrace: 
@@ -3168,7 +4511,7 @@ MonoBehaviour:
       name: TestDefaultPacketValidBool
       fullName: VoicePacketInfoTest.TestDefaultPacketValidBool
       resultStatus: 1
-      duration: 0.0087625
+      duration: 0.003834
       messages: 
       output: 
       stacktrace: 
@@ -3180,7 +4523,7 @@ MonoBehaviour:
       name: TestInitPacketChannels
       fullName: VoicePacketInfoTest.TestInitPacketChannels
       resultStatus: 1
-      duration: 0.0096671
+      duration: 0.005826
       messages: 
       output: 
       stacktrace: 
@@ -3192,7 +4535,7 @@ MonoBehaviour:
       name: TestInitPacketFormat
       fullName: VoicePacketInfoTest.TestInitPacketFormat
       resultStatus: 1
-      duration: 0.0066634
+      duration: 0.0056016
       messages: 
       output: 
       stacktrace: 
@@ -3204,7 +4547,7 @@ MonoBehaviour:
       name: TestInitPacketFrequency
       fullName: VoicePacketInfoTest.TestInitPacketFrequency
       resultStatus: 1
-      duration: 0.0062993
+      duration: 0.005536
       messages: 
       output: 
       stacktrace: 
@@ -3216,7 +4559,7 @@ MonoBehaviour:
       name: TestInitPacketNetId
       fullName: VoicePacketInfoTest.TestInitPacketNetId
       resultStatus: 1
-      duration: 0.0077764
+      duration: 0.0050339
       messages: 
       output: 
       stacktrace: 
@@ -3228,7 +4571,7 @@ MonoBehaviour:
       name: TestInitPacketValidBool
       fullName: VoicePacketInfoTest.TestInitPacketValidBool
       resultStatus: 1
-      duration: 0.0044614
+      duration: 0.0057754
       messages: 
       output: 
       stacktrace: 
@@ -3240,7 +4583,7 @@ MonoBehaviour:
       name: TestInvaildPacketChannels
       fullName: VoicePacketInfoTest.TestInvaildPacketChannels
       resultStatus: 1
-      duration: 0.0042129
+      duration: 0.0053653
       messages: 
       output: 
       stacktrace: 
@@ -3252,7 +4595,7 @@ MonoBehaviour:
       name: TestInvaildPacketFormat
       fullName: VoicePacketInfoTest.TestInvaildPacketFormat
       resultStatus: 1
-      duration: 0.0050133
+      duration: 0.007341
       messages: 
       output: 
       stacktrace: 
@@ -3264,7 +4607,7 @@ MonoBehaviour:
       name: TestInvaildPacketFrequency
       fullName: VoicePacketInfoTest.TestInvaildPacketFrequency
       resultStatus: 1
-      duration: 0.0071182
+      duration: 0.005464
       messages: 
       output: 
       stacktrace: 
@@ -3276,7 +4619,7 @@ MonoBehaviour:
       name: TestInvaildPacketNetId
       fullName: VoicePacketInfoTest.TestInvaildPacketNetId
       resultStatus: 1
-      duration: 0.0048936
+      duration: 0.0020196
       messages: 
       output: 
       stacktrace: 
@@ -3288,7 +4631,7 @@ MonoBehaviour:
       name: TestInvaildPacketValidBool
       fullName: VoicePacketInfoTest.TestInvaildPacketValidBool
       resultStatus: 1
-      duration: 0.0039095
+      duration: 0.0048581
       messages: 
       output: 
       stacktrace: 
@@ -3300,7 +4643,7 @@ MonoBehaviour:
       name: VoidManipulatorTest
       fullName: VoidManipulatorTest
       resultStatus: 1
-      duration: 0.0002121
+      duration: 0.038264
       messages: 
       output: 
       stacktrace: 
@@ -3308,13 +4651,25 @@ MonoBehaviour:
       ignoredOrSkipped: 0
       description: 
       isSuite: 1
-    m_ResultText: VoiceDataWorkflowTest (10.882s)
+    - id: '[Assembly-CSharp-Editor][VoidManipulatorTest.TestValidFlag]'
+      name: TestValidFlag
+      fullName: VoidManipulatorTest.TestValidFlag
+      resultStatus: 1
+      duration: 0.0189487
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+    m_ResultText: TestPacketPayloadMaxSize (0.023s)
     m_ResultStacktrace: 
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6be06f90
-      m_LastClickedID: -1871716245
-      m_ExpandedIDs: 34360deaaecc6775ffffff7f
+      m_SelectedIDs: 3ea35a32
+      m_LastClickedID: 844800830
+      m_ExpandedIDs: 34360dea4343e21aaecc6775ffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 

@@ -11,11 +11,11 @@ namespace VOCASY.Common
         /// <summary>
         /// Header size
         /// </summary>
-        public const int FirstPacketByteAvailable = sizeof(uint) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
+        public const int FirstPacketByteAvailable = sizeof(ulong) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
         /// <summary>
         /// Max final packet length
         /// </summary>
-        public const int PLength = 1024;
+        public const int PLength = 5120;
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
@@ -62,9 +62,8 @@ namespace VOCASY.Common
         /// <param name="info">data info</param>
         public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
         {
-            toSend.CurrentSeek = 0;
+            toSend.CurrentSeek = sizeof(ulong);
             toSend.CurrentLength = 0;
-            toSend.Write(ReceiverId, 0);
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
@@ -73,7 +72,7 @@ namespace VOCASY.Common
 
             toSend.CurrentSeek = sizeof(ulong);
 
-            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength - sizeof(ulong), ReceiverId);
+            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength, ReceiverId);
 
         }
         /// <summary>
@@ -84,9 +83,8 @@ namespace VOCASY.Common
         /// <param name="receiverID">Receiver to which the packet should be sent</param>
         public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
         {
-            toSend.CurrentSeek = 0;
+            toSend.CurrentSeek = sizeof(ulong);
             toSend.CurrentLength = 0;
-            toSend.Write(receiverID, 0);
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
@@ -95,7 +93,7 @@ namespace VOCASY.Common
 
             toSend.CurrentSeek = sizeof(ulong);
 
-            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength - sizeof(ulong), receiverID);
+            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength, receiverID);
         }
         private void OnEnable()
         {
