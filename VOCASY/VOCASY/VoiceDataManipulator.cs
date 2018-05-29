@@ -36,8 +36,8 @@ namespace VOCASY
         /// <param name="info">data info</param>
         /// <param name="out_audioData">output array on which data will be written</param>
         /// <param name="out_audioDataOffset">output array start index</param>
-        /// <param name="dataCount">total number of bytes written</param>
-        public abstract void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount);
+        /// <returns>total number of floats written</returns>
+        public abstract int FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset);
         /// <summary>
         /// Processes a Gamepacket into audio data in format Int16
         /// </summary>
@@ -45,7 +45,7 @@ namespace VOCASY
         /// <param name="info">data info</param>
         /// <param name="out_audioData">output array on which data will be written</param>
         /// <param name="out_audioDataOffset">output array start index</param>
-        /// <param name="dataCount">total number of bytes written</param>
-        public abstract void FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount);
+        /// <returns>total number of bytes written</returns>
+        public abstract int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset);
     }
 }

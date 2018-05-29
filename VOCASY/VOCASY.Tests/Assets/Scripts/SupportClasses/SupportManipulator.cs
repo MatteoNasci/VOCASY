@@ -32,9 +32,9 @@ public class SupportManipulator : VoiceDataManipulator
             info = this.Info;
     }
 
-    public override void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset)
     {
-        dataCount = Mathf.Min(packet.CurrentLength - packet.CurrentSeek, out_audioData.Length - out_audioDataOffset);
+        int dataCount = Mathf.Min(packet.CurrentLength - packet.CurrentSeek, out_audioData.Length - out_audioDataOffset);
         for (int i = 0; i < dataCount / sizeof(float); i++)
         {
             out_audioData[i + out_audioDataOffset] = packet.ReadFloat();
@@ -42,14 +42,16 @@ public class SupportManipulator : VoiceDataManipulator
         FromPacketToAudio = true;
         if (UseInfo)
             info = this.Info;
+        return dataCount;
     }
 
-    public override void FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset)
     {
-        dataCount = Mathf.Min(packet.CurrentLength - packet.CurrentSeek, out_audioData.Length - out_audioDataOffset);
+        int dataCount = Mathf.Min(packet.CurrentLength - packet.CurrentSeek, out_audioData.Length - out_audioDataOffset);
         packet.ReadByteData(out_audioData, out_audioDataOffset, dataCount);
         FromPacketToAudioInt16 = true;
         if (UseInfo)
             info = this.Info;
+        return dataCount;
     }
 }

@@ -96,20 +96,19 @@ namespace VOCASY.Common
 
             bool useSingle = res == AudioDataTypeFlag.Single;
 
-            int count;
             //packet received Seek to zero to prepare for data manipulation
             packetBuffer.CurrentSeek = 0;
 
             //Different methods between Int16 and Single format. Data manipulation is done and, if no error occurred, audio data is sent to the handler in order to be used as output sound
             if (useSingle)
             {
-                Manipulator.FromPacketToAudioData(packetBuffer, ref info, dataBuffer, 0, out count);
+                int count = Manipulator.FromPacketToAudioData(packetBuffer, ref info, dataBuffer, 0);
                 if (info.ValidPacketInfo)
                     handler.ReceiveAudioData(dataBuffer, 0, count, info);
             }
             else
             {
-                Manipulator.FromPacketToAudioDataInt16(packetBuffer, ref info, dataBufferInt16, 0, out count);
+                int count = Manipulator.FromPacketToAudioDataInt16(packetBuffer, ref info, dataBufferInt16, 0);
                 if (info.ValidPacketInfo)
                     handler.ReceiveAudioDataInt16(dataBufferInt16, 0, count, info);
             }

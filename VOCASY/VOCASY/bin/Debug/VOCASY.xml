@@ -398,7 +398,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -406,9 +406,9 @@
             <param name="info">data info</param>
             <param name="out_audioData">output array on which data will be written</param>
             <param name="out_audioDataOffset">output array start index</param>
-            <param name="dataCount">total number of bytes written</param>
+            <returns>total number of floats written</returns>
         </member>
-        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.Common.VoidManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -416,7 +416,7 @@
             <param name="info">data info</param>
             <param name="out_audioData">output array on which data will be written</param>
             <param name="out_audioDataOffset">output array start index</param>
-            <param name="dataCount">total number of bytes written</param>
+            <returns>total number of bytes written</returns>
         </member>
         <member name="T:VOCASY.Common.NetworkIdentity">
             <summary>
@@ -468,7 +468,7 @@
             <param name="info">data info</param>
             <param name="output">gamepacket on which data will be written</param>
         </member>
-        <member name="M:VOCASY.VoiceDataManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.VoiceDataManipulator.FromPacketToAudioData(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Single[],System.Int32)">
             <summary>
             Processes a Gamepacket into audio data in format Single
             </summary>
@@ -476,9 +476,9 @@
             <param name="info">data info</param>
             <param name="out_audioData">output array on which data will be written</param>
             <param name="out_audioDataOffset">output array start index</param>
-            <param name="dataCount">total number of bytes written</param>
+            <returns>total number of floats written</returns>
         </member>
-        <member name="M:VOCASY.VoiceDataManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32,System.Int32@)">
+        <member name="M:VOCASY.VoiceDataManipulator.FromPacketToAudioDataInt16(GENUtility.BytePacket,VOCASY.VoicePacketInfo@,System.Byte[],System.Int32)">
             <summary>
             Processes a Gamepacket into audio data in format Int16
             </summary>
@@ -486,7 +486,7 @@
             <param name="info">data info</param>
             <param name="out_audioData">output array on which data will be written</param>
             <param name="out_audioDataOffset">output array start index</param>
-            <param name="dataCount">total number of bytes written</param>
+            <returns>total number of bytes written</returns>
         </member>
         <member name="T:VOCASY.VoiceDataTransport">
             <summary>
