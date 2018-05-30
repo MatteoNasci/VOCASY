@@ -409,7 +409,7 @@ public class ReceiverTest
 
         receiver.ReceiveAudioData(data, 0, 10, info);
         Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(7));
-    }/*
+    }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity()
     {
@@ -427,8 +427,8 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
-        Assert.That((recBuffer.GetValue(receiver) as float[])[1], Is.EqualTo(f).Within(0.0001));
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 1);
+        Assert.That((recBuffer.GetValue(receiver) as float[])[0], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity2()
@@ -467,8 +467,8 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
-        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 3);
+        Assert.That((recBuffer.GetValue(receiver) as float[])[0], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity4()
@@ -487,7 +487,7 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 1);
         Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
@@ -507,7 +507,7 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 1);
         Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
@@ -527,8 +527,8 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
-        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 5);
+        Assert.That((recBuffer.GetValue(receiver) as float[])[1], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity7()
@@ -547,8 +547,8 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
-        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 1);
+        Assert.That((recBuffer.GetValue(receiver) as float[])[8], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity8()
@@ -567,8 +567,8 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
-        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(f).Within(0.0001));
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 3);
+        Assert.That((recBuffer.GetValue(receiver) as float[])[8], Is.EqualTo(f).Within(0.0001));
     }
     [Test]
     public void TestReceiveAudioDataInt16DataIntegrity9()
@@ -587,9 +587,9 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 0);
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, 1);
         Assert.That((recBuffer.GetValue(receiver) as float[])[0], Is.EqualTo(f).Within(0.0001));
-    }*/
+    }
 
     [Test]
     public void TestReceiveAudioDataSingleBufferInit()
@@ -797,9 +797,9 @@ public class ReceiverTest
 
         receiver.ReceiveAudioData(data, 0, 10, info);
         Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(15));
-    }/*
+    }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate()
+    public void TestReceiveAudioDataSingleDataIntegrity()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -815,10 +815,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(20));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[1], Is.EqualTo(0).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate2()
+    public void TestReceiveAudioDataSingleDataIntegrity2()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -834,10 +834,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(10));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[5], Is.EqualTo(5).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate3()
+    public void TestReceiveAudioDataSingleDataIntegrity3()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -853,10 +853,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(3));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(9).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate4()
+    public void TestReceiveAudioDataSingleDataIntegrity4()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -872,10 +872,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(40));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(0).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate5()
+    public void TestReceiveAudioDataSingleDataIntegrity5()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -891,10 +891,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(20));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[2], Is.EqualTo(1).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate6()
+    public void TestReceiveAudioDataSingleDataIntegrity6()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -910,10 +910,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(7));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[1], Is.EqualTo(3).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate7()
+    public void TestReceiveAudioDataSingleDataIntegrity7()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -929,10 +929,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(80));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[8], Is.EqualTo(1).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate8()
+    public void TestReceiveAudioDataSingleDataIntegrity8()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -948,10 +948,10 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 0);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(40));
+        Assert.That((recBuffer.GetValue(receiver) as float[])[12], Is.EqualTo(3).Within(0.0001));
     }
     [Test]
-    public void TestReceiveAudioDataSingleWriteIndexUpdate9()
+    public void TestReceiveAudioDataSingleDataIntegrity9()
     {
         float[] data = new float[10];
         for (int i = 0; i < 10; i++)
@@ -967,6 +967,6 @@ public class ReceiverTest
         recWriteIndex.SetValue(receiver, 11999);
 
         receiver.ReceiveAudioData(data, 0, 10, info);
-        Assert.That(recWriteIndex.GetValue(receiver), Is.EqualTo(15));
-    }*/
+        Assert.That((recBuffer.GetValue(receiver) as float[])[0], Is.EqualTo(1).Within(0.0001));
+    }
 }
