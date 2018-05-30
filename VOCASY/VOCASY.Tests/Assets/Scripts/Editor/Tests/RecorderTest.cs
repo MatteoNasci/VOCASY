@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using VOCASY.Common;
 using VOCASY;
+using UnityEngine.TestTools;
 using System.Reflection;
 using GENUtility;
 using UnityEngine;
@@ -81,6 +82,18 @@ public class RecorderTest
         recIsEnabled.SetValue(recorder, true);
         recAwake.Invoke(recorder, new object[0]);
         Assert.That(recorder.IsEnabled, Is.False);
+    }
+    [Test]
+    public void TestInitClipValue()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        Assert.That(recClip.GetValue(recorder), Is.Null);
+    }
+    [Test]
+    public void TestBufferInitValue()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        Assert.That(recCyclicAudioBuffer.GetValue(recorder), Is.Null);
     }
     [Test]
     public void TestInitIsEnabledValue3()
@@ -344,5 +357,99 @@ public class RecorderTest
         recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
         Assert.That(recorder.IsEnabled, Is.False);
     }
-    //TODO : Start/stopRec , Update, GetMicData x2
+    [Test]
+    public void TestStartRecordingClipInit()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That(recClip.GetValue(recorder), Is.Not.Null);
+    }
+    [Test]
+    public void TestStartRecordingBufferInit()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That(recCyclicAudioBuffer.GetValue(recorder), Is.Not.Null);
+    }
+    [Test]
+    public void TestStartRecordingIsEnabled()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That(recorder.IsEnabled, Is.True);
+    }
+    [Test]
+    public void TestStartRecordingIsRecording()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+    }
+    [Test]
+    public void TestStartRecordingClipChannels()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That((recClip.GetValue(recorder) as AudioClip).channels, Is.EqualTo(1));
+    }
+    [Test]
+    public void TestStartRecordingIndexesSet()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recWriteIndex.SetValue(recorder, 5);
+        recReadIndex.SetValue(recorder, 11);
+        recorder.StartRecording();
+        Assert.That(recWriteIndex.GetValue(recorder), Is.EqualTo(0));
+    }
+    [Test]
+    public void TestStartRecordingIndexesSet2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recWriteIndex.SetValue(recorder, 5);
+        recReadIndex.SetValue(recorder, 11);
+        recorder.StartRecording();
+        Assert.That(recReadIndex.GetValue(recorder), Is.EqualTo(0));
+    }
+    [Test]
+    public void TestStartRecordingClipFreqRedLight()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That((recClip.GetValue(recorder) as AudioClip).frequency, Is.Not.EqualTo(0));
+    }
+    [Test]
+    public void TestStartRecordingClipDuration()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        Assert.That((recClip.GetValue(recorder) as AudioClip).length, Is.EqualTo(1).Within(0.00001));
+    }
+    [Test]
+    public void TestStopRecordingClipNull()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        recorder.StopRecording();
+        Assert.That(recClip.GetValue(recorder), Is.Null);
+    }
+    [Test]
+    public void TestStopRecordingIsEnabled()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        recorder.StopRecording();
+        Assert.That(recorder.IsEnabled, Is.False);
+    }
+    [Test]
+    public void TestStopRecordingIsNotRecording()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        recorder.StopRecording();
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+    }
+    //TODO : Update, GetMicData x2
 }
