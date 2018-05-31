@@ -739,7 +739,7 @@
         </member>
         <member name="F:VOCASY.VoiceHandler.Workflow">
             <summary>
-            Voice chat workflow
+            Workflow used by this handler
             </summary>
         </member>
         <member name="F:VOCASY.VoiceHandler.IsSelfOutputMuted">

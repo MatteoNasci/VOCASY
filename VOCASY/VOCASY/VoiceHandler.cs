@@ -7,7 +7,7 @@ namespace VOCASY
     public abstract class VoiceHandler : MonoBehaviour
     {
         /// <summary>
-        /// Voice chat workflow
+        /// Workflow used by this handler
         /// </summary>
         public VoiceDataWorkflow Workflow;
         /// <summary>

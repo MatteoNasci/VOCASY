@@ -15,6 +15,7 @@ using UnityEngine;
 [Category("VOCASY")]
 public class RecorderTest
 {
+    int frameNumber;
     GameObject go;
     Recorder recorder;
     SupportSettings settings;
@@ -41,6 +42,8 @@ public class RecorderTest
     [OneTimeSetUp]
     public void OneTimeSetupReflections()
     {
+        frameNumber = 15;
+
         Type t = typeof(Recorder);
         recIsEnabled = t.GetField("isEnabled", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recMinDevFrequency = t.GetField("minDevFrequency", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -554,168 +557,156 @@ public class RecorderTest
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.Not.EqualTo(0));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessValidPacket()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.True);
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessReadIndex()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(recReadIndex.GetValue(recorder), Is.Not.EqualTo(0));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessFormat()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Format, Is.EqualTo(AudioDataTypeFlag.Single));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Format == AudioDataTypeFlag.Single)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessChannels()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Channels, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).channels));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Channels == (recClip.GetValue(recorder) as AudioClip).channels)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessFrequency()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Frequency, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).frequency));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Frequency == (recClip.GetValue(recorder) as AudioClip).frequency)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessNetidDefault()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         float[] data = new float[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.NetId, Is.EqualTo(0));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).NetId != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoDataRecorded()
@@ -724,21 +715,20 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoDataRecorded2()
@@ -747,21 +737,19 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoSpace()
@@ -772,22 +760,20 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-
-        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoSpace2()
@@ -798,22 +784,20 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 0, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoSpace4()
@@ -824,22 +808,19 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 1000, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-
-        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataSingleNoSpace3()
@@ -850,166 +831,153 @@ public class RecorderTest
         float[] data = new float[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 0, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessCount()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.Not.EqualTo(0));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessValidPacket()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.True);
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessReadIndex()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(recReadIndex.GetValue(recorder), Is.Not.EqualTo(0));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessFormat()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Format, Is.EqualTo(AudioDataTypeFlag.Int16));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Format == AudioDataTypeFlag.Int16)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessChannels()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Channels, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).channels));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Channels == (recClip.GetValue(recorder) as AudioClip).channels)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessFrequency()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.Frequency, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).frequency));
+
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).Frequency == (recClip.GetValue(recorder) as AudioClip).frequency)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessNetidDefault()
@@ -1017,23 +985,21 @@ public class RecorderTest
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-
         byte[] data = new byte[1000];
         int effectiveCount;
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.NetId, Is.EqualTo(0));
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).NetId != 0)
+            {
+                success = true;
+                break;
+            }
+        }
+
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoDataRecorded()
@@ -1042,21 +1008,20 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        recUpdate.Invoke(recorder, new object[0]);
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoDataRecorded2()
@@ -1065,21 +1030,19 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        recUpdate.Invoke(recorder, new object[0]);
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoSpace()
@@ -1090,21 +1053,20 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoSpace2()
@@ -1115,21 +1077,20 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 0, out effectiveCount);
+            if (effectiveCount != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
-        Assert.That(effectiveCount, Is.EqualTo(0));
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoSpace4()
@@ -1140,21 +1101,19 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 1000, 1000, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoSpace3()
@@ -1165,21 +1124,19 @@ public class RecorderTest
         byte[] data = new byte[1000];
         int effectiveCount;
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if (recorder.GetMicData(data, 0, 0, out effectiveCount).ValidPacketInfo)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
-        Assert.That(info.ValidPacketInfo, Is.False);
+        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestUpdateSuccessPrevOffset()
@@ -1187,20 +1144,19 @@ public class RecorderTest
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if ((int)recPrevOffset.GetValue(recorder) != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        Assert.That(recPrevOffset.GetValue(recorder), Is.Not.EqualTo(0));
+        Assert.That(success, Is.True);
     }
     [UnityTest]
     public IEnumerator TestUpdateSuccessWriteIndex()
@@ -1208,19 +1164,18 @@ public class RecorderTest
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
 
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
-        yield return null;
-        recUpdate.Invoke(recorder, new object[0]);
+        bool success = false;
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if ((int)recWriteIndex.GetValue(recorder) != 0)
+            {
+                success = true;
+                break;
+            }
+        }
 
-        Assert.That(recWriteIndex.GetValue(recorder), Is.Not.EqualTo(0));
+        Assert.That(success, Is.True);
     }
 }
