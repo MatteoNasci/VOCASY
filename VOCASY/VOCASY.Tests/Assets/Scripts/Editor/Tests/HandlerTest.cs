@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VOCASY.Common;
+using UnityEngine;
+using UnityEngine.TestTools;
 using VOCASY;
 using GENUtility;
 [TestFixture]

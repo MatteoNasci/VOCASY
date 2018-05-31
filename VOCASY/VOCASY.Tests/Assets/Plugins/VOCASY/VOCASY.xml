@@ -321,6 +321,72 @@
             Saves current settings to file. If it is not performed changes to the settings will not be recorded
             </summary>
         </member>
+        <member name="T:VOCASY.Common.Transport">
+            <summary>
+            Class that fakes network state between self and another client. It should be used for tests and debug
+            </summary>
+        </member>
+        <member name="T:VOCASY.Common.Transport.SendToTarget">
+            <summary>
+            Delegate used when data is requested to be sent to a specific target
+            </summary>
+        </member>
+        <member name="T:VOCASY.Common.Transport.SendToAllTargets">
+            <summary>
+            delegate used when data is requested to be sent to all
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Transport.FirstPacketByteAvailable">
+            <summary>
+            Header size
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Transport.PLength">
+            <summary>
+            Max final packet length
+            </summary>
+        </member>
+        <member name="P:VOCASY.Common.Transport.MaxDataLength">
+            <summary>
+            Max data length that should be sent to this class
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Transport.SendToAction">
+            <summary>
+            Action invoked when data is requested to be sent to a specific target
+            </summary>
+        </member>
+        <member name="F:VOCASY.Common.Transport.SendToAllAction">
+            <summary>
+            Action invoked when data is requested to be sent to all
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Transport.ProcessReceivedData(GENUtility.BytePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
+            <summary>
+            Process packet data
+            </summary>
+            <param name="buffer">GamePacket of which data will be stored</param>
+            <param name="dataReceived">Raw data received from network</param>
+            <param name="startIndex">Raw data start index</param>
+            <param name="length">Raw data length</param>
+            <param name="netId">Sender net id</param>
+            <returns>data info</returns>
+        </member>
+        <member name="M:VOCASY.Common.Transport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
+            <summary>
+            Sends a packet to all the other clients that need it
+            </summary>
+            <param name="data">GamePacket that stores the data to send</param>
+            <param name="info">data info</param>
+        </member>
+        <member name="M:VOCASY.Common.Transport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
+            <summary>
+            Performs a normal SendToAllOthers to the given id
+            </summary>
+            <param name="data">GamePacket that stores the data to send</param>
+            <param name="info">data info</param>
+            <param name="receiverID">Receiver to which the packet should be sent</param>
+        </member>
         <member name="T:VOCASY.Common.Workflow">
             <summary>
             Class that manages the workflow of audio data from input to output

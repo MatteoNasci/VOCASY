@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using VOCASY.Common;
@@ -67,6 +68,8 @@ public class RecorderTest
     [TearDown]
     public void TeardownRecorder()
     {
+        LogAssert.ignoreFailingMessages = true;
+        recorder.StopRecording();
         recorder.Settings = null;
         ScriptableObject.DestroyImmediate(settings);
         GameObject.DestroyImmediate(go);
@@ -164,6 +167,12 @@ public class RecorderTest
         Assert.That(recIsEnabled.GetValue(recorder), Is.False);
     }
     [Test]
+    public void TestInitIsRecording()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+    }
+    [Test]
     public void TestInitOnFreqChangedSubscription()
     {
         settings.AudioQuality = FrequencyType.LowerThanAverageQuality;
@@ -205,6 +214,24 @@ public class RecorderTest
         recIsEnabled.SetValue(recorder, true);
         settings.AudioQuality = FrequencyType.HighQuality;
         Assert.That(recorder.IsEnabled, Is.True);
+    }
+    [Test]
+    public void TestInitOnFreqChangedSubscription8()
+    {
+        settings.AudioQuality = FrequencyType.LowerThanAverageQuality;
+        recAwake.Invoke(recorder, new object[0]);
+        recIsEnabled.SetValue(recorder, true);
+        settings.AudioQuality = FrequencyType.HighQuality;
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+    }
+    [Test]
+    public void TestInitOnFreqChangedSubscription9()
+    {
+        settings.AudioQuality = FrequencyType.LowerThanAverageQuality;
+        recAwake.Invoke(recorder, new object[0]);
+        recIsEnabled.SetValue(recorder, false);
+        settings.AudioQuality = FrequencyType.HighQuality;
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
     }
     [Test]
     public void TestInitOnFreqChangedSubscription4()
@@ -270,6 +297,24 @@ public class RecorderTest
         Assert.That(recorder.IsEnabled, Is.True);
     }
     [Test]
+    public void TestOnFreqChanged8()
+    {
+        recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
+        settings.AudioQuality = FrequencyType.LowerThanAverageQuality;
+        recIsEnabled.SetValue(recorder, true);
+        recOnFrequencyChanged.Invoke(recorder, new object[] { FrequencyType.BestQuality });
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+    }
+    [Test]
+    public void TestOnFreqChanged9()
+    {
+        recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
+        settings.AudioQuality = FrequencyType.LowerThanAverageQuality;
+        recIsEnabled.SetValue(recorder, false);
+        recOnFrequencyChanged.Invoke(recorder, new object[] { FrequencyType.BestQuality });
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+    }
+    [Test]
     public void TestOnFreqChanged4()
     {
         recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
@@ -326,6 +371,24 @@ public class RecorderTest
         Assert.That(recorder.IsEnabled, Is.False);
     }
     [Test]
+    public void TestInitOnMicDevChangedSubscription5()
+    {
+        settings.MicrophoneDevice = null;
+        recAwake.Invoke(recorder, new object[0]);
+        recIsEnabled.SetValue(recorder, false);
+        settings.MicrophoneDevice = "default";
+        Assert.That(Microphone.IsRecording("default"), Is.False);
+    }
+    [Test]
+    public void TestInitOnMicDevChangedSubscription6()
+    {
+        settings.MicrophoneDevice = null;
+        recAwake.Invoke(recorder, new object[0]);
+        recIsEnabled.SetValue(recorder, true);
+        settings.MicrophoneDevice = "default";
+        Assert.That(Microphone.IsRecording("default"), Is.True);
+    }
+    [Test]
     public void TestOnMicDevChanged()
     {
         settings.MicrophoneDevice = "default";
@@ -350,12 +413,28 @@ public class RecorderTest
         Assert.That(recorder.IsEnabled, Is.True);
     }
     [Test]
+    public void TestOnMicDevChanged5()
+    {
+        settings.MicrophoneDevice = "default";
+        recIsEnabled.SetValue(recorder, true);
+        recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+    }
+    [Test]
     public void TestOnMicDevChanged4()
     {
         settings.MicrophoneDevice = "default";
         recIsEnabled.SetValue(recorder, false);
         recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
         Assert.That(recorder.IsEnabled, Is.False);
+    }
+    [Test]
+    public void TestOnMicDevChanged6()
+    {
+        settings.MicrophoneDevice = "default";
+        recIsEnabled.SetValue(recorder, false);
+        recOnMicDeviceChanged.Invoke(recorder, new object[] { null });
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
     }
     [Test]
     public void TestStartRecordingClipInit()
@@ -451,5 +530,697 @@ public class RecorderTest
         recorder.StopRecording();
         Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
     }
-    //TODO : Update, GetMicData x2
+    [Test]
+    public void TestUpdateEarlyOutDisabled()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        recIsEnabled.SetValue(recorder, false);
+        recUpdate.Invoke(recorder, new object[0]);
+        Assert.That(recPrevOffset.GetValue(recorder), Is.EqualTo(0));
+    }
+    [Test]
+    public void TestUpdateEarlyOutNotRecording()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        recorder.StopRecording();
+        recUpdate.Invoke(recorder, new object[0]);
+        Assert.That(recPrevOffset.GetValue(recorder), Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessCount()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.Not.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessValidPacket()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.True);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessReadIndex()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(recReadIndex.GetValue(recorder), Is.Not.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessFormat()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Format, Is.EqualTo(AudioDataTypeFlag.Single));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessChannels()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Channels, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).channels));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessFrequency()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Frequency, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).frequency));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessNetidDefault()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        float[] data = new float[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.NetId, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoDataRecorded()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoDataRecorded2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoSpace()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+
+        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoSpace2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoSpace4()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+
+        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleNoSpace3()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessCount()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.Not.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessValidPacket()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.True);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessReadIndex()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(recReadIndex.GetValue(recorder), Is.Not.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessFormat()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Format, Is.EqualTo(AudioDataTypeFlag.Int16));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessChannels()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Channels, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).channels));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessFrequency()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.Frequency, Is.EqualTo((recClip.GetValue(recorder) as AudioClip).frequency));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessNetidDefault()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.NetId, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoDataRecorded()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+
+        recUpdate.Invoke(recorder, new object[0]);
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoDataRecorded2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+
+        recUpdate.Invoke(recorder, new object[0]);
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoSpace()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoSpace2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
+        Assert.That(effectiveCount, Is.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoSpace4()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 1000, 1000, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16NoSpace3()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        VoicePacketInfo info = recorder.GetMicData(data, 0, 0, out effectiveCount);
+        Assert.That(info.ValidPacketInfo, Is.False);
+    }
+    [UnityTest]
+    public IEnumerator TestUpdateSuccessPrevOffset()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        Assert.That(recPrevOffset.GetValue(recorder), Is.Not.EqualTo(0));
+    }
+    [UnityTest]
+    public IEnumerator TestUpdateSuccessWriteIndex()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+        yield return null;
+        recUpdate.Invoke(recorder, new object[0]);
+
+        Assert.That(recWriteIndex.GetValue(recorder), Is.Not.EqualTo(0));
+    }
 }
