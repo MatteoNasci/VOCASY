@@ -480,7 +480,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.True);
     }
@@ -503,7 +503,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(output[0], Is.EqualTo(0).Within(0.0001));
     }
@@ -526,7 +526,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(output[24], Is.EqualTo(24).Within(0.0001));
     }
@@ -549,7 +549,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(output[9], Is.EqualTo(9).Within(0.0001));
     }
@@ -587,7 +587,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.False);
     }
@@ -606,7 +606,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioData(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioData(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.False);
     }
@@ -682,7 +682,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.True);
     }
@@ -705,7 +705,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(output[0], Is.EqualTo(0).Within(0.0001));
     }
@@ -728,7 +728,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(output[24], Is.EqualTo(24).Within(0.0001));
     }
@@ -751,7 +751,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(output[9], Is.EqualTo(9).Within(0.0001));
     }
@@ -789,7 +789,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.False);
     }
@@ -808,7 +808,7 @@ public class VoidManipulatorTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
 
-        int count = manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
+        manipulator.FromPacketToAudioDataInt16(packet, ref info, output, 0);
 
         Assert.That(info.ValidPacketInfo, Is.False);
     }

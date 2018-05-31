@@ -8,8 +8,10 @@ public class SupportWorkflow : VoiceDataWorkflow
 {
     public byte[] receivedData;
     public ulong receivedID;
+    public Dictionary<ulong, VoiceHandler> Handlers = new Dictionary<ulong, VoiceHandler>();
     public override void AddVoiceHandler(VoiceHandler handler)
     {
+        Handlers.Add(handler.NetID, handler);
     }
 
     public override void Initialize()
@@ -29,5 +31,6 @@ public class SupportWorkflow : VoiceDataWorkflow
 
     public override void RemoveVoiceHandler(VoiceHandler handler)
     {
+        Handlers.Remove(handler.NetID);
     }
 }

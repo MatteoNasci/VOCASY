@@ -470,7 +470,7 @@ public class TransportTest
         BytePacket buffer = new BytePacket(20);
         byte[] receivedData = new byte[20];
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.CurrentLength, Is.EqualTo(16));
     }
     [Test]
@@ -479,7 +479,7 @@ public class TransportTest
         BytePacket buffer = new BytePacket(20);
         byte[] receivedData = new byte[20];
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.CurrentLength, Is.Not.EqualTo(20));
     }
     [Test]
@@ -612,7 +612,7 @@ public class TransportTest
         ByteManipulator.Write(receivedData, 3, (byte)99);
         ByteManipulator.Write(receivedData, 4, (int)7788);
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(0), Is.EqualTo(7788));
     }
     [Test]
@@ -625,7 +625,7 @@ public class TransportTest
         ByteManipulator.Write(receivedData, 3, (byte)99);
         ByteManipulator.Write(receivedData, 4, (int)7788);
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(0), Is.Not.EqualTo(0));
     }
     [Test]
@@ -638,7 +638,7 @@ public class TransportTest
         ByteManipulator.Write(receivedData, 3, (byte)99);
         ByteManipulator.Write(receivedData, 15, (int)77889);
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(11), Is.EqualTo(77889));
     }
     [Test]
@@ -651,7 +651,7 @@ public class TransportTest
         ByteManipulator.Write(receivedData, 3, (byte)99);
         ByteManipulator.Write(receivedData, 15, (int)77889);
         ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
+        transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(11), Is.Not.EqualTo(0));
     }
 }

@@ -22,8 +22,8 @@ public class RecorderTest
 
     FieldInfo recIsEnabled;
 
-    FieldInfo recMinDevFrequency;
-    FieldInfo recMaxDevFrequency;
+    //FieldInfo recMinDevFrequency;
+    //FieldInfo recMaxDevFrequency;
 
     FieldInfo recClip;
     FieldInfo recPrevOffset;
@@ -34,7 +34,7 @@ public class RecorderTest
 
     MethodInfo recUpdate;
     MethodInfo recAwake;
-    MethodInfo recOnDestroy;
+    //MethodInfo recOnDestroy;
 
     MethodInfo recOnFrequencyChanged;
     MethodInfo recOnMicDeviceChanged;
@@ -46,8 +46,8 @@ public class RecorderTest
 
         Type t = typeof(Recorder);
         recIsEnabled = t.GetField("isEnabled", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        recMinDevFrequency = t.GetField("minDevFrequency", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        recMaxDevFrequency = t.GetField("maxDevFrequency", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        //recMinDevFrequency = t.GetField("minDevFrequency", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        //recMaxDevFrequency = t.GetField("maxDevFrequency", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recClip = t.GetField("clip", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recPrevOffset = t.GetField("prevOffset", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recCyclicAudioBuffer = t.GetField("cyclicAudioBuffer", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -56,7 +56,7 @@ public class RecorderTest
 
         recUpdate = t.GetMethod("Update", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recAwake = t.GetMethod("Awake", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        recOnDestroy = t.GetMethod("OnDestroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        //recOnDestroy = t.GetMethod("OnDestroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recOnFrequencyChanged = t.GetMethod("OnFrequencyChanged", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         recOnMicDeviceChanged = t.GetMethod("OnMicDeviceChanged", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
