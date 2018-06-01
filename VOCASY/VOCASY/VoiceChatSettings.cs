@@ -245,6 +245,14 @@ namespace VOCASY
         /// Saves current settings to file. If it is not performed changes to the settings will not be recorded
         /// </summary>
         public abstract void SaveCurrentSettings();
+        /// <summary>
+        /// This method indicates whenever the PTT has been activated
+        /// </summary>
+        /// <returns>true if PTT is active</returns>
+        public virtual bool IsPushToTalkOn()
+        {
+            return pushToTalk && Input.GetKey(PushToTalkKey);
+        }
 
         /// <summary>
         /// Initializes paths and gets values from file

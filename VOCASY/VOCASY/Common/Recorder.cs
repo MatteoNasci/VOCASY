@@ -94,7 +94,7 @@ namespace VOCASY.Common
 
             for (int i = bufferOffset; i < l; i += sizeof(short))
             {
-                ByteManipulator.Write(buffer, i, (short)Mathf.Lerp(short.MinValue, short.MaxValue, cyclicAudioBuffer[readIndex]));
+                ByteManipulator.Write(buffer, i, (short)Mathf.LerpUnclamped(0, short.MaxValue, cyclicAudioBuffer[readIndex]));
 
                 readIndex++;
                 if (readIndex >= cyclicAudioBuffer.Length)

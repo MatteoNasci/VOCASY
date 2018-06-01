@@ -112,7 +112,7 @@ namespace VOCASY.Common
         }
         private void PTTOnUpdate()
         {
-            if (Input.GetKey(Workflow.Settings.PushToTalkKey))
+            if (Workflow.Settings.IsPushToTalkOn())
             {
                 //if ptt key is pressed and recorder is not recording start recording
                 if (!Recorder.IsEnabled)

@@ -986,14 +986,14 @@ public class RecorderTest
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-        byte[] data = new byte[1000];
+        byte[] data = new byte[100];
         int effectiveCount;
 
         for (int i = 0; i < frameNumber; i++)
         {
             yield return null;
             recUpdate.Invoke(recorder, new object[0]);
-            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            recorder.GetMicData(data, 0, 100, out effectiveCount);
             if ((int)recReadIndex.GetValue(recorder) != 0)
             {
                 break;
@@ -1001,22 +1001,23 @@ public class RecorderTest
         }
 
         float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, 0));
-        Assert.That(cyclic[0], Is.EqualTo(f).Within(0.00001));
+        short f = ByteManipulator.ReadInt16(data, 0);
+        short other = (short)Mathf.LerpUnclamped(0, short.MaxValue, cyclic[0]);
+        Assert.That(other, Is.EqualTo(f));
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessDataIntegrity2()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-        byte[] data = new byte[1000];
+        byte[] data = new byte[100];
         int effectiveCount;
 
         for (int i = 0; i < frameNumber; i++)
         {
             yield return null;
             recUpdate.Invoke(recorder, new object[0]);
-            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            recorder.GetMicData(data, 0, 100, out effectiveCount);
             if ((int)recReadIndex.GetValue(recorder) != 0)
             {
                 break;
@@ -1025,22 +1026,23 @@ public class RecorderTest
 
         int index = (int)recReadIndex.GetValue(recorder) - 1;
         float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, (index / 2) * 2));
-        Assert.That(cyclic[index / 2], Is.EqualTo(f).Within(0.00001));
+        short f = ByteManipulator.ReadInt16(data, (index / 2) * 2);
+        short other = (short)Mathf.LerpUnclamped(0, short.MaxValue, cyclic[index / 2]);
+        Assert.That(other, Is.EqualTo(f));
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessDataIntegrity3()
     {
         recAwake.Invoke(recorder, new object[0]);
         recorder.StartRecording();
-        byte[] data = new byte[1000];
+        byte[] data = new byte[100];
         int effectiveCount;
 
         for (int i = 0; i < frameNumber; i++)
         {
             yield return null;
             recUpdate.Invoke(recorder, new object[0]);
-            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            recorder.GetMicData(data, 0, 100, out effectiveCount);
             if ((int)recReadIndex.GetValue(recorder) != 0)
             {
                 break;
@@ -1049,8 +1051,9 @@ public class RecorderTest
 
         int index = (int)recReadIndex.GetValue(recorder) - 1;
         float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
-        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, index * 2));
-        Assert.That(cyclic[index], Is.EqualTo(f).Within(0.00001));
+        short f = ByteManipulator.ReadInt16(data, index * 2);
+        short other = (short)Mathf.LerpUnclamped(0, short.MaxValue, cyclic[index]);
+        Assert.That(other, Is.EqualTo(f).Within(0.0001));
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessFormat()

@@ -151,7 +151,7 @@ namespace VOCASY.Common
             //resets stored data
             readIndex = 0;
             writeIndex = 0;
-            
+
             source.Stop();
             source.enabled = false;
         }

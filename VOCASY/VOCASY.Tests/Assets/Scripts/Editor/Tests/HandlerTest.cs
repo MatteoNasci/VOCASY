@@ -383,5 +383,67 @@ public class HandlerTest
         Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
         recorder.StopRecording();
     }
-    //TODO: Update , NormalUpdate , InitUpdate , PTTOnUpdate , PTTOffUpdate , ReceiveAudioData x2 , GetMicData x2
+    [Test]
+    public void TestPTTOffUpdate()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StopRecording();
+        handlerPTTOffUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestPTTOffUpdate2()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerPTTOffUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestPTTOnUpdate()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StopRecording();
+        handlerPTTOnUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestPTTOnUpdate2()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerPTTOnUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestPTTOnUpdate3()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.IsPTTOn = () => true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StopRecording();
+        handlerPTTOnUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestPTTOnUpdate4()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.IsPTTOn = () => true;
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerPTTOnUpdate.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    //TODO: Update , NormalUpdate , InitUpdate , ReceiveAudioData x2 , GetMicData x2
 }
