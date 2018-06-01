@@ -621,6 +621,74 @@ public class RecorderTest
         Assert.That(success, Is.True);
     }
     [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessDataIntegrity()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        Assert.That(cyclic[0], Is.EqualTo(data[0]).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessDataIntegrity2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        int index = (int)recReadIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        Assert.That(cyclic[index / 2], Is.EqualTo(data[index / 2]).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataSingleSuccessDataIntegrity3()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        float[] data = new float[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        int index = (int)recReadIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        Assert.That(cyclic[index], Is.EqualTo(data[index]).Within(0.00001));
+    }
+    [UnityTest]
     public IEnumerator TestGetMicDataSingleSuccessFormat()
     {
         recAwake.Invoke(recorder, new object[0]);
@@ -914,6 +982,77 @@ public class RecorderTest
         Assert.That(success, Is.True);
     }
     [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessDataIntegrity()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, 0));
+        Assert.That(cyclic[0], Is.EqualTo(f).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessDataIntegrity2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        int index = (int)recReadIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, (index / 2) * 2));
+        Assert.That(cyclic[index / 2], Is.EqualTo(f).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestGetMicDataInt16SuccessDataIntegrity3()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+        byte[] data = new byte[1000];
+        int effectiveCount;
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            recorder.GetMicData(data, 0, 1000, out effectiveCount);
+            if ((int)recReadIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+
+        int index = (int)recReadIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        float f = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(data, index * 2));
+        Assert.That(cyclic[index], Is.EqualTo(f).Within(0.00001));
+    }
+    [UnityTest]
     public IEnumerator TestGetMicDataInt16SuccessFormat()
     {
         recAwake.Invoke(recorder, new object[0]);
@@ -1177,5 +1316,71 @@ public class RecorderTest
         }
 
         Assert.That(success, Is.True);
+    }
+    [UnityTest]
+    public IEnumerator TestUpdateSuccessCorrectData()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if ((int)recWriteIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+        int index = (int)recWriteIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        AudioClip clip = recClip.GetValue(recorder) as AudioClip;
+        float[] temp = new float[index + 2];
+        clip.GetData(temp, 0);
+        Assert.That(temp[index], Is.EqualTo(cyclic[index]).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestUpdateSuccessCorrectData2()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if ((int)recWriteIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+        int index = (int)recWriteIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        AudioClip clip = recClip.GetValue(recorder) as AudioClip;
+        float[] temp = new float[index + 2];
+        clip.GetData(temp, 0);
+        Assert.That(temp[index / 2], Is.EqualTo(cyclic[index / 2]).Within(0.00001));
+    }
+    [UnityTest]
+    public IEnumerator TestUpdateSuccessCorrectData3()
+    {
+        recAwake.Invoke(recorder, new object[0]);
+        recorder.StartRecording();
+
+        for (int i = 0; i < frameNumber; i++)
+        {
+            yield return null;
+            recUpdate.Invoke(recorder, new object[0]);
+            if ((int)recWriteIndex.GetValue(recorder) != 0)
+            {
+                break;
+            }
+        }
+        int index = (int)recWriteIndex.GetValue(recorder) - 1;
+        float[] cyclic = recCyclicAudioBuffer.GetValue(recorder) as float[];
+        AudioClip clip = recClip.GetValue(recorder) as AudioClip;
+        float[] temp = new float[index + 2];
+        clip.GetData(temp, 0);
+        Assert.That(temp[0], Is.EqualTo(cyclic[0]).Within(0.00001));
     }
 }
