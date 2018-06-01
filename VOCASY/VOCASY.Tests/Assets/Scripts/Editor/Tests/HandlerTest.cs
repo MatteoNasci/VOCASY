@@ -186,6 +186,22 @@ public class HandlerTest
         Assert.That(handler.enabled, Is.False);
     }
     [Test]
+    public void TestOnVoiceChatEnabledChanged3()
+    {
+        handler.enabled = false;
+        settings.VoiceChatEnabled = true;
+        handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.True);
+    }
+    [Test]
+    public void TestOnVoiceChatEnabledChanged4()
+    {
+        handler.enabled = true;
+        settings.VoiceChatEnabled = false;
+        handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
+    }
+    [Test]
     public void TestOnEnableNonInit()
     {
         settings.VoiceChatEnabled = true;
@@ -445,5 +461,300 @@ public class HandlerTest
         Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
         recorder.StopRecording();
     }
-    //TODO: Update , NormalUpdate , InitUpdate , ReceiveAudioData x2 , GetMicData x2
+    [Test]
+    public void TestInitUpdateEarlyOut()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = null;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handlerInitialized.GetValue(handler), Is.False);
+    }
+    [Test]
+    public void TestInitUpdateEarlyOut2()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = false;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handlerInitialized.GetValue(handler), Is.False);
+    }
+    [Test]
+    public void TestInitUpdateSuccessInitialized()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handlerInitialized.GetValue(handler), Is.True);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateNullRefException()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Receiver = null;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as NullReferenceException, Is.Not.Null);
+        }
+        finally
+        {
+            handler.Receiver = receiver;
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateNullRefException2()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Recorder = null;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as NullReferenceException, Is.Not.Null);
+        }
+        finally
+        {
+            handler.Recorder = recorder;
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateArgExceptionCompatibility()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.Int16;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Single;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as ArgumentException, Is.Not.Null);
+        }
+        finally
+        {
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateArgExceptionCompatibility2()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.Single;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Int16;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as ArgumentException, Is.Not.Null);
+        }
+        finally
+        {
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateArgExceptionCompatibility3()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.None;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Single;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as ArgumentException, Is.Not.Null);
+        }
+        finally
+        {
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateArgExceptionCompatibility4()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.None;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.None;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as ArgumentException, Is.Not.Null);
+        }
+        finally
+        {
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateArgExceptionCompatibility5()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.None;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Both;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        try
+        {
+            handlerInitUpdate.Invoke(handler, empty);
+        }
+        catch (TargetInvocationException e)
+        {
+            Assert.That(e.InnerException as ArgumentException, Is.Not.Null);
+        }
+        finally
+        {
+            handlerOnDisable.Invoke(handler, empty);
+        }
+    }
+    [Test]
+    public void TestInitUpdateAvailableTypesValue()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.Int16;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Both;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.AvailableTypes, Is.EqualTo(AudioDataTypeFlag.Int16));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateAvailableTypesValue2()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.Both;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Both;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.AvailableTypes, Is.EqualTo(AudioDataTypeFlag.Both));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateAvailableTypesValue3()
+    {
+        SupportReceiver rece = go.AddComponent<SupportReceiver>();
+        rece.Flag = AudioDataTypeFlag.Both;
+        SupportRecorder reco = go.AddComponent<SupportRecorder>();
+        reco.Flag = AudioDataTypeFlag.Single;
+        handler.Receiver = rece;
+        handler.Recorder = reco;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.AvailableTypes, Is.EqualTo(AudioDataTypeFlag.Single));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateOnEnableInvoked()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(workflow.Handlers.Count, Is.EqualTo(1));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestUpdateInitVersion()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Identity.IsLocalPlayer = true;
+        handlerUpdate.Invoke(handler, empty);
+        Assert.That(workflow.Handlers.Count, Is.EqualTo(1));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestUpdateNormalVersion()
+    {
+        SupportReceiver rec = go.AddComponent<SupportReceiver>();
+        rec.Volume = 1f;
+        handler.Receiver = rec;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, true);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Identity.IsLocalPlayer = false;
+        handler.SelfOutputVolume = 0.5f;
+        settings.VoiceChatVolume = 0.5f;
+        handlerUpdate.Invoke(handler, empty);
+        Assert.That(handler.Receiver.Volume, Is.EqualTo(0.25).Within(0.00001));
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    //TODO: NormalUpdate , ReceiveAudioData x2 , GetMicData x2
 }
