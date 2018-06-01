@@ -34,6 +34,8 @@ public class HandlerTest
     MethodInfo handlerOnDisable;
     MethodInfo handlerAwake;
 
+    MethodInfo recorderAwake;
+
     object[] empty;
     //MethodInfo handlerOnDestroy;
     [OneTimeSetUp]
@@ -52,6 +54,8 @@ public class HandlerTest
         handlerOnDisable = t.GetMethod("OnDisable", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         handlerAwake = t.GetMethod("Awake", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         //handlerOnDestroy = t.GetMethod("OnDestroy", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+        recorderAwake = typeof(Recorder).GetMethod("Awake", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
     [SetUp]
     public void SetupVoiceHandler()
@@ -61,7 +65,9 @@ public class HandlerTest
         settings = ScriptableObject.CreateInstance<SupportSettings>();
         workflow.Settings = settings;
         recorder = go.AddComponent<Recorder>();
+        recorder.Settings = settings;
         receiver = go.AddComponent<Receiver>();
+        receiver.Settings = settings;
         handler = go.AddComponent<Handler>();
         handler.Recorder = recorder;
         handler.Receiver = receiver;
@@ -245,5 +251,137 @@ public class HandlerTest
         handlerOnEnable.Invoke(handler, empty);
         Assert.That(receiver.enabled, Is.False);
     }
-    //TODO: OnDisable , Update , NormalUpdate , InitUpdate , PTTOnUpdate , PTTOffUpdate , ReceiveAudioData x2 , GetMicData x2
+    [Test]
+    public void TestOnDisableNonInit()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        workflow.AddVoiceHandler(handler);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(workflow.Handlers.Count, Is.EqualTo(1));
+    }
+    [Test]
+    public void TestOnDisableNonInit2()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        recorder.enabled = true;
+        handlerInitialized.SetValue(handler, false);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(recorder.enabled, Is.True);
+    }
+    [Test]
+    public void TestOnDisableNonInit3()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        receiver.enabled = true;
+        handlerInitialized.SetValue(handler, false);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(receiver.enabled, Is.True);
+    }
+    [Test]
+    public void TestOnDisableNonInit4()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerInitialized.SetValue(handler, false);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestOnDisableNonInit5()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = false;
+        handlerAwake.Invoke(handler, empty);
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerInitialized.SetValue(handler, false);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestOnDisableInit()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        workflow.AddVoiceHandler(handler);
+        handlerInitialized.SetValue(handler, true);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(workflow.Handlers.Count, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestOnDisableInit2()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        recorder.enabled = true;
+        handlerInitialized.SetValue(handler, true);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(recorder.enabled, Is.False);
+    }
+    [Test]
+    public void TestOnDisableInit3()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        receiver.enabled = true;
+        handlerInitialized.SetValue(handler, true);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(receiver.enabled, Is.False);
+    }
+    [Test]
+    public void TestOnDisableInit4()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = true;
+        handlerAwake.Invoke(handler, empty);
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerInitialized.SetValue(handler, true);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.False);
+        recorder.StopRecording();
+    }
+    [Test]
+    public void TestOnDisableInit5()
+    {
+        LogAssert.ignoreFailingMessages = true;
+        settings.VoiceChatEnabled = true;
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsLocalPlayer = false;
+        handlerAwake.Invoke(handler, empty);
+        recorderAwake.Invoke(recorder, empty);
+        recorder.StartRecording();
+        handlerInitialized.SetValue(handler, true);
+        handlerOnDisable.Invoke(handler, empty);
+        Assert.That(Microphone.IsRecording(settings.MicrophoneDevice), Is.True);
+        recorder.StopRecording();
+    }
+    //TODO: Update , NormalUpdate , InitUpdate , PTTOnUpdate , PTTOffUpdate , ReceiveAudioData x2 , GetMicData x2
 }
