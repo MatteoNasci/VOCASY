@@ -43,6 +43,18 @@ namespace VOCASY
         /// <param name="handler">handler which has available mic data</param>
         public abstract void ProcessMicData(VoiceHandler handler);
         /// <summary>
+        /// Processes the ismuted message received
+        /// </summary>
+        /// <param name="isSelfMuted">true if local slient has been muted by the sender</param>
+        /// <param name="senderID">message sender id</param>
+        public abstract void ProcessIsMutedMessage(bool isSelfMuted, ulong senderID);
+        /// <summary>
+        /// Informs the workflow whenever an handler has been muted
+        /// </summary>
+        /// <param name="handlerNetId">handler obj net id</param>
+        /// <param name="isMuted">is the handler muted</param>
+        public abstract void IsHandlerMuted(ulong handlerNetId, bool isMuted);
+        /// <summary>
         /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill a new call to this method is made with setted fields
         /// </summary>
         public abstract void Initialize();

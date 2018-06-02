@@ -24,6 +24,10 @@ namespace VOCASY.Common
         /// To which id fake packets should be sent
         /// </summary>
         public ulong ReceiverId;
+        /// <summary>
+        /// Voice chat workflow
+        /// </summary>
+        public VoiceDataWorkflow Workflow;
 
         [SerializeField]
         private int packetDataSize = PLength - FirstPacketByteAvailable;
@@ -94,6 +98,14 @@ namespace VOCASY.Common
             toSend.CurrentSeek = sizeof(ulong);
 
             Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength, receiverID);
+        }
+        /// <summary>
+        /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client. Does nothing here
+        /// </summary>
+        /// <param name="receiverID">Receiver to which the packet should be sent</param>
+        /// <param name="isReceiverMutedByLocal">True if receiver is muted and can avoid sending voice chat packets to the local client</param>
+        public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
+        {
         }
         private void OnEnable()
         {

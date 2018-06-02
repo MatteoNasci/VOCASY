@@ -13,11 +13,6 @@ namespace VOCASY
         public abstract int MaxDataLength { get; }
 
         /// <summary>
-        /// Voice chat workflow
-        /// </summary>
-        public VoiceDataWorkflow Workflow;
-
-        /// <summary>
         /// Process packet data
         /// </summary>
         /// <param name="buffer">GamePacket of which data will be stored</param>
@@ -40,5 +35,11 @@ namespace VOCASY
         /// <param name="info">data info</param>
         /// <param name="receiverID">Receiver to which the packet should be sent</param>
         public abstract void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID);
+        /// <summary>
+        /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client
+        /// </summary>
+        /// <param name="receiverID">Receiver to which the packet should be sent</param>
+        /// <param name="isReceiverMutedByLocal">True if receiver is muted and can avoid sending voice chat packets to the local client</param>
+        public abstract void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal);
     }
 }

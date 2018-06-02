@@ -3,7 +3,7 @@ using GENUtility;
 namespace VOCASY.Common
 {
     /// <summary>
-    /// Class that fakes network state between self and another client. It should be used for tests and debug
+    /// Class that manages the transport side of the Voice Chat Workflow.
     /// </summary>
     [CreateAssetMenu(fileName = "Transport", menuName = "VOCASY/DataTransports/Transport")]
     public class Transport : VoiceDataTransport
@@ -11,11 +11,24 @@ namespace VOCASY.Common
         /// <summary>
         /// Delegate used when data is requested to be sent to a specific target
         /// </summary>
+        /// <param name="data">data to send</param>
+        /// <param name="startIndex">data start index</param>
+        /// <param name="length">data length</param>
+        /// <param name="target">target to send packet</param>
         public delegate void SendToTarget(byte[] data, int startIndex, int length, ulong target);
         /// <summary>
-        /// delegate used when data is requested to be sent to all
+        /// Delegate used when data is requested to be sent to all
         /// </summary>
+        /// <param name="data">data to send</param>
+        /// <param name="startIndex">data start index</param>
+        /// <param name="length">data length</param>
         public delegate void SendToAllTargets(byte[] data, int startIndex, int length);
+        /// <summary>
+        /// Delegate used to send a packet message to the target informing him whenever he has been muted/unmuted by the local client.
+        /// </summary>
+        /// <param name="targetID">Target to which the packet should be sent</param>
+        /// <param name="isTargetMutedByLocal">True if target is muted and can avoid sending voice chat packets to the local client</param>
+        public delegate void SendMessageIsMutedToTarget(ulong targetID, bool isTargetMutedByLocal);
         /// <summary>
         /// Header size
         /// </summary>
@@ -36,9 +49,37 @@ namespace VOCASY.Common
         /// Action invoked when data is requested to be sent to all
         /// </summary>
         public SendToAllTargets SendToAllAction;
+        /// <summary>
+        /// Action invoked when an ismuted message is requested to be sent to a target
+        /// </summary>
+        public SendMessageIsMutedToTarget SendMsgTo;
+        /// <summary>
+        /// Voice chat workflow
+        /// </summary>
+        public VoiceDataWorkflow Workflow;
 
         private BytePacket toSend;
 
+        /// <summary>
+        /// Processes the ismuted message received
+        /// </summary>
+        /// <param name="isSelfMuted">true if local slient has been muted by the sender</param>
+        /// <param name="senderID">message sender id</param>
+        public void ProcessNetworkIsMutedMessage(bool isSelfMuted, ulong senderID)
+        {
+            Workflow.ProcessIsMutedMessage(isSelfMuted, senderID);
+        }
+        /// <summary>
+        /// Process the received packet data.
+        /// </summary>
+        /// <param name="receivedData">received raw data</param>
+        /// <param name="startIndex">received raw data start index</param>
+        /// <param name="length">received raw data length</param>
+        /// <param name="netId">sender net id</param>
+        public void ProcessNetworkReceivedPacket(byte[] receivedData, int startIndex, int length, ulong netId)
+        {
+            Workflow.ProcessReceivedPacket(receivedData, startIndex, length, netId);
+        }
         /// <summary>
         /// Process packet data
         /// </summary>
@@ -83,7 +124,7 @@ namespace VOCASY.Common
             SendToAllAction?.Invoke(toSend.Data, 0, toSend.CurrentLength);
         }
         /// <summary>
-        /// Performs a normal SendToAllOthers to the given id
+        /// Sends a packet to the given target
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
@@ -101,6 +142,16 @@ namespace VOCASY.Common
 
             SendToAction?.Invoke(toSend.Data, 0, toSend.CurrentLength, receiverID);
         }
+        /// <summary>
+        /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client.
+        /// </summary>
+        /// <param name="receiverID">Receiver to which the packet should be sent</param>
+        /// <param name="isReceiverMutedByLocal">True if receiver is muted and can avoid sending voice chat packets to the local client</param>
+        public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
+        {
+            SendMsgTo?.Invoke(receiverID, isReceiverMutedByLocal);
+        }
+
         private void OnEnable()
         {
             toSend = new BytePacket(MaxDataLength);

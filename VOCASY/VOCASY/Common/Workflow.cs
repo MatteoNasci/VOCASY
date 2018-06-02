@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GENUtility;
+using System.IO;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -10,6 +11,30 @@ namespace VOCASY.Common
     [CreateAssetMenu(fileName = "VoiceManager", menuName = "VOCASY/Workflow")]
     public class Workflow : VoiceDataWorkflow
     {
+        /// <summary>
+        /// Folder used to store data
+        /// </summary>
+        public const string FolderName = "Comminucation";
+        /// <summary>
+        /// File name used to store ids
+        /// </summary>
+        public const string FileName1 = "MuteStatusesIds.txt";
+        /// <summary>
+        /// File name used to store mute statuses
+        /// </summary>
+        public const string FileName2 = "MuteStatuses.txt";
+        /// <summary>
+        /// Full path to file storing ids
+        /// </summary>
+        public string SavedDataFilePath1 { get; private set; }
+        /// <summary>
+        /// Full path to file storing statuses
+        /// </summary>
+        public string SavedDataFilePath2 { get; private set; }
+        /// <summary>
+        /// Full path to folder holding saved files
+        /// </summary>
+        public string SavedDataFolderPath { get; private set; }
         /// <summary>
         /// Format to use. This is only a preference and will only be followed when more than 1 format is available for use in the current setup. It can only refer to a single format
         /// </summary>
@@ -23,9 +48,16 @@ namespace VOCASY.Common
                 formatToUse = value;
             }
         }
+        /// <summary>
+        /// True if you wish to use files to hold net ids and their last saved mute statuses.
+        /// </summary>
+        public bool UseStoredIdsStatuses = true;
+
         private AudioDataTypeFlag formatToUse = AudioDataTypeFlag.Int16;
 
         private Dictionary<ulong, VoiceHandler> handlers;
+
+        private Dictionary<ulong, MuteStatus> mutedIds;
 
         private float[] dataBuffer;
         private byte[] dataBufferInt16;
@@ -43,8 +75,11 @@ namespace VOCASY.Common
             if (res == AudioDataTypeFlag.None)
                 throw new ArgumentException("the given handler type is incompatible with the current audio data manipulator");
 
+            ulong id = handler.NetID;
             //handler is added and callback for when mic data is available is set on the handler
-            handlers.Add(handler.NetID, handler);
+            handlers.Add(id, handler);
+
+            IsHandlerMuted(id, handler.IsOutputMuted);
         }
         /// <summary>
         /// Removes the handler
@@ -163,11 +198,84 @@ namespace VOCASY.Common
             }
         }
         /// <summary>
+        /// Processes the ismuted message received
+        /// </summary>
+        /// <param name="isSelfMuted">true if local slient has been muted by the sender</param>
+        /// <param name="senderID">message sender id</param>
+        public override void ProcessIsMutedMessage(bool isSelfMuted, ulong senderID)
+        {
+            if (!mutedIds.ContainsKey(senderID))
+                mutedIds.Add(senderID, MuteStatus.None);
+
+            MuteStatus curr = mutedIds[senderID];
+
+            mutedIds[senderID] = isSelfMuted ? curr | MuteStatus.RemoteHasMutedLocal : curr & ~MuteStatus.RemoteHasMutedLocal;
+        }
+        /// <summary>
+        /// Informs the workflow whenever an handler has been muted
+        /// </summary>
+        /// <param name="handlerNetId">handler obj net id</param>
+        /// <param name="isMuted">is the handler muted</param>
+        public override void IsHandlerMuted(ulong handlerNetId, bool isMuted)
+        {
+            if (!mutedIds.ContainsKey(handlerNetId))
+                mutedIds.Add(handlerNetId, MuteStatus.None);
+
+            MuteStatus curr = mutedIds[handlerNetId];
+
+            bool isMutedLocally = ((byte)curr & (byte)MuteStatus.LocalHasMutedRemote) != 0;
+
+            bool diff = isMuted ? !isMutedLocally : isMutedLocally;
+
+            if (diff)
+            {
+                mutedIds[handlerNetId] = !isMutedLocally ? curr | MuteStatus.LocalHasMutedRemote : curr & ~MuteStatus.LocalHasMutedRemote;
+                Transport.SendMessageIsMutedTo(handlerNetId, isMuted);
+            }
+        }
+        /// <summary>
         /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill it is re-initialized
         /// </summary>
         public override void Initialize()
         {
             handlers = new Dictionary<ulong, VoiceHandler>();
+
+            if (mutedIds == null)
+            {
+                mutedIds = new Dictionary<ulong, MuteStatus>();
+
+                if (UseStoredIdsStatuses)
+                {
+                    List<ulong> ids = new List<ulong>();
+                    List<MuteStatus> statuses = new List<MuteStatus>();
+
+                    if (File.Exists(SavedDataFilePath1) && File.Exists(SavedDataFilePath2))
+                    {
+                        JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedDataFilePath1), ids);
+                        JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedDataFilePath2), statuses);
+
+                        int length = Mathf.Min(ids.Count, statuses.Count);
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            mutedIds.Add(ids[i], statuses[i]);
+                        }
+                    }
+                    else
+                    {
+                        if (!Directory.Exists(SavedDataFolderPath))
+                            Directory.CreateDirectory(SavedDataFolderPath);
+
+                        File.WriteAllText(SavedDataFilePath1, JsonUtility.ToJson(ids));
+                        File.WriteAllText(SavedDataFilePath2, JsonUtility.ToJson(statuses));
+                    }
+                }
+            }
+            else
+            {
+                if (!UseStoredIdsStatuses)
+                    mutedIds = new Dictionary<ulong, MuteStatus>();
+            }
 
             if (Manipulator)
             {
@@ -185,8 +293,43 @@ namespace VOCASY.Common
 
             packetBuffer = Transport ? new BytePacket(Transport.MaxDataLength) : null;
         }
+        /// <summary>
+        /// Deletes if they exists all files used to store ids and mute statuses
+        /// </summary>
+        public void ClearSavedStatusesFiles()
+        {
+            if (File.Exists(SavedDataFilePath1))
+                File.Delete(SavedDataFilePath1);
+            if (File.Exists(SavedDataFilePath2))
+                File.Delete(SavedDataFilePath2);
+        }
+        void Awake()
+        {
+            SavedDataFolderPath = Path.Combine(Application.persistentDataPath, FolderName);
+            SavedDataFilePath1 = Path.Combine(SavedDataFolderPath, FileName1);
+            SavedDataFilePath2 = Path.Combine(SavedDataFolderPath, FileName2);
+        }
         void OnDisable()
         {
+            if (UseStoredIdsStatuses && mutedIds != null)
+            {
+                List<ulong> ids = new List<ulong>();
+                List<MuteStatus> statuses = new List<MuteStatus>();
+
+                foreach (KeyValuePair<ulong, MuteStatus> item in mutedIds)
+                {
+                    ids.Add(item.Key);
+                    statuses.Add(item.Value);
+                }
+
+                if (!Directory.Exists(SavedDataFolderPath))
+                    Directory.CreateDirectory(SavedDataFolderPath);
+
+                File.WriteAllText(SavedDataFilePath1, JsonUtility.ToJson(ids));
+                File.WriteAllText(SavedDataFilePath2, JsonUtility.ToJson(statuses));
+            }
+
+            mutedIds = null;
             handlers = null;
             dataBuffer = null;
             dataBufferInt16 = null;

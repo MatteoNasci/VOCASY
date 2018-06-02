@@ -10,6 +10,7 @@ public class SupportTransport : VoiceDataTransport
     public VoicePacketInfo Info;
     public byte[] SentArray;
     public override int MaxDataLength { get { return MaxDataL; } }
+    public VoiceDataWorkflow Workflow;
 
     public override VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
     {
@@ -17,6 +18,11 @@ public class SupportTransport : VoiceDataTransport
         DataReceived = length;
         buffer.WriteByteData(dataReceived, startIndex, length);
         return Info;
+    }
+
+    public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
