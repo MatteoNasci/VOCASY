@@ -226,20 +226,13 @@
             <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
+        <member name="M:VOCASY.Common.SelfDataTransport.SendToAll(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.Collections.Generic.List{System.UInt64})">
             <summary>
             Sends a packet to all the other clients that need it
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
-            <summary>
-            Performs a normal SendToAllOthers to the given id
-            </summary>
-            <param name="data">GamePacket that stores the data to send</param>
-            <param name="info">data info</param>
-            <param name="receiverID">Receiver to which the packet should be sent</param>
+            <param name="receiversIds">list of receivers ids. Not used here</param>
         </member>
         <member name="M:VOCASY.Common.SelfDataTransport.SendMessageIsMutedTo(System.UInt64,System.Boolean)">
             <summary>
@@ -363,22 +356,14 @@
             Class that manages the transport side of the Voice Chat Workflow.
             </summary>
         </member>
-        <member name="T:VOCASY.Common.Transport.SendToTarget">
-            <summary>
-            Delegate used when data is requested to be sent to a specific target
-            </summary>
-            <param name="data">data to send</param>
-            <param name="startIndex">data start index</param>
-            <param name="length">data length</param>
-            <param name="target">target to send packet</param>
-        </member>
         <member name="T:VOCASY.Common.Transport.SendToAllTargets">
             <summary>
-            Delegate used when data is requested to be sent to all
+            Delegate used when data is requested to be sent to a list of targets
             </summary>
             <param name="data">data to send</param>
             <param name="startIndex">data start index</param>
             <param name="length">data length</param>
+            <param name="receiversIds">list of receivers ids to which the packet will be sent</param>
         </member>
         <member name="T:VOCASY.Common.Transport.SendMessageIsMutedToTarget">
             <summary>
@@ -402,14 +387,9 @@
             Max data length that should be sent to this class
             </summary>
         </member>
-        <member name="F:VOCASY.Common.Transport.SendToAction">
-            <summary>
-            Action invoked when data is requested to be sent to a specific target
-            </summary>
-        </member>
         <member name="F:VOCASY.Common.Transport.SendToAllAction">
             <summary>
-            Action invoked when data is requested to be sent to all
+            Action invoked when data is requested to be sent to a list of targets
             </summary>
         </member>
         <member name="F:VOCASY.Common.Transport.SendMsgTo">
@@ -449,20 +429,13 @@
             <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
-        <member name="M:VOCASY.Common.Transport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
+        <member name="M:VOCASY.Common.Transport.SendToAll(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.Collections.Generic.List{System.UInt64})">
             <summary>
-            Sends a packet to all the other clients that need it
+            Sends a packet to a list of clients
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
-        </member>
-        <member name="M:VOCASY.Common.Transport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
-            <summary>
-            Sends a packet to the given target
-            </summary>
-            <param name="data">GamePacket that stores the data to send</param>
-            <param name="info">data info</param>
-            <param name="receiverID">Receiver to which the packet should be sent</param>
+            <param name="receiversIds">list of receivers ids that will receive the audio packet</param>
         </member>
         <member name="M:VOCASY.Common.Transport.SendMessageIsMutedTo(System.UInt64,System.Boolean)">
             <summary>
@@ -713,20 +686,13 @@
             <param name="netId">Sender net id</param>
             <returns>data info</returns>
         </member>
-        <member name="M:VOCASY.VoiceDataTransport.SendToAllOthers(GENUtility.BytePacket,VOCASY.VoicePacketInfo)">
+        <member name="M:VOCASY.VoiceDataTransport.SendToAll(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.Collections.Generic.List{System.UInt64})">
             <summary>
-            Sends a packet to all the other clients
+            Sends a packet to a list of clients
             </summary>
             <param name="data">GamePacket that stores the data to send</param>
             <param name="info">data info</param>
-        </member>
-        <member name="M:VOCASY.VoiceDataTransport.SendTo(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.UInt64)">
-            <summary>
-            Sends a packet to another client
-            </summary>
-            <param name="data">GamePacket that stores the data to send</param>
-            <param name="info">data info</param>
-            <param name="receiverID">Receiver to which the packet should be sent</param>
+            <param name="receiversIds">list of receivers ids</param>
         </member>
         <member name="M:VOCASY.VoiceDataTransport.SendMessageIsMutedTo(System.UInt64,System.Boolean)">
             <summary>

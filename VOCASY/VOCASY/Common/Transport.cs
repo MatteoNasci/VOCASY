@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GENUtility;
+using System.Collections.Generic;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -9,20 +10,13 @@ namespace VOCASY.Common
     public class Transport : VoiceDataTransport
     {
         /// <summary>
-        /// Delegate used when data is requested to be sent to a specific target
+        /// Delegate used when data is requested to be sent to a list of targets
         /// </summary>
         /// <param name="data">data to send</param>
         /// <param name="startIndex">data start index</param>
         /// <param name="length">data length</param>
-        /// <param name="target">target to send packet</param>
-        public delegate void SendToTarget(byte[] data, int startIndex, int length, ulong target);
-        /// <summary>
-        /// Delegate used when data is requested to be sent to all
-        /// </summary>
-        /// <param name="data">data to send</param>
-        /// <param name="startIndex">data start index</param>
-        /// <param name="length">data length</param>
-        public delegate void SendToAllTargets(byte[] data, int startIndex, int length);
+        /// <param name="receiversIds">list of receivers ids to which the packet will be sent</param>
+        public delegate void SendToAllTargets(byte[] data, int startIndex, int length, List<ulong> receiversIds);
         /// <summary>
         /// Delegate used to send a packet message to the target informing him whenever he has been muted/unmuted by the local client.
         /// </summary>
@@ -42,11 +36,7 @@ namespace VOCASY.Common
         /// </summary>
         public override int MaxDataLength { get { return PLength - FirstPacketByteAvailable; } }
         /// <summary>
-        /// Action invoked when data is requested to be sent to a specific target
-        /// </summary>
-        public SendToTarget SendToAction;
-        /// <summary>
-        /// Action invoked when data is requested to be sent to all
+        /// Action invoked when data is requested to be sent to a list of targets
         /// </summary>
         public SendToAllTargets SendToAllAction;
         /// <summary>
@@ -106,41 +96,22 @@ namespace VOCASY.Common
             return info;
         }
         /// <summary>
-        /// Sends a packet to all the other clients that need it
+        /// Sends a packet to a list of clients
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
-        public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
+        /// <param name="receiversIds">list of receivers ids that will receive the audio packet</param>
+        public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)
         {
             toSend.CurrentSeek = 0;
             toSend.CurrentLength = 0;
-            toSend.Write(info.NetId);
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
 
             int n = toSend.Copy(data);
 
-            SendToAllAction?.Invoke(toSend.Data, 0, toSend.CurrentLength);
-        }
-        /// <summary>
-        /// Sends a packet to the given target
-        /// </summary>
-        /// <param name="data">GamePacket that stores the data to send</param>
-        /// <param name="info">data info</param>
-        /// <param name="receiverID">Receiver to which the packet should be sent</param>
-        public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
-        {
-            toSend.CurrentSeek = 0;
-            toSend.CurrentLength = 0;
-            toSend.Write(info.NetId);
-            toSend.Write(info.Frequency);
-            toSend.Write(info.Channels);
-            toSend.Write((byte)info.Format);
-
-            int n = toSend.Copy(data);
-
-            SendToAction?.Invoke(toSend.Data, 0, toSend.CurrentLength, receiverID);
+            SendToAllAction?.Invoke(toSend.Data, 0, toSend.CurrentLength, receiversIds);
         }
         /// <summary>
         /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client.

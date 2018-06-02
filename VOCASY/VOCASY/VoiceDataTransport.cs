@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GENUtility;
+using System.Collections.Generic;
 namespace VOCASY
 {
     /// <summary>
@@ -23,18 +24,12 @@ namespace VOCASY
         /// <returns>data info</returns>
         public abstract VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId);
         /// <summary>
-        /// Sends a packet to all the other clients
+        /// Sends a packet to a list of clients
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
-        public abstract void SendToAllOthers(BytePacket data, VoicePacketInfo info);
-        /// <summary>
-        /// Sends a packet to another client
-        /// </summary>
-        /// <param name="data">GamePacket that stores the data to send</param>
-        /// <param name="info">data info</param>
-        /// <param name="receiverID">Receiver to which the packet should be sent</param>
-        public abstract void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID);
+        /// <param name="receiversIds">list of receivers ids</param>
+        public abstract void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds);
         /// <summary>
         /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client
         /// </summary>

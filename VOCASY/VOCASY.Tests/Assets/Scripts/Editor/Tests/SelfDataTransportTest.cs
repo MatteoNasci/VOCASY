@@ -34,220 +34,12 @@ public class SelfDataTransportTest
         Assert.That(transport.MaxDataLength, Is.EqualTo(5108));
     }
     [Test]
-    public void TestSendToCorrectPayloadLength()
-    {
-        BytePacket p = new BytePacket(10);
-        p.CurrentSeek = 0;
-        p.CurrentLength = 10;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(workflow.receivedData.Length, Is.EqualTo(14));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadLengthRedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.CurrentSeek = 0;
-        p.CurrentLength = 10;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(workflow.receivedData.Length, Is.Not.EqualTo(10));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadInt32(workflow.receivedData, 4), Is.EqualTo(750));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadDataRedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadInt32(workflow.receivedData, 4), Is.Not.EqualTo(0));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData2()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 8), Is.EqualTo(110));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData2RedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 8), Is.Not.EqualTo(10));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData5()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadSByte(workflow.receivedData, 10), Is.EqualTo(-5));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData5RedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadSByte(workflow.receivedData, 10), Is.Not.EqualTo(0));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData3()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadBoolean(workflow.receivedData, 11), Is.False);
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData3RedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)short.MinValue);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadBoolean(workflow.receivedData, 11), Is.Not.True);
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData4()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)-32767);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadInt16(workflow.receivedData, 12), Is.EqualTo(-32767));
-    }
-    [Test]
-    public void TestSendToCorrectPayloadData4RedLight()
-    {
-        BytePacket p = new BytePacket(10);
-        p.Write(750);
-        p.Write((ushort)110);
-        p.Write((sbyte)-5);
-        p.Write(false);
-        p.Write((short)-32768);
-        p.CurrentSeek = 0;
-        transport.SendTo(p, new VoicePacketInfo(), 1);
-        Assert.That(ByteManipulator.ReadInt16(workflow.receivedData, 12), Is.Not.EqualTo(0));
-    }
-    [Test]
-    public void TestSendToCorrectId()
-    {
-        transport.SendTo(new BytePacket(1), new VoicePacketInfo(), 1);
-        Assert.That(workflow.receivedID, Is.EqualTo(1));
-    }
-    [Test]
-    public void TestSendToCorrectIdRedLight()
-    {
-        transport.SendTo(new BytePacket(1), new VoicePacketInfo(), 2);
-        Assert.That(workflow.receivedID, Is.Not.EqualTo(1));
-    }
-    [Test]
-    public void TestSendToCorrectFrequency()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Frequency = 17898;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 0), Is.EqualTo(17898));
-    }
-    [Test]
-    public void TestSendToCorrectFrequencyRedLight()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Frequency = 5666;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 0), Is.Not.EqualTo(17898));
-    }
-    [Test]
-    public void TestSendToCorrectChannels()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Channels = 7;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 2), Is.EqualTo(7));
-    }
-    [Test]
-    public void TestSendToCorrectChannelsRedLight()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Channels = 1;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 2), Is.Not.EqualTo(7));
-    }
-    [Test]
-    public void TestSendToCorrectFormat()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Format = AudioDataTypeFlag.Int16;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 3), Is.EqualTo((byte)AudioDataTypeFlag.Int16));
-    }
-    [Test]
-    public void TestSendToCorrectFormatRedLight()
-    {
-        VoicePacketInfo info = new VoicePacketInfo();
-        info.Format = AudioDataTypeFlag.Single;
-        transport.SendTo(new BytePacket(1), info, 1);
-        Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 3), Is.Not.EqualTo((byte)AudioDataTypeFlag.Int16));
-    }
-    [Test]
     public void TestSendToAllOthersCorrectPayloadLength()
     {
         BytePacket p = new BytePacket(10);
         p.CurrentSeek = 0;
         p.CurrentLength = 10;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(workflow.receivedData.Length, Is.EqualTo(14));
     }
     [Test]
@@ -256,7 +48,7 @@ public class SelfDataTransportTest
         BytePacket p = new BytePacket(10);
         p.CurrentSeek = 0;
         p.CurrentLength = 10;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(workflow.receivedData.Length, Is.Not.EqualTo(10));
     }
     [Test]
@@ -269,7 +61,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadInt32(workflow.receivedData, 4), Is.EqualTo(750));
     }
     [Test]
@@ -282,7 +74,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadInt32(workflow.receivedData, 4), Is.Not.EqualTo(0));
     }
     [Test]
@@ -295,7 +87,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 8), Is.EqualTo(110));
     }
     [Test]
@@ -308,7 +100,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 8), Is.Not.EqualTo(10));
     }
     [Test]
@@ -321,7 +113,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadSByte(workflow.receivedData, 10), Is.EqualTo(-5));
     }
     [Test]
@@ -334,7 +126,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadSByte(workflow.receivedData, 10), Is.Not.EqualTo(0));
     }
     [Test]
@@ -347,7 +139,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadBoolean(workflow.receivedData, 11), Is.False);
     }
     [Test]
@@ -360,7 +152,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)short.MinValue);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadBoolean(workflow.receivedData, 11), Is.Not.True);
     }
     [Test]
@@ -373,7 +165,7 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)-32767);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadInt16(workflow.receivedData, 12), Is.EqualTo(-32767));
     }
     [Test]
@@ -386,21 +178,21 @@ public class SelfDataTransportTest
         p.Write(false);
         p.Write((short)-32768);
         p.CurrentSeek = 0;
-        transport.SendToAllOthers(p, new VoicePacketInfo());
+        transport.SendToAll(p, new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadInt16(workflow.receivedData, 12), Is.Not.EqualTo(0));
     }
     [Test]
     public void TestSendToAllOthersCorrectId()
     {
         transport.ReceiverId = 1;
-        transport.SendToAllOthers(new BytePacket(1), new VoicePacketInfo());
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(workflow.receivedID, Is.EqualTo(1));
     }
     [Test]
     public void TestSendToAllOthersCorrectIdRedLight()
     {
         transport.ReceiverId = 2;
-        transport.SendToAllOthers(new BytePacket(1), new VoicePacketInfo());
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 2 });
         Assert.That(workflow.receivedID, Is.Not.EqualTo(1));
     }
     [Test]
@@ -408,7 +200,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Frequency = 17898;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 0), Is.EqualTo(17898));
     }
     [Test]
@@ -416,7 +208,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Frequency = 5666;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadUInt16(workflow.receivedData, 0), Is.Not.EqualTo(17898));
     }
     [Test]
@@ -424,7 +216,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Channels = 7;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 2), Is.EqualTo(7));
     }
     [Test]
@@ -432,7 +224,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Channels = 1;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 2), Is.Not.EqualTo(7));
     }
     [Test]
@@ -440,7 +232,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Format = AudioDataTypeFlag.Int16;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 3), Is.EqualTo((byte)AudioDataTypeFlag.Int16));
     }
     [Test]
@@ -448,7 +240,7 @@ public class SelfDataTransportTest
     {
         VoicePacketInfo info = new VoicePacketInfo();
         info.Format = AudioDataTypeFlag.Single;
-        transport.SendToAllOthers(new BytePacket(1), info);
+        transport.SendToAll(new BytePacket(1), info, new List<ulong>() { 1 });
         Assert.That(ByteManipulator.ReadByte(workflow.receivedData, 3), Is.Not.EqualTo((byte)AudioDataTypeFlag.Int16));
     }
     [Test]
@@ -641,4 +433,5 @@ public class SelfDataTransportTest
         transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(11), Is.Not.EqualTo(0));
     }
+    //TODO: SendToAll
 }

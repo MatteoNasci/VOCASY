@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GENUtility;
+using System.Collections.Generic;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -64,9 +65,10 @@ namespace VOCASY.Common
         /// </summary>
         /// <param name="data">GamePacket that stores the data to send</param>
         /// <param name="info">data info</param>
-        public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
+        /// <param name="receiversIds">list of receivers ids. Not used here</param>
+        public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)
         {
-            toSend.CurrentSeek = sizeof(ulong);
+            toSend.CurrentSeek = 0;
             toSend.CurrentLength = 0;
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
@@ -74,30 +76,9 @@ namespace VOCASY.Common
 
             int n = toSend.Copy(data);
 
-            toSend.CurrentSeek = sizeof(ulong);
+            toSend.CurrentSeek = 0;
 
-            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength, ReceiverId);
-
-        }
-        /// <summary>
-        /// Performs a normal SendToAllOthers to the given id
-        /// </summary>
-        /// <param name="data">GamePacket that stores the data to send</param>
-        /// <param name="info">data info</param>
-        /// <param name="receiverID">Receiver to which the packet should be sent</param>
-        public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
-        {
-            toSend.CurrentSeek = sizeof(ulong);
-            toSend.CurrentLength = 0;
-            toSend.Write(info.Frequency);
-            toSend.Write(info.Channels);
-            toSend.Write((byte)info.Format);
-
-            int n = toSend.Copy(data);
-
-            toSend.CurrentSeek = sizeof(ulong);
-
-            Workflow.ProcessReceivedPacket(toSend.Data, sizeof(ulong), toSend.CurrentLength, receiverID);
+            Workflow.ProcessReceivedPacket(toSend.Data, 0, toSend.CurrentLength, ReceiverId);
         }
         /// <summary>
         /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client. Does nothing here

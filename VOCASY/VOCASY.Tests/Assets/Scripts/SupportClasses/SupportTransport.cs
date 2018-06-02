@@ -1,9 +1,10 @@
 ﻿using GENUtility;
 using VOCASY;
 using VOCASY.Common;
+using System.Collections.Generic;
 public class SupportTransport : VoiceDataTransport
 {
-    public int DataSentTo;
+    public List<ulong> DataSentTo = new List<ulong>();
     public int DataSent;
     public int DataReceived;
     public int MaxDataL = 1024;
@@ -25,17 +26,14 @@ public class SupportTransport : VoiceDataTransport
         throw new System.NotImplementedException();
     }
 
-    public override void SendTo(BytePacket data, VoicePacketInfo info, ulong receiverID)
-    {
-        SentArray = new byte[data.Data.Length];
-        ByteManipulator.Write<byte>(data.Data, 0, SentArray, 0, SentArray.Length);
-        DataSentTo = data.CurrentLength;
-    }
-
-    public override void SendToAllOthers(BytePacket data, VoicePacketInfo info)
+    public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)
     {
         SentArray = new byte[data.Data.Length];
         ByteManipulator.Write<byte>(data.Data, 0, SentArray, 0, SentArray.Length);
         DataSent = data.CurrentLength;
+        for (int i = 0; i < receiversIds.Count; i++)
+        {
+            DataSentTo.Add(receiversIds[i]);
+        }
     }
 }

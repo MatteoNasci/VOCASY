@@ -55,6 +55,8 @@ namespace VOCASY.Common
 
         private AudioDataTypeFlag formatToUse = AudioDataTypeFlag.Int16;
 
+        private List<ulong> activeIdsToSendTo;
+
         private Dictionary<ulong, VoiceHandler> handlers;
 
         private Dictionary<ulong, MuteStatus> mutedIds;
@@ -80,6 +82,9 @@ namespace VOCASY.Common
             handlers.Add(id, handler);
 
             IsHandlerMuted(id, handler.IsOutputMuted);
+
+            if ((mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0)
+                activeIdsToSendTo.Add(id);
         }
         /// <summary>
         /// Removes the handler
@@ -87,8 +92,11 @@ namespace VOCASY.Common
         /// <param name="handler">handler to remove</param>
         public override void RemoveVoiceHandler(VoiceHandler handler)
         {
+            ulong id = handler.NetID;
             //handler and callback are removed
-            handlers.Remove(handler.NetID);
+            handlers.Remove(id);
+            if ((mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0)
+                activeIdsToSendTo.Remove(id);
         }
         /// <summary>
         /// Process the received packet data.
@@ -194,7 +202,7 @@ namespace VOCASY.Common
 
                 //if packet is valid send to transport
                 if (info.ValidPacketInfo)
-                    Transport.SendToAllOthers(packetBuffer, info);
+                    Transport.SendToAll(packetBuffer, info, activeIdsToSendTo);
             }
         }
         /// <summary>
@@ -204,12 +212,31 @@ namespace VOCASY.Common
         /// <param name="senderID">message sender id</param>
         public override void ProcessIsMutedMessage(bool isSelfMuted, ulong senderID)
         {
+            if (!handlers.ContainsKey(senderID))
+                return;
+
             if (!mutedIds.ContainsKey(senderID))
                 mutedIds.Add(senderID, MuteStatus.None);
 
             MuteStatus curr = mutedIds[senderID];
 
-            mutedIds[senderID] = isSelfMuted ? curr | MuteStatus.RemoteHasMutedLocal : curr & ~MuteStatus.RemoteHasMutedLocal;
+            bool isMutedRemotely = ((byte)curr & (byte)MuteStatus.RemoteHasMutedLocal) != 0;
+
+            bool diff = isSelfMuted ? !isMutedRemotely : isMutedRemotely;
+
+            if (diff)
+            {
+                if (!isMutedRemotely)
+                {
+                    mutedIds[senderID] = curr | MuteStatus.RemoteHasMutedLocal;
+                    activeIdsToSendTo.Remove(senderID);
+                }
+                else
+                {
+                    mutedIds[senderID] = curr & ~MuteStatus.RemoteHasMutedLocal;
+                    activeIdsToSendTo.Add(senderID);
+                }
+            }
         }
         /// <summary>
         /// Informs the workflow whenever an handler has been muted
@@ -229,7 +256,15 @@ namespace VOCASY.Common
 
             if (diff)
             {
-                mutedIds[handlerNetId] = !isMutedLocally ? curr | MuteStatus.LocalHasMutedRemote : curr & ~MuteStatus.LocalHasMutedRemote;
+                if (!isMutedLocally)
+                {
+                    mutedIds[handlerNetId] = curr | MuteStatus.LocalHasMutedRemote;
+                }
+                else
+                {
+                    mutedIds[handlerNetId] = curr & ~MuteStatus.LocalHasMutedRemote;
+                }
+
                 Transport.SendMessageIsMutedTo(handlerNetId, isMuted);
             }
         }
@@ -239,6 +274,8 @@ namespace VOCASY.Common
         public override void Initialize()
         {
             handlers = new Dictionary<ulong, VoiceHandler>();
+
+            activeIdsToSendTo = new List<ulong>();
 
             if (mutedIds == null)
             {
@@ -318,8 +355,13 @@ namespace VOCASY.Common
 
                 foreach (KeyValuePair<ulong, MuteStatus> item in mutedIds)
                 {
+                    //Save only information about statuses != than None value and ignore RemoteHasMutedLocal status
+                    MuteStatus status = item.Value & ~MuteStatus.RemoteHasMutedLocal;
+                    if (status == MuteStatus.None)
+                        continue;
+
                     ids.Add(item.Key);
-                    statuses.Add(item.Value);
+                    statuses.Add(status);
                 }
 
                 if (!Directory.Exists(SavedDataFolderPath))
