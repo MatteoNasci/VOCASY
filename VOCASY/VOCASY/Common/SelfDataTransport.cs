@@ -7,90 +7,27 @@ namespace VOCASY.Common
     /// Class that fakes network state between self and another client. It should be used for tests and debug
     /// </summary>
     [CreateAssetMenu(fileName = "SelfTransport", menuName = "VOCASY/DataTransports/Self")]
-    public class SelfDataTransport : VoiceDataTransport
+    public class SelfDataTransport : Transport
     {
-        /// <summary>
-        /// Header size
-        /// </summary>
-        public const int FirstPacketByteAvailable = sizeof(ulong) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
         /// <summary>
         /// Max final packet length
         /// </summary>
-        public const int PLength = 5120;
+        public const int PSelfLength = 5120;
         /// <summary>
         /// Max data length that should be sent to this class
         /// </summary>
-        public override int MaxDataLength { get { return packetDataSize; } }
-        /// <summary>
-        /// To which id fake packets should be sent
-        /// </summary>
-        public ulong ReceiverId;
-        /// <summary>
-        /// Voice chat workflow
-        /// </summary>
-        public VoiceDataWorkflow Workflow;
-
-        [SerializeField]
-        private int packetDataSize = PLength - FirstPacketByteAvailable;
-
-        private BytePacket toSend;
-
-        /// <summary>
-        /// Process packet data
-        /// </summary>
-        /// <param name="buffer">GamePacket of which data will be stored</param>
-        /// <param name="dataReceived">Raw data received from network</param>
-        /// <param name="startIndex">Raw data start index</param>
-        /// <param name="length">Raw data length</param>
-        /// <param name="netId">Sender net id</param>
-        /// <returns>data info</returns>
-        public override VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
+        public override int MaxDataLength { get { return PSelfLength - FirstPacketByteAvailable; } }
+        private void Awake()
         {
-            VoicePacketInfo info = new VoicePacketInfo();
-            info.NetId = netId;
-            info.Frequency = ByteManipulator.ReadUInt16(dataReceived, startIndex);
-            startIndex += sizeof(ushort);
-            info.Channels = ByteManipulator.ReadByte(dataReceived, startIndex);
-            startIndex += sizeof(byte);
-            info.Format = (AudioDataTypeFlag)ByteManipulator.ReadByte(dataReceived, startIndex);
-            startIndex += sizeof(byte);
-            info.ValidPacketInfo = true;
-
-            buffer.WriteByteData(dataReceived, startIndex, length - sizeof(ushort) - sizeof(byte) - sizeof(byte));
-
-            return info;
+            SendToAllAction = SendAll;
+            SendMsgTo = null;
         }
-        /// <summary>
-        /// Sends a packet to all the other clients that need it
-        /// </summary>
-        /// <param name="data">GamePacket that stores the data to send</param>
-        /// <param name="info">data info</param>
-        /// <param name="receiversIds">list of receivers ids. Not used here</param>
-        public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)
+        private void SendAll(byte[] data, int startIndex, int length, List<ulong> receiversIds)
         {
-            toSend.CurrentSeek = 0;
-            toSend.CurrentLength = 0;
-            toSend.Write(info.Frequency);
-            toSend.Write(info.Channels);
-            toSend.Write((byte)info.Format);
-
-            int n = toSend.Copy(data);
-
-            toSend.CurrentSeek = 0;
-
-            Workflow.ProcessReceivedPacket(toSend.Data, 0, toSend.CurrentLength, ReceiverId);
-        }
-        /// <summary>
-        /// Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client. Does nothing here
-        /// </summary>
-        /// <param name="receiverID">Receiver to which the packet should be sent</param>
-        /// <param name="isReceiverMutedByLocal">True if receiver is muted and can avoid sending voice chat packets to the local client</param>
-        public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
-        {
-        }
-        private void OnEnable()
-        {
-            toSend = new BytePacket(packetDataSize);
+            for (int i = 0; i < receiversIds.Count; i++)
+            {
+                Workflow.ProcessReceivedPacket(data, startIndex, length, receiversIds[i]);
+            }
         }
     }
 }

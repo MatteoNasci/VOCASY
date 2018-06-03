@@ -37,7 +37,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -53,7 +52,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -69,7 +67,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -85,7 +82,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -105,7 +101,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -125,7 +120,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -145,7 +139,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -161,7 +154,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -177,7 +169,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -193,7 +184,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -209,7 +199,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -225,7 +214,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -241,7 +229,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -257,7 +244,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -273,7 +259,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -294,7 +279,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -315,7 +299,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -336,7 +319,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -352,7 +334,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -368,7 +349,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -384,7 +364,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -400,7 +379,6 @@ public class VoidManipulatorTest
         output.CurrentLength = 0;
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -418,7 +396,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -437,7 +414,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -456,7 +432,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -475,7 +450,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -498,7 +472,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -521,7 +494,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -544,7 +516,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -563,7 +534,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -582,7 +552,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -601,7 +570,6 @@ public class VoidManipulatorTest
         float[] output = new float[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -620,7 +588,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -639,7 +606,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -658,7 +624,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -677,7 +642,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -700,7 +664,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -723,7 +686,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -746,7 +708,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -765,7 +726,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -784,7 +744,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
@@ -803,7 +762,6 @@ public class VoidManipulatorTest
         byte[] output = new byte[100];
         VoicePacketInfo info = new VoicePacketInfo();
         info.ValidPacketInfo = true;
-        info.NetId = 1;
         info.Frequency = 48000;
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;

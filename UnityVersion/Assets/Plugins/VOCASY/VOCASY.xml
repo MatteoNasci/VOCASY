@@ -190,12 +190,7 @@
             Class that fakes network state between self and another client. It should be used for tests and debug
             </summary>
         </member>
-        <member name="F:VOCASY.Common.SelfDataTransport.FirstPacketByteAvailable">
-            <summary>
-            Header size
-            </summary>
-        </member>
-        <member name="F:VOCASY.Common.SelfDataTransport.PLength">
+        <member name="F:VOCASY.Common.SelfDataTransport.PSelfLength">
             <summary>
             Max final packet length
             </summary>
@@ -204,42 +199,6 @@
             <summary>
             Max data length that should be sent to this class
             </summary>
-        </member>
-        <member name="F:VOCASY.Common.SelfDataTransport.ReceiverId">
-            <summary>
-            To which id fake packets should be sent
-            </summary>
-        </member>
-        <member name="F:VOCASY.Common.SelfDataTransport.Workflow">
-            <summary>
-            Voice chat workflow
-            </summary>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.ProcessReceivedData(GENUtility.BytePacket,System.Byte[],System.Int32,System.Int32,System.UInt64)">
-            <summary>
-            Process packet data
-            </summary>
-            <param name="buffer">GamePacket of which data will be stored</param>
-            <param name="dataReceived">Raw data received from network</param>
-            <param name="startIndex">Raw data start index</param>
-            <param name="length">Raw data length</param>
-            <param name="netId">Sender net id</param>
-            <returns>data info</returns>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendToAll(GENUtility.BytePacket,VOCASY.VoicePacketInfo,System.Collections.Generic.List{System.UInt64})">
-            <summary>
-            Sends a packet to all the other clients that need it
-            </summary>
-            <param name="data">GamePacket that stores the data to send</param>
-            <param name="info">data info</param>
-            <param name="receiversIds">list of receivers ids. Not used here</param>
-        </member>
-        <member name="M:VOCASY.Common.SelfDataTransport.SendMessageIsMutedTo(System.UInt64,System.Boolean)">
-            <summary>
-            Sends a packet message to the target informing him whenever he has been muted/unmuted by the local client. Does nothing here
-            </summary>
-            <param name="receiverID">Receiver to which the packet should be sent</param>
-            <param name="isReceiverMutedByLocal">True if receiver is muted and can avoid sending voice chat packets to the local client</param>
         </member>
         <member name="T:VOCASY.Common.Recorder">
             <summary>
@@ -1121,11 +1080,6 @@
             Invalid packet
             </summary>
         </member>
-        <member name="F:VOCASY.VoicePacketInfo.NetId">
-            <summary>
-            Network Id of the audio owner
-            </summary>
-        </member>
         <member name="F:VOCASY.VoicePacketInfo.Frequency">
             <summary>
             Frequency at which data is stored
@@ -1146,11 +1100,10 @@
             Format of the stored data
             </summary>
         </member>
-        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt64,System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
+        <member name="M:VOCASY.VoicePacketInfo.#ctor(System.UInt16,System.Byte,VOCASY.AudioDataTypeFlag,System.Boolean)">
             <summary>
             Create a new struct instance
             </summary>
-            <param name="netId">packet netid</param>
             <param name="frequency">audio frequency</param>
             <param name="channels">audio channels</param>
             <param name="format">audio format</param>

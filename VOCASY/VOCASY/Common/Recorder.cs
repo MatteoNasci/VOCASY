@@ -71,7 +71,7 @@ namespace VOCASY.Common
 
             readIndex = ByteManipulator.WriteFromCycle(this.cyclicAudioBuffer, readIndex, buffer, bufferOffset, dataCount);
 
-            return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Single);
+            return new VoicePacketInfo((ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Single);
         }
         /// <summary>
         /// Gets recorded data and stores it in format Int16
@@ -101,7 +101,7 @@ namespace VOCASY.Common
                     readIndex = 0;
             }
 
-            return new VoicePacketInfo(0, (ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Int16);
+            return new VoicePacketInfo((ushort)clip.frequency, (byte)clip.channels, AudioDataTypeFlag.Int16);
         }
         /// <summary>
         /// Stops recording

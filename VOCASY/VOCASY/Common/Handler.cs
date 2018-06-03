@@ -54,7 +54,6 @@ namespace VOCASY.Common
                 return VoicePacketInfo.InvalidPacket;
 
             VoicePacketInfo info = Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
-            info.NetId = Identity.NetworkId;
 
             return info;
         }
@@ -74,7 +73,6 @@ namespace VOCASY.Common
                 return VoicePacketInfo.InvalidPacket;
 
             VoicePacketInfo info = Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
-            info.NetId = Identity.NetworkId;
 
             return info;
         }

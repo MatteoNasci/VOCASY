@@ -15,7 +15,6 @@ public class SupportTransport : VoiceDataTransport
 
     public override VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
     {
-        Info.NetId = netId;
         DataReceived = length;
         buffer.WriteByteData(dataReceived, startIndex, length);
         return Info;

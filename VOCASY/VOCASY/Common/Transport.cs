@@ -26,7 +26,7 @@ namespace VOCASY.Common
         /// <summary>
         /// Header size
         /// </summary>
-        public const int FirstPacketByteAvailable = sizeof(ulong) + sizeof(ushort) + sizeof(byte) + sizeof(byte);
+        public const int FirstPacketByteAvailable = sizeof(ushort) + sizeof(byte) + sizeof(byte);
         /// <summary>
         /// Max final packet length
         /// </summary>
@@ -82,7 +82,6 @@ namespace VOCASY.Common
         public override VoicePacketInfo ProcessReceivedData(BytePacket buffer, byte[] dataReceived, int startIndex, int length, ulong netId)
         {
             VoicePacketInfo info = new VoicePacketInfo();
-            info.NetId = netId;
             info.Frequency = ByteManipulator.ReadUInt16(dataReceived, startIndex);
             startIndex += sizeof(ushort);
             info.Channels = ByteManipulator.ReadByte(dataReceived, startIndex);

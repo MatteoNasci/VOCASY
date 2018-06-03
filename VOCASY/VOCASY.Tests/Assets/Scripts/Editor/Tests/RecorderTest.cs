@@ -755,28 +755,6 @@ public class RecorderTest
         Assert.That(success, Is.True);
     }
     [UnityTest]
-    public IEnumerator TestGetMicDataSingleSuccessNetidDefault()
-    {
-        recAwake.Invoke(recorder, new object[0]);
-        recorder.StartRecording();
-        float[] data = new float[1000];
-        int effectiveCount;
-
-        bool success = false;
-        for (int i = 0; i < frameNumber; i++)
-        {
-            yield return null;
-            recUpdate.Invoke(recorder, new object[0]);
-            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).NetId != 0)
-            {
-                success = true;
-                break;
-            }
-        }
-
-        Assert.That(success, Is.False);
-    }
-    [UnityTest]
     public IEnumerator TestGetMicDataSingleNoDataRecorded()
     {
         recAwake.Invoke(recorder, new object[0]);
@@ -1120,28 +1098,6 @@ public class RecorderTest
         }
 
         Assert.That(success, Is.True);
-    }
-    [UnityTest]
-    public IEnumerator TestGetMicDataInt16SuccessNetidDefault()
-    {
-        recAwake.Invoke(recorder, new object[0]);
-        recorder.StartRecording();
-
-        byte[] data = new byte[1000];
-        int effectiveCount;
-        bool success = false;
-        for (int i = 0; i < frameNumber; i++)
-        {
-            yield return null;
-            recUpdate.Invoke(recorder, new object[0]);
-            if (recorder.GetMicData(data, 0, 1000, out effectiveCount).NetId != 0)
-            {
-                success = true;
-                break;
-            }
-        }
-
-        Assert.That(success, Is.False);
     }
     [UnityTest]
     public IEnumerator TestGetMicDataInt16NoDataRecorded()

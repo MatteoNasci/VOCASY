@@ -31,7 +31,7 @@ public class SelfDataTransportTest
     [Test]
     public void TestPacketPayloadMaxSize()
     {
-        Assert.That(transport.MaxDataLength, Is.EqualTo(5108));
+        Assert.That(transport.MaxDataLength, Is.EqualTo(5116));
     }
     [Test]
     public void TestSendToAllOthersCorrectPayloadLength()
@@ -184,14 +184,12 @@ public class SelfDataTransportTest
     [Test]
     public void TestSendToAllOthersCorrectId()
     {
-        transport.ReceiverId = 1;
         transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 1 });
         Assert.That(workflow.receivedID, Is.EqualTo(1));
     }
     [Test]
     public void TestSendToAllOthersCorrectIdRedLight()
     {
-        transport.ReceiverId = 2;
         transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 2 });
         Assert.That(workflow.receivedID, Is.Not.EqualTo(1));
     }
@@ -260,30 +258,6 @@ public class SelfDataTransportTest
         ulong netId = 5;
         transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.CurrentLength, Is.Not.EqualTo(20));
-    }
-    [Test]
-    public void TestProcessReceivedDataId()
-    {
-        BytePacket buffer = new BytePacket(20);
-        byte[] receivedData = new byte[20];
-        ByteManipulator.Write(receivedData, 0, (ushort)4588);
-        ByteManipulator.Write(receivedData, 2, (byte)5);
-        ByteManipulator.Write(receivedData, 3, (byte)99);
-        ulong netId = 5;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
-        Assert.That(info.NetId, Is.EqualTo(5));
-    }
-    [Test]
-    public void TestProcessReceivedDataIdRedLight()
-    {
-        BytePacket buffer = new BytePacket(20);
-        byte[] receivedData = new byte[20];
-        ByteManipulator.Write(receivedData, 0, (ushort)4588);
-        ByteManipulator.Write(receivedData, 2, (byte)5);
-        ByteManipulator.Write(receivedData, 3, (byte)99);
-        ulong netId = 6;
-        VoicePacketInfo info = transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
-        Assert.That(info.NetId, Is.Not.EqualTo(5));
     }
     [Test]
     public void TestProcessReceivedDataFreq()

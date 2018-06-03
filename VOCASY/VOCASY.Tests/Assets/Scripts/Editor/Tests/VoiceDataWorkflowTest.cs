@@ -452,7 +452,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentNullException>(() => workflow.ProcessReceivedPacket(null, 0, dataReceived.Length, 2));
     }
@@ -481,7 +480,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 3);
         Assert.That(manipulator.FromPacketToAudioInt16, Is.False);
@@ -498,7 +496,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = false;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(manipulator.FromPacketToAudioInt16, Is.False);
@@ -515,7 +512,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.None;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -531,7 +527,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -547,7 +542,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler2.Flag = AudioDataTypeFlag.Single;
         Assert.Throws<ArgumentException>(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
@@ -564,7 +558,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -580,7 +573,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -596,7 +588,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.DoesNotThrow(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -612,7 +603,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.DoesNotThrow(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -628,7 +618,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.DoesNotThrow(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -644,7 +633,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.DoesNotThrow(() => workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2));
     }
@@ -660,7 +648,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler2.IsSelfOutputMuted = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
@@ -678,7 +665,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler2.SelfOutputVolume = 0f;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
@@ -696,7 +682,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 1);
         Assert.That(manipulator.FromPacketToAudioInt16, Is.False);
@@ -713,7 +698,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         manipulator.Info.ValidPacketInfo = false;
         manipulator.UseInfo = true;
@@ -732,7 +716,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataInt16, Is.True);
@@ -749,7 +732,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 2;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 24000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataInt16, Is.True);
@@ -766,7 +748,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 2;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 24000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataInt16, Is.True);
@@ -783,7 +764,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 2;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataInt16, Is.True);
@@ -800,7 +780,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataSingle, Is.True);
@@ -817,7 +796,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataSingle, Is.True);
@@ -834,7 +812,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceiveDataSingle, Is.True);
@@ -851,7 +828,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedDataInt16[23], Is.EqualTo(23));
@@ -868,7 +844,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedDataInt16[98], Is.EqualTo(98));
@@ -889,7 +864,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedData[23], Is.EqualTo(23).Within(0.0001));
@@ -910,7 +884,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedData[2], Is.EqualTo(2).Within(0.0001));
@@ -932,7 +905,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedData[23], Is.EqualTo(23).Within(0.0001));
@@ -954,7 +926,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedData[2], Is.EqualTo(2).Within(0.0001));
@@ -972,7 +943,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedDataInt16[23], Is.EqualTo(23));
@@ -990,7 +960,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Both;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedDataInt16[98], Is.EqualTo(98));
@@ -1008,7 +977,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessReceivedPacket(dataReceived, 0, dataReceived.Length, 2);
         Assert.That(handler2.ReceivedDataInt16[98], Is.EqualTo(98));
@@ -1030,7 +998,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         settings.VoiceChatEnabled = false;
         workflow.ProcessMicData(handler1);
@@ -1048,7 +1015,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         settings.VoiceChatEnabled = false;
         workflow.ProcessMicData(handler1);
@@ -1066,7 +1032,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         settings.MuteSelf = true;
         workflow.ProcessMicData(handler1);
@@ -1084,7 +1049,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         settings.MuteSelf = true;
         workflow.ProcessMicData(handler1);
@@ -1102,7 +1066,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler2);
         Assert.That(handler2.GetDataSingle, Is.False);
@@ -1119,7 +1082,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler2);
         Assert.That(handler2.GetDataInt16, Is.False);
@@ -1137,7 +1099,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
     }
@@ -1154,7 +1115,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
     }
@@ -1171,7 +1131,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
     }
@@ -1188,7 +1147,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         Assert.Throws<ArgumentException>(() => workflow.ProcessMicData(handler1));
     }
@@ -1204,7 +1162,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1223,7 +1180,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1242,7 +1198,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1261,7 +1216,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1281,7 +1235,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1301,7 +1254,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1321,7 +1273,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1341,7 +1292,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1360,7 +1310,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1380,7 +1329,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1400,7 +1348,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1420,7 +1367,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1440,7 +1386,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1460,7 +1405,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1480,7 +1424,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1502,7 +1445,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1510,7 +1452,7 @@ public class VoiceDataWorkflowTest
         manipulator.UseInfo = true;
         manipulator.Info.ValidPacketInfo = false;
         workflow.ProcessMicData(handler1);
-        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+        Assert.That(transport.DataSentTo, Is.Empty);
     }
     [Test]
     public void TestProcessMicDataSuccess()
@@ -1524,7 +1466,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1544,13 +1485,12 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
         handler1.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler1);
-        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+        Assert.That(transport.DataSentTo[0], Is.EqualTo(2));
     }
     [Test]
     public void TestProcessMicDataSuccess2()
@@ -1564,7 +1504,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1584,13 +1523,12 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
         handler1.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler1);
-        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+        Assert.That(transport.DataSentTo[0], Is.EqualTo(2));
     }
     [Test]
     public void TestProcessMicDataSuccess3()
@@ -1604,7 +1542,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1624,13 +1561,12 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
         handler1.Info.ValidPacketInfo = true;
         workflow.ProcessMicData(handler1);
-        Assert.That(transport.DataSentTo, Is.EqualTo(0));
+        Assert.That(transport.DataSentTo[0], Is.EqualTo(2));
     }
     [Test]
     public void TestProcessMicDataSuccessValidData()
@@ -1644,7 +1580,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1668,7 +1603,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1689,7 +1623,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Int16;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1714,7 +1647,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;
@@ -1739,7 +1671,6 @@ public class VoiceDataWorkflowTest
         transport.Info.Channels = 1;
         transport.Info.Format = AudioDataTypeFlag.Single;
         transport.Info.Frequency = 48000;
-        transport.Info.NetId = 2;
         transport.Info.ValidPacketInfo = true;
         handler1.DataRec = dataRecordedSingle;
         handler1.DataRecInt16 = dataRecordedInt16;

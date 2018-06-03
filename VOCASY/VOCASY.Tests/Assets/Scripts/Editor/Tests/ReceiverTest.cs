@@ -215,7 +215,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
 
         receiver.ReceiveAudioData(data, 0, 10, info);
@@ -233,7 +232,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
 
         receiver.ReceiveAudioData(data, 0, 10, info);
@@ -251,7 +249,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -270,7 +267,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -289,7 +285,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -308,7 +303,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -327,7 +321,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -346,7 +339,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -365,7 +357,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -384,7 +375,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -403,7 +393,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -422,7 +411,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -442,7 +430,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -462,7 +449,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -482,7 +468,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -502,7 +487,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -522,7 +506,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -542,7 +525,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -562,7 +544,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -582,7 +563,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -603,7 +583,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
 
         receiver.ReceiveAudioData(data, 0, 10, info);
@@ -621,7 +600,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
 
         receiver.ReceiveAudioData(data, 0, 10, info);
@@ -639,7 +617,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -658,7 +635,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -677,7 +653,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -696,7 +671,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -715,7 +689,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -734,7 +707,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -753,7 +725,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -772,7 +743,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -791,7 +761,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -810,7 +779,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -829,7 +797,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -848,7 +815,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 48000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -867,7 +833,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -886,7 +851,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -905,7 +869,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 24000;
         recWriteIndex.SetValue(receiver, 11999);
 
@@ -924,7 +887,6 @@ public class ReceiverTest
         info.Channels = 1;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -943,7 +905,6 @@ public class ReceiverTest
         info.Channels = 2;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 0);
 
@@ -962,7 +923,6 @@ public class ReceiverTest
         info.Channels = 5;
         info.Format = AudioDataTypeFlag.Both;
         info.ValidPacketInfo = true;
-        info.NetId = 0;
         info.Frequency = 12000;
         recWriteIndex.SetValue(receiver, 11999);
 
