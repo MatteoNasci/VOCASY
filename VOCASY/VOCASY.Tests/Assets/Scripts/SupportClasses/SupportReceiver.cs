@@ -6,6 +6,8 @@ using VOCASY;
 using UnityEngine;
 public class SupportReceiver : VoiceReceiver
 {
+    public bool ReceivedSingle = false;
+    public bool ReceivedInt16 = false;
     public AudioDataTypeFlag Flag;
     public override float Volume { get; set; }
 
@@ -13,9 +15,11 @@ public class SupportReceiver : VoiceReceiver
 
     public override void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
     {
+        ReceivedSingle = true;
     }
 
     public override void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
     {
+        ReceivedInt16 = true;
     }
 }

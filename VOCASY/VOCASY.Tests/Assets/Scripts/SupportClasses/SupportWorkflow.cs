@@ -10,6 +10,7 @@ public class SupportWorkflow : VoiceDataWorkflow
 {
     public byte[] receivedData;
     public ulong receivedID;
+    public bool ProcessData = false;
     public Dictionary<ulong, VoiceHandler> Handlers = new Dictionary<ulong, VoiceHandler>();
     public Dictionary<ulong, VOCASY.Common.MuteStatus> HandlersMuteStatuses = new Dictionary<ulong, VOCASY.Common.MuteStatus>();
     public override void AddVoiceHandler(VoiceHandler handler)
@@ -52,6 +53,7 @@ public class SupportWorkflow : VoiceDataWorkflow
 
     public override void ProcessMicData(VoiceHandler handler)
     {
+        ProcessData = true;
     }
 
     public override void ProcessReceivedPacket(byte[] receivedData, int startIndex, int length, ulong netId)

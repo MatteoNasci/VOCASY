@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 namespace VOCASY.Common
 {
     /// <summary>
@@ -53,9 +52,7 @@ namespace VOCASY.Common
             if (!Recorder.IsEnabled)
                 return VoicePacketInfo.InvalidPacket;
 
-            VoicePacketInfo info = Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
-
-            return info;
+            return Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
         }
         /// <summary>
         /// Gets recorded data and stores it in format Int16
@@ -72,9 +69,7 @@ namespace VOCASY.Common
             if (!Recorder.IsEnabled)
                 return VoicePacketInfo.InvalidPacket;
 
-            VoicePacketInfo info = Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
-
-            return info;
+            return Recorder.GetMicData(buffer, bufferOffset, micDataCount, out effectiveMicDataCount);
         }
         /// <summary>
         /// Processes audio data in format Single and plays it

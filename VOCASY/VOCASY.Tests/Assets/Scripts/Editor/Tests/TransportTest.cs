@@ -25,15 +25,10 @@ public class TransportTest
         }
         workflow.ProcessReceivedPacket(data, startIndex, length, sender);
     }
-    public void SendMSG(ulong targetID, bool isTargetMutedByLocal)
-    {
-        throw new NotImplementedException();
-    }
     [SetUp]
     public void SetupTransport()
     {
         transport = ScriptableObject.CreateInstance<Transport>();
-        transport.SendMsgTo = SendMSG;
         transport.SendToAllAction = SendToAllOthers;
         workflow = ScriptableObject.CreateInstance<SupportWorkflow>();
         transport.Workflow = workflow;
@@ -494,5 +489,4 @@ public class TransportTest
         transport.SendMessageIsMutedTo(1, false);
         Assert.That(res, Is.False);
     }
-    //TODO : SendToAll , ricontrollare tutti i test (attenzione a field sender)
 }

@@ -407,5 +407,4 @@ public class SelfDataTransportTest
         transport.ProcessReceivedData(buffer, receivedData, 0, 20, netId);
         Assert.That(buffer.ReadInt(11), Is.Not.EqualTo(0));
     }
-    //TODO: SendToAll
 }

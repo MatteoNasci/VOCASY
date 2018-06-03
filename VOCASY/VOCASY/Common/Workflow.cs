@@ -83,7 +83,7 @@ namespace VOCASY.Common
 
             IsHandlerMuted(id, handler.IsOutputMuted);
 
-            if ((mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0 && !handler.IsRecorder)
+            if (!handler.IsRecorder && (mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0)
                 activeIdsToSendTo.Add(id);
         }
         /// <summary>
@@ -93,9 +93,8 @@ namespace VOCASY.Common
         public override void RemoveVoiceHandler(VoiceHandler handler)
         {
             ulong id = handler.NetID;
-            //handler and callback are removed
-            handlers.Remove(id);
-            if ((mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0 && !handler.IsRecorder)
+
+            if (handlers.Remove(id) && (mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0 && !handler.IsRecorder)
                 activeIdsToSendTo.Remove(id);
         }
         /// <summary>
@@ -212,11 +211,11 @@ namespace VOCASY.Common
         /// <param name="senderID">message sender id</param>
         public override void ProcessIsMutedMessage(bool isSelfMuted, ulong senderID)
         {
-            if (!handlers.ContainsKey(senderID) || handlers[senderID].IsRecorder)
-                return;
-
             if (!mutedIds.ContainsKey(senderID))
                 mutedIds.Add(senderID, MuteStatus.None);
+
+            if (!handlers.ContainsKey(senderID) || handlers[senderID].IsRecorder)
+                return;
 
             MuteStatus curr = mutedIds[senderID];
 
@@ -247,6 +246,9 @@ namespace VOCASY.Common
         {
             if (!mutedIds.ContainsKey(handlerNetId))
                 mutedIds.Add(handlerNetId, MuteStatus.None);
+
+            if (!handlers.ContainsKey(handlerNetId) || handlers[handlerNetId].IsRecorder)
+                return;
 
             MuteStatus curr = mutedIds[handlerNetId];
 
