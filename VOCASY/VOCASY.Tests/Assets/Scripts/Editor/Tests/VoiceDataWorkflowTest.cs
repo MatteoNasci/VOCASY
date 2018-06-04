@@ -6,6 +6,8 @@ using VOCASY.Common;
 using System.Reflection;
 using VOCASY;
 using GENUtility;
+using System.IO;
+
 [TestFixture]
 [TestOf(typeof(Workflow))]
 [Category("VOCASY")]
@@ -20,27 +22,36 @@ public class VoiceDataWorkflowTest
     SupportHandler handler1;
     SupportHandler handler2;
 
+    object[] empty;
     byte[] dataReceived;
     byte[] dataRecordedInt16;
     float[] dataRecordedSingle;
 
     MethodInfo workflowOnDisable;
+    MethodInfo workflowAwake;
+    FieldInfo workflowActiveIdsToSendTo;
     FieldInfo workflowHandlers;
     FieldInfo workflowDataBufferInt16;
     FieldInfo workflowDataBuffer;
     FieldInfo workflowPacketBuffer;
+    FieldInfo workflowMutedIds;
 
     #region Setup
 
     [OneTimeSetUp]
     public void SetupReflections()
     {
+        empty = new object[0];
+
         Type type = typeof(Workflow);
         workflowOnDisable = type.GetMethod("OnDisable", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        workflowAwake = type.GetMethod("Awake", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         workflowDataBuffer = type.GetField("dataBuffer", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         workflowDataBufferInt16 = type.GetField("dataBufferInt16", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         workflowPacketBuffer = type.GetField("packetBuffer", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         workflowHandlers = type.GetField("handlers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        workflowMutedIds = type.GetField("mutedIds", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        workflowActiveIdsToSendTo = type.GetField("activeIdsToSendTo", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
     [SetUp]
     public void Setup()
@@ -434,6 +445,54 @@ public class VoiceDataWorkflowTest
         workflow.AddVoiceHandler(handler1);
         workflow.RemoveVoiceHandler(handler1);
         Assert.That((workflowHandlers.GetValue(workflow) as Dictionary<ulong, VoiceHandler>).Count, Is.Not.EqualTo(1));
+    }
+    [Test]
+    public void TestRemoveHandlerActiveIds()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler2);
+        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestRemoveHandlerActiveIdsRedLight()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler2);
+        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.Not.EqualTo(1));
+    }
+    [Test]
+    public void TestRemoveHandlerActiveIds2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.EqualTo(1));
+    }
+    [Test]
+    public void TestRemoveHandlerActiveIdsRedLight2()
+    {
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.Not.EqualTo(0));
     }
 
     #endregion
@@ -1681,5 +1740,184 @@ public class VoiceDataWorkflowTest
 
     #endregion
 
-    //TODO: Controllare tutti i metodi.  activeIdsToSendTo,  SavedDataFilePath1 & 2 ,SavedDataFolderPath , mutedIds , AddVoiceHandler(mutedIds , activeIdsToSendTo) , PRocessMicData (SendToAll) , ProcessIsMutedMessage (early out, activeIdsToSendTo) , IsHandlerMuted (dont remember) , OnDisable (new save system for statuses) , Initialize (activeIdsToSendTo) , RemoveHandler (activeIdsToSendTo) , ProcessIsMutedMessage , IsHandlerMuted , Initialized (mutedIds, UseStoredIdsStatuses) , ClearSavdStatusesFiles , Awake , OnDisable (mutedIds , UseStoredIdsStatuses)
+    [Test]
+    public void TestAwakeSavedDataFolderPath()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        Assert.That(workflow.SavedDataFolderPath.Equals(Path.Combine(Application.persistentDataPath, workflow.FolderName)), Is.True);
+    }
+    [Test]
+    public void TestAwakeSavedDataFilePath()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        Assert.That(workflow.SavedDataFilePath.Equals(Path.Combine(Application.persistentDataPath, Path.Combine(workflow.FolderName, workflow.FileName))), Is.True);
+    }
+    [Test]
+    public void TestSavedDataFolderPath()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FolderName = "Ciaone";
+        Assert.That(workflow.SavedDataFolderPath.Equals(Path.Combine(Application.persistentDataPath, "Ciaone")), Is.True);
+    }
+    [Test]
+    public void TestSavedDataFilePath()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FileName = "Pippo.txt";
+        Assert.That(workflow.SavedDataFilePath.Equals(Path.Combine(Application.persistentDataPath, Path.Combine(workflow.FolderName, "Pippo.txt"))), Is.True);
+    }
+    [Test]
+    public void TestSavedDataFolderPath2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FolderName = "Ciaone";
+        Assert.That(File.Exists(workflow.SavedDataFilePath), Is.True);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSavedDataFilePath2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FileName = "Pippo.txt";
+        Assert.That(File.Exists(workflow.SavedDataFilePath), Is.True);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSavedDataFolderPath3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        string s = workflow.SavedDataFilePath;
+        workflow.FolderName = "Ciaone";
+        Assert.That(File.Exists(s), Is.False);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSavedDataFilePath3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        string s = workflow.SavedDataFilePath;
+        workflow.FileName = "Pippo.txt";
+        Assert.That(File.Exists(s), Is.False);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSavedDataFolderPath4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FolderName = "Ciaone";
+        string s = workflow.SavedDataFilePath;
+        workflow.FolderName = "Ciaone2";
+        Assert.That(File.Exists(s), Is.False);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSavedDataFilePath4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FileName = "Pippo.txt";
+        string s = workflow.SavedDataFilePath;
+        workflow.FileName = "Pippo2.txt";
+        Assert.That(File.Exists(s), Is.False);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestClearSavedFiles()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        workflow.FileName = "Pippo.txt";
+        workflow.ClearSavedStatusesFiles();
+        Assert.That(File.Exists(workflow.SavedDataFilePath), Is.False);
+    }
+    [Test]
+    public void TestSave()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        workflow.SaveCurrentMuteStatuses();
+        string text = File.ReadAllText(workflow.SavedDataFilePath);
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.IsHandlerMuted(2, true);
+        workflow.SaveCurrentMuteStatuses();
+        string text2 = File.ReadAllText(workflow.SavedDataFilePath);
+        Assert.That(text2.Equals(text), Is.False);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestSave2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        workflow.SaveCurrentMuteStatuses();
+        string text = File.ReadAllText(workflow.SavedDataFilePath);
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.SaveCurrentMuteStatuses();
+        string text2 = File.ReadAllText(workflow.SavedDataFilePath);
+        Assert.That(text2.Equals(text), Is.True);
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestLoad()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.IsHandlerMuted(2, true);
+        workflow.SaveCurrentMuteStatuses();
+        string text2 = File.ReadAllText(workflow.SavedDataFilePath);
+
+        Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.LocalHasMutedRemote));
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestLoad2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.IsHandlerMuted(2, true);
+        workflow.SaveCurrentMuteStatuses();
+        string text2 = File.ReadAllText(workflow.SavedDataFilePath);
+        workflow.IsHandlerMuted(2, false);
+
+        Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.None));
+        File.Delete(workflow.SavedDataFilePath);
+    }
+    [Test]
+    public void TestLoad3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.IsHandlerMuted(2, true);
+        workflow.SaveCurrentMuteStatuses();
+        string text2 = File.ReadAllText(workflow.SavedDataFilePath);
+        workflow.IsHandlerMuted(2, false);
+        workflow.LoadSavedMuteStatuses();
+
+        Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.LocalHasMutedRemote));
+        File.Delete(workflow.SavedDataFilePath);
+    }
+
+    //TODO: Controllare tutti i metodi. , activeIdsToSendTo,  , mutedIds , AddVoiceHandler(mutedIds , activeIdsToSendTo) , PRocessMicData (SendToAll) , 
+    //TODO: ProcessIsMutedMessage , Initialize (activeIdsToSendTo) , OnDisable (mutedIds , UseStoredIdsStatuses),
+    //TODO: IsHandlerMuted , Initialized (mutedIds, UseStoredIdsStatuses)
 }

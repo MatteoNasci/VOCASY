@@ -11,26 +11,57 @@ namespace VOCASY.Common
     [CreateAssetMenu(fileName = "VoiceManager", menuName = "VOCASY/Workflow")]
     public class Workflow : VoiceDataWorkflow
     {
+        [Serializable]
+        private class StatusesHolder
+        {
+            public List<ulong> IDs = new List<ulong>();
+            public List<MuteStatus> Statuses = new List<MuteStatus>();
+            public StatusesHolder()
+            {
+            }
+            public StatusesHolder(List<ulong> ids, List<MuteStatus> statuses)
+            {
+                IDs = new List<ulong>(ids);
+                Statuses = new List<MuteStatus>(statuses);
+            }
+        }
+
         /// <summary>
         /// Folder used to store data
         /// </summary>
-        public const string FolderName = "Comminucation";
+        public string FolderName
+        {
+            get { return folderName; }
+            set
+            {
+                if (value == null)
+                    return;
+                ClearSavedStatusesFiles();
+                folderName = value;
+                Awake();
+                SaveCurrentMuteStatuses();
+            }
+        }
         /// <summary>
-        /// File name used to store ids
+        /// File name used to store statuses
         /// </summary>
-        public const string FileName1 = "MuteStatusesIds.txt";
-        /// <summary>
-        /// File name used to store mute statuses
-        /// </summary>
-        public const string FileName2 = "MuteStatuses.txt";
+        public string FileName
+        {
+            get { return statusesFileName; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    return;
+                ClearSavedStatusesFiles();
+                statusesFileName = value;
+                Awake();
+                SaveCurrentMuteStatuses();
+            }
+        }
         /// <summary>
         /// Full path to file storing ids
         /// </summary>
-        public string SavedDataFilePath1 { get; private set; }
-        /// <summary>
-        /// Full path to file storing statuses
-        /// </summary>
-        public string SavedDataFilePath2 { get; private set; }
+        public string SavedDataFilePath { get; private set; }
         /// <summary>
         /// Full path to folder holding saved files
         /// </summary>
@@ -52,6 +83,11 @@ namespace VOCASY.Common
         /// True if you wish to use files to hold net ids and their last saved mute statuses.
         /// </summary>
         public bool UseStoredIdsStatuses = true;
+
+        [SerializeField]
+        private string statusesFileName = "MuteStatuses.txt";
+        [SerializeField]
+        private string folderName = "Communication";
 
         private AudioDataTypeFlag formatToUse = AudioDataTypeFlag.Int16;
 
@@ -283,32 +319,7 @@ namespace VOCASY.Common
             {
                 mutedIds = new Dictionary<ulong, MuteStatus>();
 
-                if (UseStoredIdsStatuses)
-                {
-                    List<ulong> ids = new List<ulong>();
-                    List<MuteStatus> statuses = new List<MuteStatus>();
-
-                    if (File.Exists(SavedDataFilePath1) && File.Exists(SavedDataFilePath2))
-                    {
-                        JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedDataFilePath1), ids);
-                        JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedDataFilePath2), statuses);
-
-                        int length = Mathf.Min(ids.Count, statuses.Count);
-
-                        for (int i = 0; i < length; i++)
-                        {
-                            mutedIds.Add(ids[i], statuses[i]);
-                        }
-                    }
-                    else
-                    {
-                        if (!Directory.Exists(SavedDataFolderPath))
-                            Directory.CreateDirectory(SavedDataFolderPath);
-
-                        File.WriteAllText(SavedDataFilePath1, JsonUtility.ToJson(ids));
-                        File.WriteAllText(SavedDataFilePath2, JsonUtility.ToJson(statuses));
-                    }
-                }
+                LoadSavedMuteStatuses();
             }
             else
             {
@@ -337,23 +348,38 @@ namespace VOCASY.Common
         /// </summary>
         public void ClearSavedStatusesFiles()
         {
-            if (File.Exists(SavedDataFilePath1))
-                File.Delete(SavedDataFilePath1);
-            if (File.Exists(SavedDataFilePath2))
-                File.Delete(SavedDataFilePath2);
+            if (File.Exists(SavedDataFilePath))
+                File.Delete(SavedDataFilePath);
         }
-        void Awake()
-        {
-            SavedDataFolderPath = Path.Combine(Application.persistentDataPath, FolderName);
-            SavedDataFilePath1 = Path.Combine(SavedDataFolderPath, FileName1);
-            SavedDataFilePath2 = Path.Combine(SavedDataFolderPath, FileName2);
-        }
-        void OnDisable()
+        /// <summary>
+        /// Loads mute statuses from file if available
+        /// </summary>
+        public void LoadSavedMuteStatuses()
         {
             if (UseStoredIdsStatuses && mutedIds != null)
             {
-                List<ulong> ids = new List<ulong>();
-                List<MuteStatus> statuses = new List<MuteStatus>();
+                StatusesHolder holder = new StatusesHolder();
+                if (File.Exists(SavedDataFilePath))
+                {
+                    JsonUtility.FromJsonOverwrite(File.ReadAllText(SavedDataFilePath), holder);
+
+                    int length = Mathf.Min(holder.IDs.Count, holder.Statuses.Count);
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        mutedIds[holder.IDs[i]] = holder.Statuses[i];
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Saves current clients mute statuses if available
+        /// </summary>
+        public void SaveCurrentMuteStatuses()
+        {
+            if (UseStoredIdsStatuses && mutedIds != null)
+            {
+                StatusesHolder holder = new StatusesHolder();
 
                 foreach (KeyValuePair<ulong, MuteStatus> item in mutedIds)
                 {
@@ -362,16 +388,24 @@ namespace VOCASY.Common
                     if (status == MuteStatus.None)
                         continue;
 
-                    ids.Add(item.Key);
-                    statuses.Add(status);
+                    holder.IDs.Add(item.Key);
+                    holder.Statuses.Add(status);
                 }
 
                 if (!Directory.Exists(SavedDataFolderPath))
                     Directory.CreateDirectory(SavedDataFolderPath);
 
-                File.WriteAllText(SavedDataFilePath1, JsonUtility.ToJson(ids));
-                File.WriteAllText(SavedDataFilePath2, JsonUtility.ToJson(statuses));
+                File.WriteAllText(SavedDataFilePath, JsonUtility.ToJson(holder));
             }
+        }
+        void Awake()
+        {
+            SavedDataFolderPath = Path.Combine(Application.persistentDataPath, folderName);
+            SavedDataFilePath = Path.Combine(SavedDataFolderPath, statusesFileName);
+        }
+        void OnDisable()
+        {
+            SaveCurrentMuteStatuses();
 
             mutedIds = null;
             handlers = null;

@@ -22,7 +22,6 @@ public class SupportTransport : VoiceDataTransport
 
     public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)

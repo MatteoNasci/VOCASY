@@ -408,29 +408,19 @@
             Class that manages the workflow of audio data from input to output
             </summary>
         </member>
-        <member name="F:VOCASY.Common.Workflow.FolderName">
+        <member name="P:VOCASY.Common.Workflow.FolderName">
             <summary>
             Folder used to store data
             </summary>
         </member>
-        <member name="F:VOCASY.Common.Workflow.FileName1">
+        <member name="P:VOCASY.Common.Workflow.FileName">
             <summary>
-            File name used to store ids
+            File name used to store statuses
             </summary>
         </member>
-        <member name="F:VOCASY.Common.Workflow.FileName2">
-            <summary>
-            File name used to store mute statuses
-            </summary>
-        </member>
-        <member name="P:VOCASY.Common.Workflow.SavedDataFilePath1">
+        <member name="P:VOCASY.Common.Workflow.SavedDataFilePath">
             <summary>
             Full path to file storing ids
-            </summary>
-        </member>
-        <member name="P:VOCASY.Common.Workflow.SavedDataFilePath2">
-            <summary>
-            Full path to file storing statuses
             </summary>
         </member>
         <member name="P:VOCASY.Common.Workflow.SavedDataFolderPath">
@@ -497,6 +487,16 @@
         <member name="M:VOCASY.Common.Workflow.ClearSavedStatusesFiles">
             <summary>
             Deletes if they exists all files used to store ids and mute statuses
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Workflow.LoadSavedMuteStatuses">
+            <summary>
+            Loads mute statuses from file if available
+            </summary>
+        </member>
+        <member name="M:VOCASY.Common.Workflow.SaveCurrentMuteStatuses">
+            <summary>
+            Saves current clients mute statuses if available
             </summary>
         </member>
         <member name="T:VOCASY.Common.VoidManipulator">
