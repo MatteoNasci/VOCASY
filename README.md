@@ -1,5 +1,4 @@
 # VOCASY
 Voice chat system for Unity Engine
 
-Steam implementation should work fine, normal unity implementation with Concentus lib currently broken.
-A fix and overall rework to make everything simpler is in progress
+Steam implementation is currently undergoing tests, Concentus lib implementation for normal unity implementation will be done at a later stage
