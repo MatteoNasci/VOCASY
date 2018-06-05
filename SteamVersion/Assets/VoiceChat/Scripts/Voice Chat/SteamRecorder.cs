@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using Steamworks;
 using VOCASY;
-public class SteamRecorder : MonoBehaviour, IVoiceRecorder
+public class SteamRecorder : VoiceRecorder
 {
-    public bool IsDisabled { get { return !isRecording; } }
+    public override bool IsEnabled { get { return isRecording; } }
 
-    public int MicDataAvailable
+    public override int MicDataAvailable
     {
         get
         {
@@ -16,7 +16,7 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
         }
     }
 
-    public AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
+    public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
 
     public byte Channels { get { return 1; } }
 
@@ -24,10 +24,10 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
 
     private bool isRecording = false;
 
-    public VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
+    public override VoicePacketInfo GetMicData(byte[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
     {
         effectiveDataCount = 0;
-        if (IsDisabled)
+        if (!IsEnabled)
             return VoicePacketInfo.InvalidPacket;
 
         uint n;
@@ -41,7 +41,7 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
         {
             eR = SteamUser.GetVoice(true, buffer, (uint)Mathf.Min(effectiveDataCount, buffer.Length - bufferOffset, dataCount), out n);
             effectiveDataCount = (int)n;
-            return new VoicePacketInfo(0, Frequency, Channels, AudioDataTypeFlag.Int16, true);
+            return new VoicePacketInfo(Frequency, Channels, AudioDataTypeFlag.Int16, true);
         }
         else
         {
@@ -49,18 +49,18 @@ public class SteamRecorder : MonoBehaviour, IVoiceRecorder
             return VoicePacketInfo.InvalidPacket;
         }
     }
-    public VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
+    public override VoicePacketInfo GetMicData(float[] buffer, int bufferOffset, int dataCount, out int effectiveDataCount)
     {
         effectiveDataCount = 0;
         return VoicePacketInfo.InvalidPacket;
     }
-    public void StartRecording()
+    public override void StartRecording()
     {
         SteamUser.StartVoiceRecording();
         uint n;
         isRecording = SteamUser.GetAvailableVoice(out n) != EVoiceResult.k_EVoiceResultNotRecording;
     }
-    public void StopRecording()
+    public override void StopRecording()
     {
         SteamUser.StopVoiceRecording();
         uint n;

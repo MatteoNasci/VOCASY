@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
 using Steamworks;
 using VOCASY;
-[RequireComponent(typeof(IVoiceHandler))]
 public class SteamPlayer : MonoBehaviour
 {
-    private IVoiceHandler handler;
+    public VoiceHandler Handler;
     void Awake()
     {
         SteamCallbacksUtility.LobbyChatUpd += OnLobbyUpdate;
-        handler = GetComponent<IVoiceHandler>();
     }
     void OnDestroy()
     {
@@ -16,7 +14,10 @@ public class SteamPlayer : MonoBehaviour
     }
     void OnLobbyUpdate(LobbyChatUpdate_t cb)
     {
-        if ((EChatMemberStateChange)cb.m_rgfChatMemberStateChange != EChatMemberStateChange.k_EChatMemberStateChangeEntered && cb.m_ulSteamIDUserChanged == handler.Identity.NetworkId)
-            Destroy(this.gameObject);
+        if (!Handler)
+            return;
+
+        if ((EChatMemberStateChange)cb.m_rgfChatMemberStateChange != EChatMemberStateChange.k_EChatMemberStateChangeEntered && cb.m_ulSteamIDUserChanged == Handler.NetID)
+            Destroy(Handler.gameObject);
     }
 }

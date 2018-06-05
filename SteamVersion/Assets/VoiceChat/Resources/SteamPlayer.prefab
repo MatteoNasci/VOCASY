@@ -21,10 +21,9 @@ GameObject:
   - component: {fileID: 4823619821516582}
   - component: {fileID: 82604976759913048}
   - component: {fileID: 114272470752257478}
-  - component: {fileID: 114352113530322076}
   - component: {fileID: 114250160229291734}
-  - component: {fileID: 114649666924339464}
   - component: {fileID: 114223811801696526}
+  - component: {fileID: 114381661471421518}
   m_Layer: 0
   m_Name: SteamPlayer
   m_TagString: LocalClient
@@ -136,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0783a5fd289148b4c85f26eded31d8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Handler: {fileID: 114381661471421518}
 --- !u!114 &114250160229291734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 1202367468, guid: ebc68fc57ea047f49ba2c15d0e88238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Settings: {fileID: 11400000, guid: d5381316825b7ab4eb0a8de06e2a178d, type: 2}
 --- !u!114 &114272470752257478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624986b8cf6eb9545a156d4c87b96164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114352113530322076
+--- !u!114 &114381661471421518
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -166,17 +167,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1260659463207830}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0e7f84fe4d9bbb4ba90602e5c278b91, type: 3}
+  m_Script: {fileID: 2079226943, guid: ebc68fc57ea047f49ba2c15d0e88238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114649666924339464
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1260659463207830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 2111043110, guid: ebc68fc57ea047f49ba2c15d0e88238b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Workflow: {fileID: 11400000, guid: acc64cc4062797948a27571fc394ed29, type: 2}
+  IsSelfOutputMuted: 0
+  Receiver: {fileID: 114250160229291734}
+  Recorder: {fileID: 114272470752257478}
+  Identity:
+    NetworkId: 0
+    IsLocalPlayer: 0
+    IsInitialized: 0

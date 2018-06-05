@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
-using VOCASY.Utility;
+using GENUtility;
+using System;
 namespace VOCASY.Common
 {
     /// <summary>
     /// Class that manages voice audio output, compatible with all data formats and frequency/channels
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
-    public class Receiver : MonoBehaviour, IVoiceReceiver
+    public class Receiver : VoiceReceiver
     {
         /// <summary>
         /// Output frequency
@@ -20,34 +21,25 @@ namespace VOCASY.Common
         /// Output channels
         /// </summary>
         public const byte OutputBaseChannels = 2;
-
-        /// <summary>
-        /// Flag that determines which types of data format this class can process
-        /// </summary>
-        public AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Both; } }
         /// <summary>
         /// Volume specific for this output source
         /// </summary>
-        public float Volume { get { return source.volume; } set { source.volume = value; } }
+        public override float Volume { get { return source.volume; } set { source.volume = value; } }
         /// <summary>
-        /// Is this output source disabled?
+        /// Flag that determines which types of data format this class can process
         /// </summary>
-        public bool IsDisabled { get { return !enabled; } }
+        public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Both; } }
+        /// <summary>
+        /// Settings used
+        /// </summary>
+        public VoiceChatSettings Settings;
 
         private AudioSource source;
 
-        private float[] audioBuffer;
+        private float[] cyclicAudioBuffer;
         private int readIndex;
         private int writeIndex;
 
-        /// <summary>
-        /// Updates the enable status of this output source
-        /// </summary>
-        /// <param name="isEnabled">enable value</param>
-        public void Enable(bool isEnabled)
-        {
-            this.enabled = isEnabled;
-        }
         /// <summary>
         /// Processes audio data in format Int16 and plays it
         /// </summary>
@@ -55,18 +47,18 @@ namespace VOCASY.Common
         /// <param name="audioDataOffset">audio data start index</param>
         /// <param name="audioDataCount">audio data amount to process</param>
         /// <param name="info">data info</param>
-        public void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
+        public override void ReceiveAudioData(byte[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
-            if (audioBuffer == null)
-                audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
+            if (cyclicAudioBuffer == null)
+                cyclicAudioBuffer = new float[Settings.MaxFrequency / 4];
 
             int length = audioDataCount / sizeof(short);
 
             //operations to convert the given audio data stored at tot frequency and tot channels into audio data with Frequency and Channels compatible with output source, inserting results into internal cyclic buffer
             float frequencyPerc = OutputBaseFrequencyInverse * info.Frequency;
-            float channelsPerc = OutputBaseChannels / info.Channels;
+            float channelsPerc = OutputBaseChannels / (float)info.Channels;
 
-            int bufferLength = audioBuffer.Length;
+            int bufferLength = cyclicAudioBuffer.Length;
             float index = writeIndex;
             float v = 0f;
             int prevDtReadIndex = int.MinValue;
@@ -76,11 +68,11 @@ namespace VOCASY.Common
                 int idx = audioDataOffset + ((int)i * sizeof(short));
                 if (idx != prevDtReadIndex)
                 {
-                    v = Mathf.InverseLerp(short.MinValue, short.MaxValue, Utils.ReadInt16(audioData, idx));
+                    v = Mathf.InverseLerp(short.MinValue, short.MaxValue, ByteManipulator.ReadInt16(audioData, idx));
                     prevDtReadIndex = idx;
                 }
 
-                audioBuffer[(int)index] = v;
+                cyclicAudioBuffer[(int)index] = v;
 
                 index += channelsPerc;
                 if (index >= bufferLength)
@@ -95,27 +87,27 @@ namespace VOCASY.Common
         /// <param name="audioDataOffset">audio data start index</param>
         /// <param name="audioDataCount">audio data amount to process</param>
         /// <param name="info">data info</param>
-        public void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
+        public override void ReceiveAudioData(float[] audioData, int audioDataOffset, int audioDataCount, VoicePacketInfo info)
         {
-            if (audioBuffer == null)
-                audioBuffer = new float[VoiceChatSettings.MaxFrequency / 4];
+            if (cyclicAudioBuffer == null)
+                cyclicAudioBuffer = new float[Settings.MaxFrequency / 4];
 
             //if given audio data is already configured the same as the output source copy elements directly into internal cyclic buffer
             if (info.Frequency == OutputBaseFrequency && info.Channels == OutputBaseChannels)
             {
-                Utils.WriteToCycle(audioData, audioDataOffset, audioBuffer, writeIndex, audioDataCount, out writeIndex);
+                writeIndex = ByteManipulator.WriteToCycle(audioData, audioDataOffset, cyclicAudioBuffer, writeIndex, audioDataCount);
                 return;
             }
 
             //operations to convert the given audio data stored at tot frequency and tot channels into audio data with Frequency and Channels compatible with output source, inserting results into internal cyclic buffer
             float frequencyPerc = OutputBaseFrequencyInverse * info.Frequency;
-            float channelsPerc = OutputBaseChannels / info.Channels;
+            float channelsPerc = OutputBaseChannels / (float)info.Channels;
 
-            int bufferLength = audioBuffer.Length;
+            int bufferLength = cyclicAudioBuffer.Length;
             float index = writeIndex;
             for (float i = 0; i < audioDataCount; i += frequencyPerc)
             {
-                audioBuffer[(int)index] = audioData[(int)i + audioDataOffset];
+                cyclicAudioBuffer[(int)index] = audioData[(int)i + audioDataOffset];
 
                 index += channelsPerc;
                 if (index >= bufferLength)
@@ -124,32 +116,37 @@ namespace VOCASY.Common
             writeIndex = (int)index;
         }
 
-        void OnAudioFilterRead(float[] data, int channels)//this method fills the unity audiosource audio data with the stored data
+        private void OnAudioFilterRead(float[] data, int channels)//this method fills the unity audiosource audio data with the stored data
         {
-            if (audioBuffer == null)
+            if (cyclicAudioBuffer == null)
                 return;
 
             //current total number of audio data stored
-            int count = readIndex > writeIndex ? (audioBuffer.Length - readIndex) + writeIndex : writeIndex - readIndex;
+            int count = readIndex > writeIndex ? (cyclicAudioBuffer.Length - readIndex) + writeIndex : writeIndex - readIndex;
             //total number of elements to supply to the audiosource
             count = Mathf.Min(count, data.Length);
 
-            if (count == 0)
+            if (count <= 0)
                 return;
 
             //supply data to the audiosource
-            Utils.WriteFromCycle(audioBuffer, readIndex, data, 0, count, out readIndex);
+            readIndex = ByteManipulator.WriteFromCycle(cyclicAudioBuffer, readIndex, data, 0, count);
         }
-        void Awake()
+
+
+        private void OnEnable()
         {
-            source = GetComponent<AudioSource>();
-        }
-        void OnEnable()
-        {
+            if (!source)
+            {
+                source = this.GetComponent<AudioSource>();
+                if (!source)
+                    throw new NullReferenceException("Receiver component requires an audiosource attached to the same gameobject");
+            }
+
             source.enabled = true;
             source.Play();
         }
-        void OnDisable()
+        private void OnDisable()
         {
             //resets stored data
             readIndex = 0;

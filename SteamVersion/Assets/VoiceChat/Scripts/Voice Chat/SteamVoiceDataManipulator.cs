@@ -1,22 +1,24 @@
 ﻿using Steamworks;
 using VOCASY;
-using VOCASY.Utility;
-public class SteamVoiceDataManipulator : IAudioDataManipulator
+using GENUtility;
+using UnityEngine;
+[CreateAssetMenu(menuName = "VOCASY/DataManipulators/Steam")]
+public class SteamVoiceDataManipulator : VoiceDataManipulator
 {
     private const int defaultBufferSize = 20000;
 
-    public AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
+    public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
 
-    private GamePacket decompressBuffer = GamePacket.CreatePacket(defaultBufferSize);
+    private BytePacket decompressBuffer = new BytePacket(defaultBufferSize);
 
-    public void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         //this method is not supported
         info.ValidPacketInfo = false;
         return;
     }
 
-    public void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         //writes audio data length
         output.Write(audioDataCount);
@@ -26,15 +28,14 @@ public class SteamVoiceDataManipulator : IAudioDataManipulator
         output.WriteByteData(audioData, audioDataOffset, n);
     }
 
-    public void FromPacketToAudioData(GamePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset)
     {
         //this method is not supported
         info.ValidPacketInfo = false;
-        dataCount = -1;
-        return;
+        return - 1;
     }
 
-    public void FromPacketToAudioDataInt16(GamePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset)
     {
         //reads audio data length
         int count = packet.ReadInt();
@@ -52,10 +53,10 @@ public class SteamVoiceDataManipulator : IAudioDataManipulator
         //audio data is decompressed
         res = SteamUser.DecompressVoice(decompressBuffer.Data, (uint)decompressBuffer.CurrentLength, out_audioData, (uint)out_audioData.Length, out b, info.Frequency);
 
-        dataCount = (int)b;
-
         //if an error occurred packet is invalid
         if (res != EVoiceResult.k_EVoiceResultOK)
             info.ValidPacketInfo = false;
+
+        return (int)b;
     }
 }

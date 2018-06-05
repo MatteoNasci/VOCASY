@@ -8,15 +8,11 @@
         /// <summary>
         /// Invalid packet
         /// </summary>
-        public static VoicePacketInfo InvalidPacket;
+        public static readonly VoicePacketInfo InvalidPacket;
         static VoicePacketInfo()
         {
-            InvalidPacket = new VoicePacketInfo(0, 0, 0, AudioDataTypeFlag.None, false);
+            InvalidPacket = new VoicePacketInfo(0, 0, AudioDataTypeFlag.None, false);
         }
-        /// <summary>
-        /// Network Id of the audio owner
-        /// </summary>
-        public ulong NetId;
         /// <summary>
         /// Frequency at which data is stored
         /// </summary>
@@ -36,14 +32,12 @@
         /// <summary>
         /// Create a new struct instance
         /// </summary>
-        /// <param name="netId">packet netid</param>
         /// <param name="frequency">audio frequency</param>
         /// <param name="channels">audio channels</param>
         /// <param name="format">audio format</param>
         /// <param name="valid">is packet valid?</param>
-        public VoicePacketInfo(ulong netId, ushort frequency, byte channels, AudioDataTypeFlag format, bool valid = true)
+        public VoicePacketInfo(ushort frequency, byte channels, AudioDataTypeFlag format, bool valid = true)
         {
-            NetId = netId;
             Frequency = frequency;
             Channels = channels;
             Format = format;
