@@ -267,7 +267,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1428212616}
-  - component: {fileID: 1428212615}
   - component: {fileID: 1428212614}
   m_Layer: 0
   m_Name: GameObject
@@ -287,21 +286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b061953dd9e58ec449c4534e9fbf07ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 14e23becdf6f575449dd5e647e992565, type: 2}
+  Workflow: {fileID: 11400000, guid: ee4565095b15d9f4f8ac527f7d2865e2, type: 2}
   Prefab: {fileID: 1728815152150654, guid: 64e5088b804c96b449412c6232f094e2, type: 2}
---- !u!114 &1428212615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1428212613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1772668860, guid: 26d4d3d37e9442d4eb2b6907dbf6f5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ReceiverId: 0
-  packetDataSize: 10016
 --- !u!4 &1428212616
 Transform:
   m_ObjectHideFlags: 0

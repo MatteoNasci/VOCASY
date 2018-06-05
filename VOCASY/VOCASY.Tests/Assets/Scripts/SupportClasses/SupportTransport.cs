@@ -19,9 +19,10 @@ public class SupportTransport : VoiceDataTransport
         buffer.WriteByteData(dataReceived, startIndex, length);
         return Info;
     }
-
+    public bool MessageSent;
     public override void SendMessageIsMutedTo(ulong receiverID, bool isReceiverMutedByLocal)
     {
+        MessageSent = true;
     }
 
     public override void SendToAll(BytePacket data, VoicePacketInfo info, List<ulong> receiversIds)

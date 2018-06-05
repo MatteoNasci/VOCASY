@@ -15,7 +15,7 @@ namespace VOCASY.Editor
             workflow = target as Workflow;
         }
         /// <summary>
-        /// Method that modifies VoiceChatSettings inspector view
+        /// Method that modifies Workflow inspector view
         /// </summary>
         public override void OnInspectorGUI()
         {

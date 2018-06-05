@@ -1,22 +1,25 @@
 ﻿using VOCASY;
 using Concentus.Enums;
 using Concentus.Structs;
-using VOCASY.Utility;
+using GENUtility;
 using UnityEngine;
-public class ConcentusDataManipulator : IAudioDataManipulator
+[CreateAssetMenu(fileName = "ConcentusManipulator", menuName = ("VOCASY/DataManipulators/Concentus"))]
+public class ConcentusDataManipulator : VoiceDataManipulator
 {
-    public AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Single; } }
+    public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Single; } }
+
+    public VoiceChatSettings Settings;
 
     private OpusEncoder encoder;
     private OpusDecoder decoder;
 
-    public ConcentusDataManipulator(int fs, int channels)
+    void OnEnable()
     {
-        encoder = new OpusEncoder(fs, channels, OpusApplication.OPUS_APPLICATION_VOIP);
-        decoder = new OpusDecoder(fs, channels);
+        encoder = new OpusEncoder(Settings.MaxFrequency, Settings.MaxChannels, OpusApplication.OPUS_APPLICATION_VOIP);
+        decoder = new OpusDecoder(Settings.MaxFrequency, Settings.MaxChannels);
     }
 
-    public void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacket(float[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         int startIndex = output.CurrentSeek + (sizeof(int) * 2);
         int frameSize = Mathf.Min(audioDataCount / info.Channels, (info.Frequency / 100) * 6);
@@ -26,21 +29,21 @@ public class ConcentusDataManipulator : IAudioDataManipulator
         output.CurrentSeek += n;
     }
 
-    public void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, GamePacket output)
+    public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         info.ValidPacketInfo = false;
     }
 
-    public void FromPacketToAudioData(GamePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset)
     {
         int length = packet.ReadInt();
         int frameSize = packet.ReadInt();
-        dataCount = decoder.Decode(packet.Data, packet.CurrentSeek, length, out_audioData, out_audioDataOffset, frameSize) * decoder.NumChannels;
+        return decoder.Decode(packet.Data, packet.CurrentSeek, length, out_audioData, out_audioDataOffset, frameSize) * decoder.NumChannels;
     }
 
-    public void FromPacketToAudioDataInt16(GamePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset)
     {
-        dataCount = 0;
         info.ValidPacketInfo = false;
+        return 0;
     }
 }

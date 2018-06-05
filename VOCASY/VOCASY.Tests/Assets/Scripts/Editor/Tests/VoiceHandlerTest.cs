@@ -9,6 +9,7 @@ using System.Reflection;
 using UnityEngine.TestTools;
 using VOCASY;
 using GENUtility;
+using System.IO;
 [TestFixture]
 [TestOf(typeof(VoiceHandler))]
 [Category("VOCASY")]

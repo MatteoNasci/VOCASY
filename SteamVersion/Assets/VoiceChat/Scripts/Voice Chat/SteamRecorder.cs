@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using Steamworks;
 using VOCASY;
-using VOCASY.Common;
 public class SteamRecorder : VoiceRecorder
 {
     public override bool IsEnabled { get { return isRecording; } }
@@ -42,7 +41,7 @@ public class SteamRecorder : VoiceRecorder
         {
             eR = SteamUser.GetVoice(true, buffer, (uint)Mathf.Min(effectiveDataCount, buffer.Length - bufferOffset, dataCount), out n);
             effectiveDataCount = (int)n;
-            return new VoicePacketInfo(0, Frequency, Channels, AudioDataTypeFlag.Int16, true);
+            return new VoicePacketInfo(Frequency, Channels, AudioDataTypeFlag.Int16, true);
         }
         else
         {

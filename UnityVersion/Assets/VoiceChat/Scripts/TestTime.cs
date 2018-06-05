@@ -4,7 +4,7 @@ using System.IO;
 using System;
 using System.Text;
 using VOCASY;
-using VOCASY.Utility;
+using GENUtility;
 public class TestTime : MonoBehaviour
 {
     Stopwatch watch = new Stopwatch();
@@ -21,8 +21,8 @@ public class TestTime : MonoBehaviour
     void Update()
     {
         int n = 200000;
-        GamePacket first = GamePacket.CreatePacket(n);
-        GamePacket second = GamePacket.CreatePacket(n);
+        BytePacket first = new BytePacket(n);
+        BytePacket second = new BytePacket(n);
 
 
         watch.Reset();
@@ -67,9 +67,6 @@ public class TestTime : MonoBehaviour
 
         AverageFirst = d1 / c1;
         AverageSecond = d2 / c2;
-
-        first.DisposePacket();
-        second.DisposePacket();
     }
     private class GamePacketStream
     {

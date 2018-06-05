@@ -21,7 +21,7 @@
         </member>
         <member name="M:VOCASY.Editor.WorkflowsDrawer.OnInspectorGUI">
             <summary>
-            Method that modifies VoiceChatSettings inspector view
+            Method that modifies Workflow inspector view
             </summary>
         </member>
     </members>

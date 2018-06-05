@@ -19,11 +19,6 @@ namespace VOCASY.Common
             public StatusesHolder()
             {
             }
-            public StatusesHolder(List<ulong> ids, List<MuteStatus> statuses)
-            {
-                IDs = new List<ulong>(ids);
-                Statuses = new List<MuteStatus>(statuses);
-            }
         }
 
         /// <summary>
@@ -250,7 +245,8 @@ namespace VOCASY.Common
             if (!mutedIds.ContainsKey(senderID))
                 mutedIds.Add(senderID, MuteStatus.None);
 
-            if (!handlers.ContainsKey(senderID) || handlers[senderID].IsRecorder)
+            bool existsLocally = handlers.ContainsKey(senderID);
+            if (existsLocally && handlers[senderID].IsRecorder)
                 return;
 
             MuteStatus curr = mutedIds[senderID];
@@ -264,12 +260,14 @@ namespace VOCASY.Common
                 if (!isMutedRemotely)
                 {
                     mutedIds[senderID] = curr | MuteStatus.RemoteHasMutedLocal;
-                    activeIdsToSendTo.Remove(senderID);
+                    if (existsLocally)
+                        activeIdsToSendTo.Remove(senderID);
                 }
                 else
                 {
                     mutedIds[senderID] = curr & ~MuteStatus.RemoteHasMutedLocal;
-                    activeIdsToSendTo.Add(senderID);
+                    if (existsLocally)
+                        activeIdsToSendTo.Add(senderID);
                 }
             }
         }
@@ -320,11 +318,6 @@ namespace VOCASY.Common
                 mutedIds = new Dictionary<ulong, MuteStatus>();
 
                 LoadSavedMuteStatuses();
-            }
-            else
-            {
-                if (!UseStoredIdsStatuses)
-                    mutedIds = new Dictionary<ulong, MuteStatus>();
             }
 
             if (Manipulator)
@@ -407,6 +400,7 @@ namespace VOCASY.Common
         {
             SaveCurrentMuteStatuses();
 
+            activeIdsToSendTo = null;
             mutedIds = null;
             handlers = null;
             dataBuffer = null;

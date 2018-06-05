@@ -1,31 +1,33 @@
 ﻿using UnityEngine;
 using VOCASY;
 using VOCASY.Common;
-[RequireComponent(typeof(IAudioTransportLayer))]
 public class Starter : MonoBehaviour
 {
-    public VoiceChatSettings Settings;
+    public VoiceDataWorkflow Workflow;
     public GameObject Prefab;
-    private uint otherId = 5;
-    private uint selfId = 1;
+
     void Start()
     {
-        IAudioTransportLayer transport = GetComponent<IAudioTransportLayer>();
-        Settings.AudioQuality = FrequencyType.BestQuality;
-        VoiceDataWorkflow.Init(new ConcentusDataManipulator(VoiceChatSettings.MaxFrequency, 2), transport, Settings, VoiceChatSettings.MaxFrequency, 2);
-
-        SelfDataTransport selfT = transport as SelfDataTransport;
+        SelfDataTransport selfT = Workflow.Transport as SelfDataTransport;
         if (selfT != null)
         {
-            selfT.ReceiverId = otherId;
+            Handler obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<Handler>();
+            if (obj)
+            {
+                obj.Identity = new NetworkIdentity();
+                obj.Identity.IsLocalPlayer = true;
+                obj.Identity.NetworkId = 1;
+                obj.Identity.IsInitialized = true;
+            }
 
-            INetworkIdentity obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
-            obj.IsLocalPlayer = true;
-            obj.NetworkId = selfId;
-
-            obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<INetworkIdentity>();
-            obj.IsLocalPlayer = false;
-            obj.NetworkId = otherId;
+            obj = GameObject.Instantiate<GameObject>(Prefab.gameObject).GetComponent<Handler>();
+            if (obj)
+            {
+                obj.Identity = new NetworkIdentity();
+                obj.Identity.IsLocalPlayer = false;
+                obj.Identity.NetworkId = 2;
+                obj.Identity.IsInitialized = true;
+            }
         }
 
         Destroy(this);

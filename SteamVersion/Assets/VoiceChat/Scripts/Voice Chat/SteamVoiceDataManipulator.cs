@@ -1,9 +1,8 @@
 ﻿using Steamworks;
 using VOCASY;
 using GENUtility;
-using VOCASY.Common;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Steam/Manipulators/Default")]
+[CreateAssetMenu(menuName = "VOCASY/DataManipulators/Steam")]
 public class SteamVoiceDataManipulator : VoiceDataManipulator
 {
     private const int defaultBufferSize = 20000;
@@ -29,15 +28,14 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
         output.WriteByteData(audioData, audioDataOffset, n);
     }
 
-    public override void FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioData(BytePacket packet, ref VoicePacketInfo info, float[] out_audioData, int out_audioDataOffset)
     {
         //this method is not supported
         info.ValidPacketInfo = false;
-        dataCount = -1;
-        return;
+        return - 1;
     }
 
-    public override void FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset, out int dataCount)
+    public override int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset)
     {
         //reads audio data length
         int count = packet.ReadInt();
@@ -55,10 +53,10 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
         //audio data is decompressed
         res = SteamUser.DecompressVoice(decompressBuffer.Data, (uint)decompressBuffer.CurrentLength, out_audioData, (uint)out_audioData.Length, out b, info.Frequency);
 
-        dataCount = (int)b;
-
         //if an error occurred packet is invalid
         if (res != EVoiceResult.k_EVoiceResultOK)
             info.ValidPacketInfo = false;
+
+        return (int)b;
     }
 }
