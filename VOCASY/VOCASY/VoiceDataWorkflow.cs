@@ -51,9 +51,8 @@ namespace VOCASY
         /// <summary>
         /// Informs the workflow whenever an handler has been muted
         /// </summary>
-        /// <param name="handlerNetId">handler obj net id</param>
-        /// <param name="isMuted">is the handler muted</param>
-        public abstract void IsHandlerMuted(ulong handlerNetId, bool isMuted);
+        /// <param name="handler">handler obj</param>
+        public abstract void IsHandlerMuted(VoiceHandler handler);
         /// <summary>
         /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill a new call to this method is made with setted fields
         /// </summary>

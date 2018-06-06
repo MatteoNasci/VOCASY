@@ -145,7 +145,7 @@ namespace VOCASY.Common
             if (!IsRecorder)
             {
                 Receiver.Volume = OutputVolume;
-                Workflow.IsHandlerMuted(this.Identity.NetworkId, IsOutputMuted);
+                Workflow.IsHandlerMuted(this);
                 return;
             }
 

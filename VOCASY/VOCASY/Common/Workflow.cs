@@ -112,7 +112,7 @@ namespace VOCASY.Common
             //handler is added and callback for when mic data is available is set on the handler
             handlers.Add(id, handler);
 
-            IsHandlerMuted(id, handler.IsOutputMuted);
+            IsHandlerMuted(handler);
 
             if (!handler.IsRecorder && (mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0)
                 activeIdsToSendTo.Add(id);
@@ -274,15 +274,18 @@ namespace VOCASY.Common
         /// <summary>
         /// Informs the workflow whenever an handler has been muted
         /// </summary>
-        /// <param name="handlerNetId">handler obj net id</param>
-        /// <param name="isMuted">is the handler muted</param>
-        public override void IsHandlerMuted(ulong handlerNetId, bool isMuted)
+        /// <param name="handler">handler obj to check</param>
+        public override void IsHandlerMuted(VoiceHandler handler)
         {
+            ulong handlerNetId = handler.NetID;
+
             if (!mutedIds.ContainsKey(handlerNetId))
                 mutedIds.Add(handlerNetId, MuteStatus.None);
 
             if (!handlers.ContainsKey(handlerNetId) || handlers[handlerNetId].IsRecorder)
                 return;
+
+            bool isMuted = handler.IsOutputMuted;
 
             MuteStatus curr = mutedIds[handlerNetId];
 
@@ -390,6 +393,44 @@ namespace VOCASY.Common
 
                 File.WriteAllText(SavedDataFilePath, JsonUtility.ToJson(holder));
             }
+        }
+        /// <summary>
+        /// Get the current mute status for the given id
+        /// </summary>
+        /// <param name="id">handler net id</param>
+        /// <returns>current mute status</returns>
+        public MuteStatus GetMuteStatus(ulong id)
+        {
+            return mutedIds.ContainsKey(id) ? mutedIds[id] : MuteStatus.None;
+        }
+        /// <summary>
+        /// Fills the given array with the currently tracked active handler ids (Counts only those to which an audio packet would be sent)
+        /// </summary>
+        /// <param name="output">active tracked handler ids</param>
+        public void GetCurrentTrackedActiveIds(ulong[] output)
+        {
+            int length = Mathf.Min(output.Length, activeIdsToSendTo.Count);
+            for (int i = 0; i < length; i++)
+            {
+                output[i] = activeIdsToSendTo[i];
+            }
+        }
+        /// <summary>
+        /// Fills the given array with the currently tracked handler ids.
+        /// </summary>
+        /// <param name="output">tracked handler ids</param>
+        public void GetCurrentTrackedIds(ulong[] output)
+        {
+            handlers.Keys.CopyTo(output, 0);
+        }
+        /// <summary>
+        /// Gets the tracked handler given its id
+        /// </summary>
+        /// <param name="id">handler id</param>
+        /// <returns>tracked handler</returns>
+        public VoiceHandler GetTrackedHandlerById(ulong id)
+        {
+            return handlers.ContainsKey(id) ? handlers[id] : null;
         }
         void Awake()
         {
