@@ -23,10 +23,14 @@ public class SupportWorkflow : VoiceDataWorkflow
     {
     }
 
-    public override void IsHandlerMuted(ulong handlerNetId, bool isMuted)
+    public override void IsHandlerMuted(VoiceHandler handler)
     {
+        ulong handlerNetId = handler.NetID;
+
         if (!HandlersMuteStatuses.ContainsKey(handlerNetId))
             HandlersMuteStatuses.Add(handlerNetId, MuteStatus.None);
+
+        bool isMuted = handler.IsOutputMuted;
 
         MuteStatus curr = HandlersMuteStatuses[handlerNetId];
 

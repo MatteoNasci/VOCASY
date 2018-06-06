@@ -1848,7 +1848,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler1);
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.SaveCurrentMuteStatuses();
         string text2 = File.ReadAllText(workflow.SavedDataFilePath);
         Assert.That(text2.Equals(text), Is.False);
@@ -1880,7 +1881,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler1);
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.SaveCurrentMuteStatuses();
         File.ReadAllText(workflow.SavedDataFilePath);
 
@@ -1897,10 +1899,12 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler1);
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.SaveCurrentMuteStatuses();
         File.ReadAllText(workflow.SavedDataFilePath);
-        workflow.IsHandlerMuted(2, false);
+        handler2.IsSelfOutputMuted = false;
+        workflow.IsHandlerMuted(handler2);
 
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.None));
         File.Delete(workflow.SavedDataFilePath);
@@ -1915,10 +1919,12 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler1);
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.SaveCurrentMuteStatuses();
         File.ReadAllText(workflow.SavedDataFilePath);
-        workflow.IsHandlerMuted(2, false);
+        handler2.IsSelfOutputMuted = false;
+        workflow.IsHandlerMuted(handler2);
         workflow.LoadSavedMuteStatuses();
 
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.LocalHasMutedRemote));
@@ -2062,8 +2068,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         handler2.SelfOutputVolume = 1f;
         settings.VoiceChatVolume = 1f;
-        handler2.IsSelfOutputMuted = false;
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>).Count, Is.EqualTo(1));
     }
     [Test]
@@ -2074,10 +2080,10 @@ public class WorkflowTest
         workflow.Initialize();
         handler1.Flag = AudioDataTypeFlag.Both;
         handler2.Flag = AudioDataTypeFlag.Both;
-        handler2.SelfOutputVolume = 1f;
+        handler2.SelfOutputVolume = 0f;
         settings.VoiceChatVolume = 1f;
         handler2.IsSelfOutputMuted = false;
-        workflow.IsHandlerMuted(2, true);
+        workflow.IsHandlerMuted(handler2);
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.None));
     }
     [Test]
@@ -2118,9 +2124,9 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         handler2.SelfOutputVolume = 1f;
         settings.VoiceChatVolume = 1f;
-        handler2.IsSelfOutputMuted = true;
+        handler2.IsSelfOutputMuted = false;
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, false);
+        workflow.IsHandlerMuted(handler2);
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.None));
     }
     [Test]
@@ -2180,7 +2186,7 @@ public class WorkflowTest
         settings.VoiceChatVolume = 1f;
         handler2.IsSelfOutputMuted = false;
         (workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>).Add(2, MuteStatus.LocalHasMutedRemote);
-        workflow.IsHandlerMuted(2, false);
+        workflow.IsHandlerMuted(handler2);
         Assert.That(transport.MessageSent, Is.False);
     }
     [Test]
@@ -2221,7 +2227,8 @@ public class WorkflowTest
         handler1.Flag = AudioDataTypeFlag.Both;
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.SaveCurrentMuteStatuses();
         workflowMutedIds.SetValue(workflow, null);
         workflow.Initialize();
@@ -2286,7 +2293,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(true, 2);
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.RemoteHasMutedLocal | MuteStatus.LocalHasMutedRemote));
     }
@@ -2300,7 +2308,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(false, 2);
         Assert.That((workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>)[2], Is.EqualTo(MuteStatus.LocalHasMutedRemote));
     }
@@ -2314,9 +2323,10 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(true, 2);
-        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count , Is.EqualTo(0));
+        Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.EqualTo(0));
     }
     [Test]
     public void TestProcessIsMutedMessageActiveIds2()
@@ -2328,7 +2338,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(false, 2);
         Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.EqualTo(1));
     }
@@ -2342,7 +2353,8 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(false, 2);
         Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>)[0], Is.EqualTo(2));
     }
@@ -2356,9 +2368,246 @@ public class WorkflowTest
         handler2.Flag = AudioDataTypeFlag.Both;
         workflow.AddVoiceHandler(handler2);
         workflow.AddVoiceHandler(handler1);
-        workflow.IsHandlerMuted(2, true);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
         workflow.ProcessIsMutedMessage(false, 2);
         workflow.ProcessIsMutedMessage(true, 2);
         Assert.That((workflowActiveIdsToSendTo.GetValue(workflow) as List<ulong>).Count, Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetMuteStatus()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.AddVoiceHandler(handler1);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
+        workflow.ProcessIsMutedMessage(false, 2);
+        Assert.That(workflow.GetMuteStatus(2), Is.EqualTo(MuteStatus.LocalHasMutedRemote));
+    }
+    [Test]
+    public void TestGetMuteStatus2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.ProcessIsMutedMessage(true, 10);
+        Assert.That(workflow.GetMuteStatus(10), Is.EqualTo(MuteStatus.RemoteHasMutedLocal));
+    }
+    [Test]
+    public void TestGetMuteStatus3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler2);
+        workflow.ProcessIsMutedMessage(true, 2);
+        handler2.IsSelfOutputMuted = true;
+        workflow.IsHandlerMuted(handler2);
+        Assert.That(workflow.GetMuteStatus(2), Is.EqualTo(MuteStatus.Both));
+    }
+    [Test]
+    public void TestGetCurrentTrackedIds()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedIds(arr);
+        Assert.That(arr[0], Is.EqualTo(1));
+    }
+    [Test]
+    public void TestGetCurrentTrackedIds2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedIds(arr);
+        Assert.That(arr[1], Is.EqualTo(2));
+    }
+    [Test]
+    public void TestGetCurrentTrackedIds3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedIds(arr);
+        Assert.That(arr[0], Is.EqualTo(2));
+    }
+    [Test]
+    public void TestGetCurrentTrackedIds4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedIds(arr);
+        Assert.That(arr[1], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[0], Is.EqualTo(2));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[1], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[0], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[1], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds5()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.ProcessIsMutedMessage(true, 2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[0], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetCurrentActiveTrackedIds6()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        workflow.ProcessIsMutedMessage(true, 2);
+        ulong[] arr = new ulong[2];
+        workflow.GetCurrentTrackedActiveIds(arr);
+        Assert.That(arr[1], Is.EqualTo(0));
+    }
+    [Test]
+    public void TestGetTrackedHandlerById()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        Assert.That(workflow.GetTrackedHandlerById(2), Is.SameAs(handler2));
+    }
+    [Test]
+    public void TestGetTrackedHandlerById2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        Assert.That(workflow.GetTrackedHandlerById(1), Is.SameAs(handler1));
+    }
+    [Test]
+    public void TestGetTrackedHandlerById3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        Assert.That(workflow.GetTrackedHandlerById(5), Is.Null);
+    }
+    [Test]
+    public void TestGetTrackedHandlerById4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        workflow.AddVoiceHandler(handler1);
+        workflow.AddVoiceHandler(handler2);
+        workflow.RemoveVoiceHandler(handler1);
+        Assert.That(workflow.GetTrackedHandlerById(1), Is.Null);
     }
 }
