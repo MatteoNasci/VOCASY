@@ -2014,7 +2014,7 @@ public class WorkflowTest
         settings.VoiceChatVolume = 1f;
         handler2.IsSelfOutputMuted = false;
         workflow.AddVoiceHandler(handler2);
-        Assert.That(transport.MessageSent, Is.False);
+        Assert.That(transport.MessageSent, Is.True);
     }
     [Test]
     public void TestAddHandlerIsHandlerMutedUpdate3()
@@ -2056,7 +2056,7 @@ public class WorkflowTest
         settings.VoiceChatVolume = 1f;
         handler2.IsSelfOutputMuted = false;
         workflow.AddVoiceHandler(handler2);
-        Assert.That(transport.MessageSent, Is.False);
+        Assert.That(transport.MessageSent, Is.True);
     }
     [Test]
     public void TestIsHandlerMutedAddMuteId()
@@ -2157,7 +2157,7 @@ public class WorkflowTest
         handler2.IsSelfOutputMuted = true;
         (workflowMutedIds.GetValue(workflow) as Dictionary<ulong, MuteStatus>).Add(2, MuteStatus.LocalHasMutedRemote);
         workflow.AddVoiceHandler(handler2);
-        Assert.That(transport.MessageSent, Is.False);
+        Assert.That(transport.MessageSent, Is.True);
     }
     [Test]
     public void TestIsHandlerMutedDiffSendMessage3()
@@ -2609,5 +2609,93 @@ public class WorkflowTest
         workflow.AddVoiceHandler(handler2);
         workflow.RemoveVoiceHandler(handler1);
         Assert.That(workflow.GetTrackedHandlerById(1), Is.Null);
+    }
+    [Test]
+    public void TestIsHandlerMutedMsgSentCondition()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        handler2.SelfOutputVolume = 1f;
+        settings.VoiceChatVolume = 1f;
+        handler2.IsSelfOutputMuted = true;
+        workflow.AddVoiceHandler(handler2);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2);
+        Assert.That(transport.MessageSent, Is.False);
+    }
+    [Test]
+    public void TestIsHandlerMutedMsgSentCondition2()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        handler2.SelfOutputVolume = 1f;
+        settings.VoiceChatVolume = 1f;
+        handler2.IsSelfOutputMuted = true;
+        workflow.AddVoiceHandler(handler2);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2, false);
+        Assert.That(transport.MessageSent, Is.True);
+    }
+    [Test]
+    public void TestIsHandlerMutedMsgSentCondition3()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        handler2.SelfOutputVolume = 1f;
+        settings.VoiceChatVolume = 1f;
+        handler2.IsSelfOutputMuted = true;
+        workflow.AddVoiceHandler(handler2);
+        transport.MessageSent = false;
+        handler2.IsSelfOutputMuted = false;
+        workflow.IsHandlerMuted(handler2);
+        Assert.That(transport.MessageSent, Is.True);
+    }
+    [Test]
+    public void TestIsHandlerMutedMsgSentCondition4()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        handler2.SelfOutputVolume = 1f;
+        settings.VoiceChatVolume = 1f;
+        handler2.IsSelfOutputMuted = true;
+        workflow.AddVoiceHandler(handler2);
+        transport.MessageSent = false;
+        handler2.IsSelfOutputMuted = false;
+        workflow.IsHandlerMuted(handler2, false);
+        Assert.That(transport.MessageSent, Is.True);
+    }
+    [Test]
+    public void TestIsHandlerMutedMsgSentCondition5()
+    {
+        workflowAwake.Invoke(workflow, empty);
+        manipulator.Flag = AudioDataTypeFlag.Both;
+        workflow.Initialize();
+        handler1.Flag = AudioDataTypeFlag.Both;
+        handler2.Flag = AudioDataTypeFlag.Both;
+        handler2.SelfOutputVolume = 1f;
+        settings.VoiceChatVolume = 1f;
+        handler2.IsSelfOutputMuted = true;
+        workflow.AddVoiceHandler(handler2);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2, false);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2, false);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2, false);
+        transport.MessageSent = false;
+        workflow.IsHandlerMuted(handler2, false);
+        Assert.That(transport.MessageSent, Is.True);
     }
 }
