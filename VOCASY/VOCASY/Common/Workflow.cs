@@ -112,7 +112,7 @@ namespace VOCASY.Common
             //handler is added and callback for when mic data is available is set on the handler
             handlers.Add(id, handler);
 
-            IsHandlerMuted(handler);
+            IsHandlerMuted(handler, false);
 
             if (!handler.IsRecorder && (mutedIds[id] & MuteStatus.RemoteHasMutedLocal) == 0)
                 activeIdsToSendTo.Add(id);
@@ -275,7 +275,8 @@ namespace VOCASY.Common
         /// Informs the workflow whenever an handler has been muted
         /// </summary>
         /// <param name="handler">handler obj to check</param>
-        public override void IsHandlerMuted(VoiceHandler handler)
+        /// <param name="sendMsgOnlyIfDiffDetected">true if you wich to send a network message only when the mute status has changed</param>
+        public override void IsHandlerMuted(VoiceHandler handler, bool sendMsgOnlyIfDiffDetected = true)
         {
             ulong handlerNetId = handler.NetID;
 
@@ -303,9 +304,10 @@ namespace VOCASY.Common
                 {
                     mutedIds[handlerNetId] = curr & ~MuteStatus.LocalHasMutedRemote;
                 }
-
-                Transport.SendMessageIsMutedTo(handlerNetId, isMuted);
             }
+
+            if (diff || !sendMsgOnlyIfDiffDetected)
+                Transport.SendMessageIsMutedTo(handlerNetId, isMuted);
         }
         /// <summary>
         /// Initializes workflow , done automatically when SO is loaded. If fields are either not setted when this method is called or changed afterwards the workflow will remain in an incorrect state untill it is re-initialized

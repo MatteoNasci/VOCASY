@@ -472,11 +472,12 @@
             <param name="isSelfMuted">true if local slient has been muted by the sender</param>
             <param name="senderID">message sender id</param>
         </member>
-        <member name="M:VOCASY.Common.Workflow.IsHandlerMuted(VOCASY.VoiceHandler)">
+        <member name="M:VOCASY.Common.Workflow.IsHandlerMuted(VOCASY.VoiceHandler,System.Boolean)">
             <summary>
             Informs the workflow whenever an handler has been muted
             </summary>
             <param name="handler">handler obj to check</param>
+            <param name="sendMsgOnlyIfDiffDetected">true if you wich to send a network message only when the mute status has changed</param>
         </member>
         <member name="M:VOCASY.Common.Workflow.Initialize">
             <summary>
@@ -1078,11 +1079,12 @@
             <param name="isSelfMuted">true if local slient has been muted by the sender</param>
             <param name="senderID">message sender id</param>
         </member>
-        <member name="M:VOCASY.VoiceDataWorkflow.IsHandlerMuted(VOCASY.VoiceHandler)">
+        <member name="M:VOCASY.VoiceDataWorkflow.IsHandlerMuted(VOCASY.VoiceHandler,System.Boolean)">
             <summary>
             Informs the workflow whenever an handler has been muted
             </summary>
             <param name="handler">handler obj</param>
+            <param name="sendMsgOnlyIfDiffDetected">true if you wich to send a network message only when the mute status has changed</param>
         </member>
         <member name="M:VOCASY.VoiceDataWorkflow.Initialize">
             <summary>

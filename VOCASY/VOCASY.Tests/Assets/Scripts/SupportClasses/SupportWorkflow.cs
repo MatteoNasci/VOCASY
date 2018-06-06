@@ -23,7 +23,7 @@ public class SupportWorkflow : VoiceDataWorkflow
     {
     }
 
-    public override void IsHandlerMuted(VoiceHandler handler)
+    public override void IsHandlerMuted(VoiceHandler handler, bool sendMsgOnlyWithDiffDetected = true)
     {
         ulong handlerNetId = handler.NetID;
 
