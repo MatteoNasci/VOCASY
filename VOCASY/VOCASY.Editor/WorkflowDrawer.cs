@@ -35,6 +35,9 @@ namespace VOCASY.Editor
                         workflow.LoadSavedMuteStatuses();
                 }
             }
+            if (GUILayout.Button("Clear Saved Players Mute Status", EditorStyles.miniButton))
+                if (EditorUtility.DisplayDialog("Clear", "Are you sure to delete the file containing the clients mute statuses?", "Clear", "Cancel"))
+                    workflow.LoadSavedMuteStatuses();
         }
     }
 }

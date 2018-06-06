@@ -24,10 +24,7 @@ namespace VOCASY.Common
         }
         private void SendAll(byte[] data, int startIndex, int length, List<ulong> receiversIds)
         {
-            for (int i = 0; i < receiversIds.Count; i++)
-            {
-                Workflow.ProcessReceivedPacket(data, startIndex, length, receiversIds[i]);
-            }
+            Workflow.ProcessReceivedPacket(data, startIndex, length, receiversIds[0]);
         }
     }
 }

@@ -184,14 +184,26 @@ public class SelfDataTransportTest
     [Test]
     public void TestSendToAllOthersCorrectId()
     {
-        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 1 });
-        Assert.That(workflow.receivedID, Is.EqualTo(1));
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 5 });
+        Assert.That(workflow.receivedID, Is.EqualTo(5));
     }
     [Test]
     public void TestSendToAllOthersCorrectIdRedLight()
     {
-        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 2 });
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 5 });
         Assert.That(workflow.receivedID, Is.Not.EqualTo(1));
+    }
+    [Test]
+    public void TestSendToAllOthersCorrectId2()
+    {
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 6, 8, 7 });
+        Assert.That(workflow.receivedID, Is.EqualTo(6));
+    }
+    [Test]
+    public void TestSendToAllOthersCorrectId2RedLight()
+    {
+        transport.SendToAll(new BytePacket(1), new VoicePacketInfo(), new List<ulong>() { 6, 8, 7 });
+        Assert.That(workflow.receivedID, Is.Not.EqualTo(7));
     }
     [Test]
     public void TestSendToAllOthersCorrectFrequency()
