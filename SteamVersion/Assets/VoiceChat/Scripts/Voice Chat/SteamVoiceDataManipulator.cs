@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "VOCASY/DataManipulators/Steam")]
 public class SteamVoiceDataManipulator : VoiceDataManipulator
 {
-    private const int defaultBufferSize = 20000;
+    private const int defaultBufferSize = 1000;
 
     public override AudioDataTypeFlag AvailableTypes { get { return AudioDataTypeFlag.Int16; } }
 
@@ -17,7 +17,6 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
         info.ValidPacketInfo = false;
         return;
     }
-
     public override void FromAudioDataToPacketInt16(byte[] audioData, int audioDataOffset, int audioDataCount, ref VoicePacketInfo info, BytePacket output)
     {
         //writes audio data length
@@ -32,7 +31,7 @@ public class SteamVoiceDataManipulator : VoiceDataManipulator
     {
         //this method is not supported
         info.ValidPacketInfo = false;
-        return - 1;
+        return -1;
     }
 
     public override int FromPacketToAudioDataInt16(BytePacket packet, ref VoicePacketInfo info, byte[] out_audioData, int out_audioDataOffset)
