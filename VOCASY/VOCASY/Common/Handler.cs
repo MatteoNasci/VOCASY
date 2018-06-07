@@ -98,7 +98,7 @@ namespace VOCASY.Common
                 Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
         }
         /// <summary>
-        /// Resets initialized status
+        /// Resets initialized status. Do not Reset an handler if it has not been disabled yet, otherwise it will remain in an incorrect state and lead to possible errors.
         /// </summary>
         public void Reset()
         {
@@ -123,7 +123,8 @@ namespace VOCASY.Common
         }
         private void OnVoiceChatEnabledChanged()
         {
-            this.enabled = Workflow.Settings.VoiceChatEnabled;
+            if (initialized)
+                this.enabled = Workflow.Settings.VoiceChatEnabled;
         }
         private void InitUpdate()
         {
@@ -144,6 +145,8 @@ namespace VOCASY.Common
                 AvailableTypes = res;
 
                 OnEnable();
+
+                OnVoiceChatEnabledChanged();
             }
         }
         private void NormalUpdate()
@@ -214,8 +217,6 @@ namespace VOCASY.Common
             Receiver.enabled = false;
 
             Workflow.Settings.VoiceChatEnabledChanged += OnVoiceChatEnabledChanged;
-
-            OnVoiceChatEnabledChanged();
         }
         private void OnDestroy()
         {
