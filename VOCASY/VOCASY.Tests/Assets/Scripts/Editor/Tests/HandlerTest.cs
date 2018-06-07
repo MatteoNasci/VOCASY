@@ -133,19 +133,37 @@ public class HandlerTest
         Assert.That(receiver.enabled, Is.False);
     }
     [Test]
-    public void TestInitVoiceChatEnabled()
+    public void TestInitNoVoiceChatEnabled()
     {
         settings.VoiceChatEnabled = true;
         handler.enabled = false;
         handlerAwake.Invoke(handler, empty);
-        Assert.That(handler.enabled, Is.True);
+        Assert.That(handler.enabled, Is.False);
     }
     [Test]
-    public void TestInitVoiceChatEnabled2()
+    public void TestInitNoVoiceChatEnabled2()
     {
         settings.VoiceChatEnabled = false;
         handler.enabled = true;
         handlerAwake.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.True);
+    }
+    [Test]
+    public void TestInitNoVoiceChatEnabled3()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.enabled = false;
+        handlerAwake.Invoke(handler, empty);
+        settings.VoiceChatEnabled = false;
+        Assert.That(handler.enabled, Is.False);
+    }
+    [Test]
+    public void TestInitNoVoiceChatEnabled4()
+    {
+        settings.VoiceChatEnabled = false;
+        handler.enabled = false;
+        handlerAwake.Invoke(handler, empty);
+        settings.VoiceChatEnabled = true;
         Assert.That(handler.enabled, Is.False);
     }
     [Test]
@@ -182,6 +200,17 @@ public class HandlerTest
         settings.VoiceChatEnabled = false;
         handlerAwake.Invoke(handler, empty);
         handler.enabled = false;
+        handlerInitialized.SetValue(handler, false);
+        settings.VoiceChatEnabled = true;
+        Assert.That(handler.enabled, Is.False);
+    }
+    [Test]
+    public void TestOnVoiceChatEnabledChangedInit()
+    {
+        settings.VoiceChatEnabled = false;
+        handlerAwake.Invoke(handler, empty);
+        handler.enabled = false;
+        handlerInitialized.SetValue(handler, true);
         settings.VoiceChatEnabled = true;
         Assert.That(handler.enabled, Is.True);
     }
@@ -191,6 +220,17 @@ public class HandlerTest
         settings.VoiceChatEnabled = true;
         handlerAwake.Invoke(handler, empty);
         handler.enabled = true;
+        handlerInitialized.SetValue(handler, false);
+        settings.VoiceChatEnabled = false;
+        Assert.That(handler.enabled, Is.True);
+    }
+    [Test]
+    public void TestOnVoiceChatEnabledChangedInit2()
+    {
+        settings.VoiceChatEnabled = true;
+        handlerAwake.Invoke(handler, empty);
+        handler.enabled = true;
+        handlerInitialized.SetValue(handler, true);
         settings.VoiceChatEnabled = false;
         Assert.That(handler.enabled, Is.False);
     }
@@ -199,16 +239,36 @@ public class HandlerTest
     {
         handler.enabled = false;
         settings.VoiceChatEnabled = true;
+        handlerInitialized.SetValue(handler, false);
+        handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
+    }
+    [Test]
+    public void TestOnVoiceChatEnabledChangedInit3()
+    {
+        handler.enabled = false;
+        settings.VoiceChatEnabled = true;
+        handlerInitialized.SetValue(handler, true);
         handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
         Assert.That(handler.enabled, Is.True);
+    }
+    [Test]
+    public void TestOnVoiceChatEnabledChangedInit4()
+    {
+        handler.enabled = true;
+        settings.VoiceChatEnabled = false;
+        handlerInitialized.SetValue(handler, true);
+        handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
     }
     [Test]
     public void TestOnVoiceChatEnabledChanged4()
     {
         handler.enabled = true;
         settings.VoiceChatEnabled = false;
+        handlerInitialized.SetValue(handler, false);
         handlerOnVoiceChatEnabledChanged.Invoke(handler, empty);
-        Assert.That(handler.enabled, Is.False);
+        Assert.That(handler.enabled, Is.True);
     }
     [Test]
     public void TestOnEnableNonInit()
@@ -490,6 +550,30 @@ public class HandlerTest
         Assert.That(handlerInitialized.GetValue(handler), Is.False);
     }
     [Test]
+    public void TestInitUpdateEarlyOut3()
+    {
+        settings.VoiceChatEnabled = false;
+        handler.enabled = true;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = false;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.True);
+    }
+    [Test]
+    public void TestInitUpdateEarlyOut4()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.enabled = false;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = false;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
+    }
+    [Test]
     public void TestInitUpdateSuccessInitialized()
     {
         handlerAwake.Invoke(handler, empty);
@@ -498,6 +582,58 @@ public class HandlerTest
         handler.Identity.IsInitialized = true;
         handlerInitUpdate.Invoke(handler, empty);
         Assert.That(handlerInitialized.GetValue(handler), Is.True);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateSuccessChatEnabled()
+    {
+        settings.VoiceChatEnabled = false;
+        handler.enabled = true;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateSuccessChatEnabled2()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.enabled = false;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.True);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateSuccessChatEnabled3()
+    {
+        settings.VoiceChatEnabled = true;
+        handler.enabled = true;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.True);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestInitUpdateSuccessChatEnabled4()
+    {
+        settings.VoiceChatEnabled = false;
+        handler.enabled = false;
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handlerInitUpdate.Invoke(handler, empty);
+        Assert.That(handler.enabled, Is.False);
         handlerOnDisable.Invoke(handler, empty);
     }
     [Test]
@@ -1347,4 +1483,5 @@ public class HandlerTest
         handler.Reset();
         Assert.That(handlerInitialized.GetValue(handler), Is.False);
     }
+    //TODO: InitUpdate reworked (now performs onvoicechatenabled() if init succesfull)
 }
