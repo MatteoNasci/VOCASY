@@ -47,8 +47,10 @@ namespace VOCASY.Common
         /// Voice chat workflow
         /// </summary>
         public VoiceDataWorkflow Workflow;
-
-        private BytePacket toSend;
+        /// <summary>
+        /// Packet used to send data
+        /// </summary>
+        protected BytePacket toSend;
 
         /// <summary>
         /// Processes the ismuted message received
@@ -104,11 +106,14 @@ namespace VOCASY.Common
         {
             toSend.CurrentSeek = 0;
             toSend.CurrentLength = 0;
+
             toSend.Write(info.Frequency);
             toSend.Write(info.Channels);
             toSend.Write((byte)info.Format);
 
-            int n = toSend.Copy(data);
+            int count = Mathf.Min(data.CurrentLength - data.CurrentSeek, toSend.Data.Length - toSend.CurrentSeek);
+
+            toSend.WriteByteData(data.Data, data.CurrentSeek, count);
 
             SendToAllAction?.Invoke(toSend.Data, 0, toSend.CurrentLength, receiversIds);
         }
@@ -121,10 +126,12 @@ namespace VOCASY.Common
         {
             SendMsgTo?.Invoke(receiverID, isReceiverMutedByLocal);
         }
-
-        private void OnEnable()
+        /// <summary>
+        /// Send Packet initialization
+        /// </summary>
+        protected virtual void OnEnable()
         {
-            toSend = new BytePacket(MaxDataLength);
+            toSend = new BytePacket(PLength);
         }
     }
 }
