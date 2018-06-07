@@ -97,6 +97,13 @@ namespace VOCASY.Common
             if (Receiver.enabled)
                 Receiver.ReceiveAudioData(audioData, audioDataOffset, audioDataCount, info);
         }
+        /// <summary>
+        /// Resets initialized status
+        /// </summary>
+        public void Reset()
+        {
+            initialized = false;
+        }
 
         private void PTTOffUpdate()
         {
