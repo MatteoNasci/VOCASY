@@ -1333,4 +1333,18 @@ public class HandlerTest
         handlerOnDisable.Invoke(handler, empty);
         recorder.StopRecording();
     }
+    [Test]
+    public void TestResetInitialized()
+    {
+        handlerInitialized.SetValue(handler, true);
+        handler.Reset();
+        Assert.That(handlerInitialized.GetValue(handler), Is.False);
+    }
+    [Test]
+    public void TestResetInitialized2()
+    {
+        handlerInitialized.SetValue(handler, false);
+        handler.Reset();
+        Assert.That(handlerInitialized.GetValue(handler), Is.False);
+    }
 }
