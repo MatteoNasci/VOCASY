@@ -585,6 +585,39 @@ public class HandlerTest
         handlerOnDisable.Invoke(handler, empty);
     }
     [Test]
+    public void TestForceInitSuccessInitialized()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.ForceInitializzation();
+        Assert.That(handlerInitialized.GetValue(handler), Is.True);
+        handlerOnDisable.Invoke(handler, empty);
+    }
+    [Test]
+    public void TestForceInitSuccessInitialized2()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, false);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Receiver = null;
+        Assert.Throws<NullReferenceException>(() => handler.ForceInitializzation());
+        handler.Recorder.StopRecording();
+    }
+    [Test]
+    public void TestForceInitSuccessInitialized3()
+    {
+        handlerAwake.Invoke(handler, empty);
+        handlerInitialized.SetValue(handler, true);
+        handler.Identity = new NetworkIdentity();
+        handler.Identity.IsInitialized = true;
+        handler.Receiver = null;
+        Assert.DoesNotThrow(() => handler.ForceInitializzation());
+        handler.Recorder.StopRecording();
+    }
+    [Test]
     public void TestInitUpdateSuccessChatEnabled()
     {
         settings.VoiceChatEnabled = false;
@@ -1262,14 +1295,6 @@ public class HandlerTest
     [Test]
     public void TestNormalUpdateNotRecorderOutmutMuted()
     {
-        //handlerAwake.Invoke(handler, empty);
-        //handler.Identity = new NetworkIdentity() { IsInitialized = true, NetworkId = 1, IsLocalPlayer = false };
-        //handlerUpdate.Invoke(handler, empty);
-        //handler.SelfOutputVolume = 0.1f;
-        //handler.IsSelfOutputMuted = true;
-        //settings.VoiceChatVolume = 0.6f;
-        //receiverOnEnable.Invoke(receiver, empty);
-        //handlerNormalUpdate.Invoke(handler, empty);
         handlerAwake.Invoke(handler, empty);
         handler.Identity = new NetworkIdentity() { IsInitialized = true, NetworkId = 1, IsLocalPlayer = false };
         handlerUpdate.Invoke(handler, empty);
@@ -1483,5 +1508,5 @@ public class HandlerTest
         handler.Reset();
         Assert.That(handlerInitialized.GetValue(handler), Is.False);
     }
-    //TODO: InitUpdate reworked (now performs onvoicechatenabled() if init succesfull)
+    //TODO: ForceInitializzation
 }

@@ -104,6 +104,14 @@ namespace VOCASY.Common
         {
             initialized = false;
         }
+        /// <summary>
+        /// Requests the handler to do its initialization. Initialization is performed only if it is not initialized yet and Identity is correctly set
+        /// </summary>
+        public void ForceInitializzation()
+        {
+            if (!initialized)
+                InitUpdate();
+        }
 
         private void PTTOffUpdate()
         {
